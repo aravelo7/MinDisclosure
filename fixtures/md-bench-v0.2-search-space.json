@@ -1,0 +1,126 @@
+{
+  "benchmark_version": "md-bench-v0.2",
+  "ordering": "Each dimension is listed from least to most privacy-revealing. Product plans use component-wise partial order.",
+  "tasks": [
+    {
+      "task_id": "MD-EQ-01",
+      "dimensions": [{
+        "dimension_id": "email",
+        "requirement_id": "req_eq_identity",
+        "occurrence_ids": ["eq_email_r1", "eq_email_r2", "eq_email_r3", "eq_email_r4"],
+        "chain": [
+          {"transform_id": "REDACT", "representation": "REDACTED"},
+          {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+          {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+        ]
+      }]
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "dimensions": [{
+        "dimension_id": "contact_email",
+        "requirement_id": "req_group_domain",
+        "occurrence_ids": ["group_email_i1", "group_email_i2", "group_email_i3", "group_email_i4"],
+        "chain": [
+          {"transform_id": "REDACT", "representation": "REDACTED"},
+          {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+          {"transform_id": "DOMAIN_HANDLE", "representation": "DERIVED_PROPERTY", "property_name": "domain_handle"},
+          {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+        ]
+      }]
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "dimensions": [{
+        "dimension_id": "date_of_birth",
+        "requirement_id": "req_order_year",
+        "occurrence_ids": ["order_dob_p1", "order_dob_p2", "order_dob_p3", "order_dob_p4"],
+        "chain": [
+          {"transform_id": "REDACT", "representation": "REDACTED"},
+          {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+          {"transform_id": "BIRTH_YEAR", "representation": "DERIVED_PROPERTY", "property_name": "birth_year"},
+          {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+        ]
+      }]
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "dimensions": [{
+        "dimension_id": "address",
+        "requirement_id": "req_loc_zone",
+        "occurrence_ids": ["loc_address_q1", "loc_address_q2", "loc_address_q3", "loc_address_q4"],
+        "chain": [
+          {"transform_id": "REDACT", "representation": "REDACTED"},
+          {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+          {"transform_id": "SERVICE_ZONE", "representation": "COARSENED_VALUE", "property_name": "service_zone"},
+          {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+        ]
+      }]
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "dimensions": [
+        {
+          "dimension_id": "subject_email",
+          "requirement_id": "req_cross_identity",
+          "occurrence_ids": ["cross_email_e1", "cross_email_e2", "cross_email_e3", "cross_email_e4", "cross_email_e5"],
+          "chain": [
+            {"transform_id": "REDACT", "representation": "REDACTED"},
+            {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+            {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+          ]
+        },
+        {
+          "dimension_id": "timestamp",
+          "requirement_id": "req_cross_hour",
+          "occurrence_ids": ["cross_time_e1", "cross_time_e2", "cross_time_e3", "cross_time_e4", "cross_time_e5"],
+          "chain": [
+            {"transform_id": "REDACT", "representation": "REDACTED"},
+            {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+            {"transform_id": "HOUR_BUCKET", "representation": "COARSENED_VALUE", "property_name": "timestamp_hour"},
+            {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "dimensions": [{
+        "dimension_id": "person_name",
+        "requirement_id": "req_graph_identity",
+        "occurrence_ids": ["graph_g1_from", "graph_g1_to", "graph_g2_from", "graph_g2_to", "graph_g3_from", "graph_g3_to"],
+        "chain": [
+          {"transform_id": "REDACT", "representation": "REDACTED"},
+          {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+          {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+        ]
+      }]
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "dimensions": [
+        {
+          "dimension_id": "recipient_email",
+          "requirement_id": "req_tool_recipient",
+          "occurrence_ids": ["tool_email_t1", "tool_email_t2", "tool_email_t3"],
+          "chain": [
+            {"transform_id": "REDACT", "representation": "REDACTED"},
+            {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN", "reversible": true},
+            {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+          ]
+        },
+        {
+          "dimension_id": "address",
+          "requirement_id": "req_tool_zone",
+          "occurrence_ids": ["tool_address_t1", "tool_address_t2", "tool_address_t3"],
+          "chain": [
+            {"transform_id": "REDACT", "representation": "REDACTED"},
+            {"transform_id": "STABLE_TOKEN", "representation": "OPAQUE_TOKEN"},
+            {"transform_id": "SERVICE_ZONE", "representation": "COARSENED_VALUE", "property_name": "service_zone"},
+            {"transform_id": "RAW_VALUE", "representation": "RAW_VALUE"}
+          ]
+        }
+      ]
+    }
+  ]
+}

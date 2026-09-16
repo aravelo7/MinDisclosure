@@ -1,0 +1,284 @@
+{
+  "benchmark_version": "md-bench-v0.2",
+  "status": "FROZEN",
+  "exposure_weights": {
+    "RAW_VALUE": 1.0,
+    "COARSENED_VALUE": 0.5,
+    "DERIVED_PROPERTY": 0.5,
+    "RELATION_ONLY": 0.25,
+    "OPAQUE_TOKEN": 0.1,
+    "REDACTED": 0.0
+  },
+  "strategies": ["FIXED_REDACTION", "STABLE_TOKENIZATION", "ORACLE_MIN_DISCLOSURE", "RAW_DISCLOSURE"],
+  "tasks": [
+    {
+      "task_id": "MD-EQ-01",
+      "raw_input": {"records": [
+        {"record_id": "r1", "email": "alice@northwind.example"},
+        {"record_id": "r2", "email": "bob@contoso.example"},
+        {"record_id": "r3", "email": "alice@northwind.example"},
+        {"record_id": "r4", "email": "carol@northwind.example"}
+      ]},
+      "user_instruction": "Return groups of record IDs that use the same email address. Omit singleton groups. Preserve input order.",
+      "expected_output_schema": {"duplicate_groups": [["record_id"]]},
+      "ground_truth": {"duplicate_groups": [["r1", "r3"]]},
+      "oracle": {"kind": "exact_json", "relationship_checks": ["equality_preserved"]},
+      "sensitive_entities": [
+        {"occurrence_id": "eq_email_r1", "source_path": "$.records[0].email", "entity_type": "EMAIL", "entity_identity": "alice_email", "raw_value": "alice@northwind.example", "sensitive_properties": {}},
+        {"occurrence_id": "eq_email_r2", "source_path": "$.records[1].email", "entity_type": "EMAIL", "entity_identity": "bob_email", "raw_value": "bob@contoso.example", "sensitive_properties": {}},
+        {"occurrence_id": "eq_email_r3", "source_path": "$.records[2].email", "entity_type": "EMAIL", "entity_identity": "alice_email", "raw_value": "alice@northwind.example", "sensitive_properties": {}},
+        {"occurrence_id": "eq_email_r4", "source_path": "$.records[3].email", "entity_type": "EMAIL", "entity_identity": "carol_email", "raw_value": "carol@northwind.example", "sensitive_properties": {}}
+      ],
+      "task_requirements": [
+        {"requirement_id": "req_eq_identity", "kind": "required_relation", "name": "identity_equality", "target": ["eq_email_r1", "eq_email_r2", "eq_email_r3", "eq_email_r4"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["OPAQUE_TOKEN"]}
+      ],
+      "oracle_disclosure_plan": {"actions": [
+        {"occurrence_id": "eq_email_r1", "representation": "OPAQUE_TOKEN", "requirement_id": "req_eq_identity"},
+        {"occurrence_id": "eq_email_r2", "representation": "OPAQUE_TOKEN", "requirement_id": "req_eq_identity"},
+        {"occurrence_id": "eq_email_r3", "representation": "OPAQUE_TOKEN", "requirement_id": "req_eq_identity"},
+        {"occurrence_id": "eq_email_r4", "representation": "OPAQUE_TOKEN", "requirement_id": "req_eq_identity"}
+      ]},
+      "source_relations": [],
+      "expected_agent_ledger_counts": {
+        "FIXED_REDACTION": {"REDACTED": 4}, "STABLE_TOKENIZATION": {"OPAQUE_TOKEN": 4},
+        "ORACLE_MIN_DISCLOSURE": {"OPAQUE_TOKEN": 4}, "RAW_DISCLOSURE": {"RAW_VALUE": 4}
+      }
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "raw_input": {"invoices": [
+        {"invoice_id": "i1", "contact_email": "ana@northwind.example", "amount": 20},
+        {"invoice_id": "i2", "contact_email": "ben@northwind.example", "amount": 35},
+        {"invoice_id": "i3", "contact_email": "cy@contoso.example", "amount": 40},
+        {"invoice_id": "i4", "contact_email": "dee@northwind.example", "amount": 5}
+      ]},
+      "user_instruction": "Group invoices by contact-email domain, label groups by first appearance, and return members and total amount.",
+      "expected_output_schema": {"groups": [{"group_id": "string", "invoice_ids": ["invoice_id"], "total_amount": 0}]},
+      "ground_truth": {"groups": [
+        {"group_id": "g1", "invoice_ids": ["i1", "i2", "i4"], "total_amount": 60},
+        {"group_id": "g2", "invoice_ids": ["i3"], "total_amount": 40}
+      ]},
+      "oracle": {"kind": "exact_json", "relationship_checks": ["grouping_preserved", "aggregate_values_correct"]},
+      "sensitive_entities": [
+        {"occurrence_id": "group_email_i1", "source_path": "$.invoices[0].contact_email", "entity_type": "EMAIL", "entity_identity": "ana_email", "raw_value": "ana@northwind.example", "sensitive_properties": {"domain_handle": "<DOMAIN_001>"}},
+        {"occurrence_id": "group_email_i2", "source_path": "$.invoices[1].contact_email", "entity_type": "EMAIL", "entity_identity": "ben_email", "raw_value": "ben@northwind.example", "sensitive_properties": {"domain_handle": "<DOMAIN_001>"}},
+        {"occurrence_id": "group_email_i3", "source_path": "$.invoices[2].contact_email", "entity_type": "EMAIL", "entity_identity": "cy_email", "raw_value": "cy@contoso.example", "sensitive_properties": {"domain_handle": "<DOMAIN_002>"}},
+        {"occurrence_id": "group_email_i4", "source_path": "$.invoices[3].contact_email", "entity_type": "EMAIL", "entity_identity": "dee_email", "raw_value": "dee@northwind.example", "sensitive_properties": {"domain_handle": "<DOMAIN_001>"}}
+      ],
+      "task_requirements": [
+        {"requirement_id": "req_group_domain", "kind": "required_property", "name": "domain_handle", "target": ["group_email_i1", "group_email_i2", "group_email_i3", "group_email_i4"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["DERIVED_PROPERTY"]}
+      ],
+      "oracle_disclosure_plan": {"actions": [
+        {"occurrence_id": "group_email_i1", "representation": "DERIVED_PROPERTY", "property_name": "domain_handle", "requirement_id": "req_group_domain"},
+        {"occurrence_id": "group_email_i2", "representation": "DERIVED_PROPERTY", "property_name": "domain_handle", "requirement_id": "req_group_domain"},
+        {"occurrence_id": "group_email_i3", "representation": "DERIVED_PROPERTY", "property_name": "domain_handle", "requirement_id": "req_group_domain"},
+        {"occurrence_id": "group_email_i4", "representation": "DERIVED_PROPERTY", "property_name": "domain_handle", "requirement_id": "req_group_domain"}
+      ]},
+      "source_relations": [],
+      "expected_agent_ledger_counts": {
+        "FIXED_REDACTION": {"REDACTED": 4}, "STABLE_TOKENIZATION": {"OPAQUE_TOKEN": 4},
+        "ORACLE_MIN_DISCLOSURE": {"DERIVED_PROPERTY": 4}, "RAW_DISCLOSURE": {"RAW_VALUE": 4}
+      }
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "raw_input": {"people": [
+        {"record_id": "p1", "date_of_birth": "1994-06-12"},
+        {"record_id": "p2", "date_of_birth": "1981-11-03"},
+        {"record_id": "p3", "date_of_birth": "2000-01-25"},
+        {"record_id": "p4", "date_of_birth": "1988-09-17"}
+      ]},
+      "user_instruction": "Return record IDs from oldest person to youngest person.",
+      "expected_output_schema": {"ordered_record_ids": ["record_id"]},
+      "ground_truth": {"ordered_record_ids": ["p2", "p4", "p1", "p3"]},
+      "oracle": {"kind": "ordered_list", "relationship_checks": ["ordering_preserved"]},
+      "sensitive_entities": [
+        {"occurrence_id": "order_dob_p1", "source_path": "$.people[0].date_of_birth", "entity_type": "DATE_OF_BIRTH", "entity_identity": "dob_p1", "raw_value": "1994-06-12", "sensitive_properties": {"birth_year": 1994}},
+        {"occurrence_id": "order_dob_p2", "source_path": "$.people[1].date_of_birth", "entity_type": "DATE_OF_BIRTH", "entity_identity": "dob_p2", "raw_value": "1981-11-03", "sensitive_properties": {"birth_year": 1981}},
+        {"occurrence_id": "order_dob_p3", "source_path": "$.people[2].date_of_birth", "entity_type": "DATE_OF_BIRTH", "entity_identity": "dob_p3", "raw_value": "2000-01-25", "sensitive_properties": {"birth_year": 2000}},
+        {"occurrence_id": "order_dob_p4", "source_path": "$.people[3].date_of_birth", "entity_type": "DATE_OF_BIRTH", "entity_identity": "dob_p4", "raw_value": "1988-09-17", "sensitive_properties": {"birth_year": 1988}}
+      ],
+      "task_requirements": [
+        {"requirement_id": "req_order_year", "kind": "required_property", "name": "birth_year", "target": ["order_dob_p1", "order_dob_p2", "order_dob_p3", "order_dob_p4"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["DERIVED_PROPERTY"]}
+      ],
+      "oracle_disclosure_plan": {"actions": [
+        {"occurrence_id": "order_dob_p1", "representation": "DERIVED_PROPERTY", "property_name": "birth_year", "requirement_id": "req_order_year"},
+        {"occurrence_id": "order_dob_p2", "representation": "DERIVED_PROPERTY", "property_name": "birth_year", "requirement_id": "req_order_year"},
+        {"occurrence_id": "order_dob_p3", "representation": "DERIVED_PROPERTY", "property_name": "birth_year", "requirement_id": "req_order_year"},
+        {"occurrence_id": "order_dob_p4", "representation": "DERIVED_PROPERTY", "property_name": "birth_year", "requirement_id": "req_order_year"}
+      ]},
+      "source_relations": [],
+      "expected_agent_ledger_counts": {
+        "FIXED_REDACTION": {"REDACTED": 4}, "STABLE_TOKENIZATION": {"OPAQUE_TOKEN": 4},
+        "ORACLE_MIN_DISCLOSURE": {"DERIVED_PROPERTY": 4}, "RAW_DISCLOSURE": {"RAW_VALUE": 4}
+      }
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "raw_input": {
+        "requests": [
+          {"request_id": "q1", "address": "18 Harbor St, Haidian, Beijing 100080", "amount": 15},
+          {"request_id": "q2", "address": "7 Lake Rd, Pudong, Shanghai 200120", "amount": 20},
+          {"request_id": "q3", "address": "99 Pine Ave, Xihu, Hangzhou 310013", "amount": 30},
+          {"request_id": "q4", "address": "4 North Rd, Chaoyang, Beijing 100020", "amount": 5}
+        ],
+        "zone_rule": {"NORTH": ["Beijing"], "EAST": ["Shanghai", "Hangzhou"]}
+      },
+      "user_instruction": "For each service zone, return request count and total amount in zone_rule order.",
+      "expected_output_schema": {"zone_summaries": [{"zone": "string", "count": 0, "total_amount": 0}]},
+      "ground_truth": {"zone_summaries": [
+        {"zone": "NORTH", "count": 2, "total_amount": 20},
+        {"zone": "EAST", "count": 2, "total_amount": 50}
+      ]},
+      "oracle": {"kind": "exact_json", "relationship_checks": ["grouping_preserved", "aggregate_values_correct"]},
+      "sensitive_entities": [
+        {"occurrence_id": "loc_address_q1", "source_path": "$.requests[0].address", "entity_type": "POSTAL_ADDRESS", "entity_identity": "address_q1", "raw_value": "18 Harbor St, Haidian, Beijing 100080", "sensitive_properties": {"service_zone": "NORTH"}},
+        {"occurrence_id": "loc_address_q2", "source_path": "$.requests[1].address", "entity_type": "POSTAL_ADDRESS", "entity_identity": "address_q2", "raw_value": "7 Lake Rd, Pudong, Shanghai 200120", "sensitive_properties": {"service_zone": "EAST"}},
+        {"occurrence_id": "loc_address_q3", "source_path": "$.requests[2].address", "entity_type": "POSTAL_ADDRESS", "entity_identity": "address_q3", "raw_value": "99 Pine Ave, Xihu, Hangzhou 310013", "sensitive_properties": {"service_zone": "EAST"}},
+        {"occurrence_id": "loc_address_q4", "source_path": "$.requests[3].address", "entity_type": "POSTAL_ADDRESS", "entity_identity": "address_q4", "raw_value": "4 North Rd, Chaoyang, Beijing 100020", "sensitive_properties": {"service_zone": "NORTH"}}
+      ],
+      "task_requirements": [
+        {"requirement_id": "req_loc_zone", "kind": "required_property", "name": "service_zone", "target": ["loc_address_q1", "loc_address_q2", "loc_address_q3", "loc_address_q4"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["COARSENED_VALUE"]}
+      ],
+      "oracle_disclosure_plan": {"actions": [
+        {"occurrence_id": "loc_address_q1", "representation": "COARSENED_VALUE", "property_name": "service_zone", "requirement_id": "req_loc_zone"},
+        {"occurrence_id": "loc_address_q2", "representation": "COARSENED_VALUE", "property_name": "service_zone", "requirement_id": "req_loc_zone"},
+        {"occurrence_id": "loc_address_q3", "representation": "COARSENED_VALUE", "property_name": "service_zone", "requirement_id": "req_loc_zone"},
+        {"occurrence_id": "loc_address_q4", "representation": "COARSENED_VALUE", "property_name": "service_zone", "requirement_id": "req_loc_zone"}
+      ]},
+      "source_relations": [],
+      "expected_agent_ledger_counts": {
+        "FIXED_REDACTION": {"REDACTED": 4}, "STABLE_TOKENIZATION": {"OPAQUE_TOKEN": 4},
+        "ORACLE_MIN_DISCLOSURE": {"COARSENED_VALUE": 4}, "RAW_DISCLOSURE": {"RAW_VALUE": 4}
+      }
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "raw_input": {"events": [
+        {"event_id": "e1", "subject_email": "lee@sample.example", "timestamp": "2026-04-01T09:00:00Z"},
+        {"event_id": "e2", "subject_email": "kim@sample.example", "timestamp": "2026-04-01T12:00:00Z"},
+        {"event_id": "e3", "subject_email": "lee@sample.example", "timestamp": "2026-04-03T08:00:00Z"},
+        {"event_id": "e4", "subject_email": "lee@sample.example", "timestamp": "2026-04-10T09:00:00Z"},
+        {"event_id": "e5", "subject_email": "kim@sample.example", "timestamp": "2026-04-05T13:00:00Z"}
+      ]},
+      "user_instruction": "Return same-subject event pairs at most 72 hours apart, earlier event first, in input-order pair order.",
+      "expected_output_schema": {"event_pairs": [["event_id", "event_id"]]},
+      "ground_truth": {"event_pairs": [["e1", "e3"]]},
+      "oracle": {"kind": "ordered_pair_set", "relationship_checks": ["identity_preserved", "window_relation_preserved"]},
+      "sensitive_entities": [
+        {"occurrence_id": "cross_email_e1", "source_path": "$.events[0].subject_email", "entity_type": "EMAIL", "entity_identity": "lee_subject", "raw_value": "lee@sample.example", "sensitive_properties": {}},
+        {"occurrence_id": "cross_time_e1", "source_path": "$.events[0].timestamp", "entity_type": "EVENT_TIMESTAMP", "entity_identity": "time_e1", "raw_value": "2026-04-01T09:00:00Z", "sensitive_properties": {"timestamp_hour": "2026-04-01T09:00Z"}},
+        {"occurrence_id": "cross_email_e2", "source_path": "$.events[1].subject_email", "entity_type": "EMAIL", "entity_identity": "kim_subject", "raw_value": "kim@sample.example", "sensitive_properties": {}},
+        {"occurrence_id": "cross_time_e2", "source_path": "$.events[1].timestamp", "entity_type": "EVENT_TIMESTAMP", "entity_identity": "time_e2", "raw_value": "2026-04-01T12:00:00Z", "sensitive_properties": {"timestamp_hour": "2026-04-01T12:00Z"}},
+        {"occurrence_id": "cross_email_e3", "source_path": "$.events[2].subject_email", "entity_type": "EMAIL", "entity_identity": "lee_subject", "raw_value": "lee@sample.example", "sensitive_properties": {}},
+        {"occurrence_id": "cross_time_e3", "source_path": "$.events[2].timestamp", "entity_type": "EVENT_TIMESTAMP", "entity_identity": "time_e3", "raw_value": "2026-04-03T08:00:00Z", "sensitive_properties": {"timestamp_hour": "2026-04-03T08:00Z"}},
+        {"occurrence_id": "cross_email_e4", "source_path": "$.events[3].subject_email", "entity_type": "EMAIL", "entity_identity": "lee_subject", "raw_value": "lee@sample.example", "sensitive_properties": {}},
+        {"occurrence_id": "cross_time_e4", "source_path": "$.events[3].timestamp", "entity_type": "EVENT_TIMESTAMP", "entity_identity": "time_e4", "raw_value": "2026-04-10T09:00:00Z", "sensitive_properties": {"timestamp_hour": "2026-04-10T09:00Z"}},
+        {"occurrence_id": "cross_email_e5", "source_path": "$.events[4].subject_email", "entity_type": "EMAIL", "entity_identity": "kim_subject", "raw_value": "kim@sample.example", "sensitive_properties": {}},
+        {"occurrence_id": "cross_time_e5", "source_path": "$.events[4].timestamp", "entity_type": "EVENT_TIMESTAMP", "entity_identity": "time_e5", "raw_value": "2026-04-05T13:00:00Z", "sensitive_properties": {"timestamp_hour": "2026-04-05T13:00Z"}}
+      ],
+      "task_requirements": [
+        {"requirement_id": "req_cross_identity", "kind": "required_relation", "name": "subject_identity", "target": ["cross_email_e1", "cross_email_e2", "cross_email_e3", "cross_email_e4", "cross_email_e5"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["OPAQUE_TOKEN"]},
+        {"requirement_id": "req_cross_hour", "kind": "required_property", "name": "timestamp_hour", "target": ["cross_time_e1", "cross_time_e2", "cross_time_e3", "cross_time_e4", "cross_time_e5"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["COARSENED_VALUE"]}
+      ],
+      "oracle_disclosure_plan": {"actions": [
+        {"occurrence_id": "cross_email_e1", "representation": "OPAQUE_TOKEN", "requirement_id": "req_cross_identity"},
+        {"occurrence_id": "cross_time_e1", "representation": "COARSENED_VALUE", "property_name": "timestamp_hour", "requirement_id": "req_cross_hour"},
+        {"occurrence_id": "cross_email_e2", "representation": "OPAQUE_TOKEN", "requirement_id": "req_cross_identity"},
+        {"occurrence_id": "cross_time_e2", "representation": "COARSENED_VALUE", "property_name": "timestamp_hour", "requirement_id": "req_cross_hour"},
+        {"occurrence_id": "cross_email_e3", "representation": "OPAQUE_TOKEN", "requirement_id": "req_cross_identity"},
+        {"occurrence_id": "cross_time_e3", "representation": "COARSENED_VALUE", "property_name": "timestamp_hour", "requirement_id": "req_cross_hour"},
+        {"occurrence_id": "cross_email_e4", "representation": "OPAQUE_TOKEN", "requirement_id": "req_cross_identity"},
+        {"occurrence_id": "cross_time_e4", "representation": "COARSENED_VALUE", "property_name": "timestamp_hour", "requirement_id": "req_cross_hour"},
+        {"occurrence_id": "cross_email_e5", "representation": "OPAQUE_TOKEN", "requirement_id": "req_cross_identity"},
+        {"occurrence_id": "cross_time_e5", "representation": "COARSENED_VALUE", "property_name": "timestamp_hour", "requirement_id": "req_cross_hour"}
+      ]},
+      "source_relations": [],
+      "expected_agent_ledger_counts": {
+        "FIXED_REDACTION": {"REDACTED": 10}, "STABLE_TOKENIZATION": {"OPAQUE_TOKEN": 10},
+        "ORACLE_MIN_DISCLOSURE": {"OPAQUE_TOKEN": 5, "COARSENED_VALUE": 5}, "RAW_DISCLOSURE": {"RAW_VALUE": 10}
+      }
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "raw_input": {"edges": [
+        {"edge_id": "g1", "from": "Mira Chen", "to": "Luis Gomez"},
+        {"edge_id": "g2", "from": "Luis Gomez", "to": "Sara Ito"},
+        {"edge_id": "g3", "from": "Sara Ito", "to": "Mira Chen"}
+      ]},
+      "user_instruction": "Assign node IDs by first endpoint appearance, return each node's out-degree, and nodes reachable from n1 in exactly two hops.",
+      "expected_output_schema": {"out_degree": [{"node": "node_id", "degree": 0}], "reachable_from_n1_in_two_hops": ["node_id"]},
+      "ground_truth": {"out_degree": [{"node": "n1", "degree": 1}, {"node": "n2", "degree": 1}, {"node": "n3", "degree": 1}], "reachable_from_n1_in_two_hops": ["n3"]},
+      "oracle": {"kind": "exact_graph_computation", "relationship_checks": ["source_edges_preserved", "graph_computation_correct"]},
+      "sensitive_entities": [
+        {"occurrence_id": "graph_g1_from", "source_path": "$.edges[0].from", "entity_type": "PERSON_NAME", "entity_identity": "mira", "raw_value": "Mira Chen", "sensitive_properties": {}},
+        {"occurrence_id": "graph_g1_to", "source_path": "$.edges[0].to", "entity_type": "PERSON_NAME", "entity_identity": "luis", "raw_value": "Luis Gomez", "sensitive_properties": {}},
+        {"occurrence_id": "graph_g2_from", "source_path": "$.edges[1].from", "entity_type": "PERSON_NAME", "entity_identity": "luis", "raw_value": "Luis Gomez", "sensitive_properties": {}},
+        {"occurrence_id": "graph_g2_to", "source_path": "$.edges[1].to", "entity_type": "PERSON_NAME", "entity_identity": "sara", "raw_value": "Sara Ito", "sensitive_properties": {}},
+        {"occurrence_id": "graph_g3_from", "source_path": "$.edges[2].from", "entity_type": "PERSON_NAME", "entity_identity": "sara", "raw_value": "Sara Ito", "sensitive_properties": {}},
+        {"occurrence_id": "graph_g3_to", "source_path": "$.edges[2].to", "entity_type": "PERSON_NAME", "entity_identity": "mira", "raw_value": "Mira Chen", "sensitive_properties": {}}
+      ],
+      "task_requirements": [
+        {"requirement_id": "req_graph_identity", "kind": "required_relation", "name": "node_identity", "target": ["graph_g1_from", "graph_g1_to", "graph_g2_from", "graph_g2_to", "graph_g3_from", "graph_g3_to"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["OPAQUE_TOKEN"]},
+        {"requirement_id": "req_graph_source_edges", "kind": "required_relation", "name": "source_directed_edge", "target": ["g1", "g2", "g3"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["RELATION_ONLY"]}
+      ],
+      "oracle_disclosure_plan": {"actions": [
+        {"occurrence_id": "graph_g1_from", "representation": "OPAQUE_TOKEN", "requirement_id": "req_graph_identity"},
+        {"occurrence_id": "graph_g1_to", "representation": "OPAQUE_TOKEN", "requirement_id": "req_graph_identity"},
+        {"occurrence_id": "graph_g2_from", "representation": "OPAQUE_TOKEN", "requirement_id": "req_graph_identity"},
+        {"occurrence_id": "graph_g2_to", "representation": "OPAQUE_TOKEN", "requirement_id": "req_graph_identity"},
+        {"occurrence_id": "graph_g3_from", "representation": "OPAQUE_TOKEN", "requirement_id": "req_graph_identity"},
+        {"occurrence_id": "graph_g3_to", "representation": "OPAQUE_TOKEN", "requirement_id": "req_graph_identity"}
+      ]},
+      "source_relations": [
+        {"relation_id": "g1", "name": "source_directed_edge", "source_occurrence_ids": ["graph_g1_from", "graph_g1_to"], "requirement_id": "req_graph_source_edges"},
+        {"relation_id": "g2", "name": "source_directed_edge", "source_occurrence_ids": ["graph_g2_from", "graph_g2_to"], "requirement_id": "req_graph_source_edges"},
+        {"relation_id": "g3", "name": "source_directed_edge", "source_occurrence_ids": ["graph_g3_from", "graph_g3_to"], "requirement_id": "req_graph_source_edges"}
+      ],
+      "expected_agent_ledger_counts": {
+        "FIXED_REDACTION": {"REDACTED": 6}, "STABLE_TOKENIZATION": {"OPAQUE_TOKEN": 6, "RELATION_ONLY": 3},
+        "ORACLE_MIN_DISCLOSURE": {"OPAQUE_TOKEN": 6, "RELATION_ONLY": 3}, "RAW_DISCLOSURE": {"RAW_VALUE": 6, "RELATION_ONLY": 3}
+      }
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "raw_input": {
+        "tickets": [
+          {"ticket_id": "t1", "severity": 2, "recipient_email": "mei.lin@example.com", "address": "18 Harbor St, Haidian, Beijing 100080"},
+          {"ticket_id": "t2", "severity": 5, "recipient_email": "omar.khan@example.com", "address": "7 Lake Rd, Pudong, Shanghai 200120"},
+          {"ticket_id": "t3", "severity": 3, "recipient_email": "ines.rossi@example.com", "address": "99 Pine Ave, Xihu, Hangzhou 310013"}
+        ],
+        "zone_rule": {"NORTH": ["Beijing"], "EAST": ["Shanghai", "Hangzhou"]}
+      },
+      "user_instruction": "Select the highest-severity ticket and issue one dispatch_visit call with ticket ID, exact recipient after trusted restoration, and service zone.",
+      "expected_output_schema": {"tool": "dispatch_visit", "arguments": {"ticket_id": "string", "recipient": "string", "service_zone": "string"}},
+      "ground_truth": {"tool": "dispatch_visit", "arguments": {"ticket_id": "t2", "recipient": "omar.khan@example.com", "service_zone": "EAST"}},
+      "oracle": {"kind": "exact_restored_tool_call", "relationship_checks": ["selection_preserved", "tool_argument_property_preserved", "exact_recipient_after_restore"]},
+      "sensitive_entities": [
+        {"occurrence_id": "tool_email_t1", "source_path": "$.tickets[0].recipient_email", "entity_type": "EMAIL", "entity_identity": "mei_email", "raw_value": "mei.lin@example.com", "sensitive_properties": {}},
+        {"occurrence_id": "tool_address_t1", "source_path": "$.tickets[0].address", "entity_type": "POSTAL_ADDRESS", "entity_identity": "address_t1", "raw_value": "18 Harbor St, Haidian, Beijing 100080", "sensitive_properties": {"service_zone": "NORTH"}},
+        {"occurrence_id": "tool_email_t2", "source_path": "$.tickets[1].recipient_email", "entity_type": "EMAIL", "entity_identity": "omar_email", "raw_value": "omar.khan@example.com", "sensitive_properties": {}},
+        {"occurrence_id": "tool_address_t2", "source_path": "$.tickets[1].address", "entity_type": "POSTAL_ADDRESS", "entity_identity": "address_t2", "raw_value": "7 Lake Rd, Pudong, Shanghai 200120", "sensitive_properties": {"service_zone": "EAST"}},
+        {"occurrence_id": "tool_email_t3", "source_path": "$.tickets[2].recipient_email", "entity_type": "EMAIL", "entity_identity": "ines_email", "raw_value": "ines.rossi@example.com", "sensitive_properties": {}},
+        {"occurrence_id": "tool_address_t3", "source_path": "$.tickets[2].address", "entity_type": "POSTAL_ADDRESS", "entity_identity": "address_t3", "raw_value": "99 Pine Ave, Xihu, Hangzhou 310013", "sensitive_properties": {"service_zone": "EAST"}}
+      ],
+      "task_requirements": [
+        {"requirement_id": "req_tool_recipient", "kind": "required_property", "name": "recipient_identity", "target": ["tool_email_t1", "tool_email_t2", "tool_email_t3"], "exact_value_required": true, "required_at_boundary": "TOOL", "allowed_representations": ["OPAQUE_TOKEN"]},
+        {"requirement_id": "req_tool_zone", "kind": "required_property", "name": "service_zone", "target": ["tool_address_t1", "tool_address_t2", "tool_address_t3"], "exact_value_required": false, "required_at_boundary": "AGENT", "allowed_representations": ["COARSENED_VALUE"]}
+      ],
+      "oracle_disclosure_plan": {"actions": [
+        {"occurrence_id": "tool_email_t1", "representation": "OPAQUE_TOKEN", "reversible": true, "requirement_id": "req_tool_recipient"},
+        {"occurrence_id": "tool_address_t1", "representation": "COARSENED_VALUE", "property_name": "service_zone", "requirement_id": "req_tool_zone"},
+        {"occurrence_id": "tool_email_t2", "representation": "OPAQUE_TOKEN", "reversible": true, "requirement_id": "req_tool_recipient"},
+        {"occurrence_id": "tool_address_t2", "representation": "COARSENED_VALUE", "property_name": "service_zone", "requirement_id": "req_tool_zone"},
+        {"occurrence_id": "tool_email_t3", "representation": "OPAQUE_TOKEN", "reversible": true, "requirement_id": "req_tool_recipient"},
+        {"occurrence_id": "tool_address_t3", "representation": "COARSENED_VALUE", "property_name": "service_zone", "requirement_id": "req_tool_zone"}
+      ]},
+      "source_relations": [],
+      "expected_agent_ledger_counts": {
+        "FIXED_REDACTION": {"REDACTED": 6}, "STABLE_TOKENIZATION": {"OPAQUE_TOKEN": 6},
+        "ORACLE_MIN_DISCLOSURE": {"OPAQUE_TOKEN": 3, "COARSENED_VALUE": 3}, "RAW_DISCLOSURE": {"RAW_VALUE": 6}
+      }
+    }
+  ]
+}

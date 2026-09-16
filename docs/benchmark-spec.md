@@ -1,343 +1,157 @@
 # Minimum Disclosure Benchmark Specification
 
-Status: **FROZEN SPECIFICATION**  
-Version: `md-bench-v0.1`  
-Frozen task IDs: `MD-EQ-01`, `MD-GROUP-02`, `MD-ORDER-03`, `MD-LOC-04`, `MD-CROSS-05`, `MD-GRAPH-06`, `MD-TOOL-07`
+Status: **FROZEN DETERMINISTIC BENCHMARK METHODOLOGY**
 
-This freeze covers the task data, annotations, representations, deterministic oracles, exposure convention, baseline semantics, and falsification rules. It does not freeze a runtime, model/provider, prompt renderer, run count, retry policy, or generation parameters.
+Version: `md-bench-v0.2`
 
-## 1. Benchmark question and boundary
+Historical version: `md-bench-v0.1` remains frozen at its existing tag and release.
 
-The benchmark asks one narrow question:
+## 1. Research boundary
 
-> What task utility can Task-aware Disclosure preserve using explicitly required sensitive properties or relations that Stable Tokenization cannot preserve using entity identity/equality alone?
+The benchmark asks whether a search-derived oracle disclosure can preserve Raw Disclosure utility while reducing raw-value exposure, especially where Stable Tokenization lacks a required field property. It does not claim novelty for task-aware privacy and does not measure a deployable planner.
 
-The primary privacy boundary is the **Agent boundary**: information visible to the model that performs the task. A trusted local transformer, token map, oracle, and restoration step are outside that boundary. Any raw value sent after restoration to a downstream tool is recorded in a separate **Tool boundary** ledger and must never be silently combined with Agent exposure.
+The two privacy boundaries are reported separately:
 
-Version 0.1 assumes gold sensitive-entity and requirement annotations. It evaluates disclosure policy, not entity detection, requirement induction, proxy behavior, or prompt-injection resistance. Requirement induction may be studied later as a separate experimental dimension.
+- **Agent boundary:** everything actually sent to the downstream task solver.
+- **Tool boundary:** values actually sent in an invoked tool call after any trusted restoration.
 
-## 2. Frozen Task Benchmark
+Task failure never clears either ledger.
 
-The seven fixtures and exact answers are in `task-cases.md`.
+## 2. No-Solver Rule
 
-| Task | Capability isolated | Expected discriminating result |
-|---|---|---|
-| `MD-EQ-01` | Equality / deduplication | Fixed should fail; Stable and Task-aware can pass. |
-| `MD-GROUP-02` | Grouping and aggregation by a derived domain relation | Stable identity tokens are insufficient; Task-aware may pass using same-domain relations. |
-| `MD-ORDER-03` | Ordering without exact dates | Stable tokens are insufficient; Task-aware may pass using ranks/order relations. |
-| `MD-LOC-04` | Coarse location | Stable tokens are insufficient; Task-aware may pass using service-zone values. |
-| `MD-CROSS-05` | Cross-record identity plus time-window relation | Stable preserves identity but not the time-window relation; Task-aware must preserve both. |
-| `MD-GRAPH-06` | Relation graph | Stable is a required strong control and should pass; Task-aware may reduce exposure using relation-only input. |
-| `MD-TOOL-07` | Property-dependent selection plus exact restored tool argument | Stable can restore the recipient but cannot derive the zone; Task-aware must disclose the zone and use reversible recipient tokenization. |
-
-The set is intentionally not all pro-Task-aware. `MD-EQ-01` and `MD-GRAPH-06` test whether Stable Tokenization already solves identity-only work. `MD-TOOL-07` tests that exact output does not automatically require raw Agent exposure when trusted restoration is available.
-
-## 3. Frozen task schema
-
-The following is a documentation schema, not a runtime class:
-
-```json
-{
-  "benchmark_version": "md-bench-v0.1",
-  "task_id": "MD-...",
-  "raw_input": {},
-  "user_instruction": "string",
-  "expected_output_schema": {},
-  "ground_truth": {},
-  "success_oracle": {
-    "kind": "exact_json | set_equality | ordered_list | exact_tool_call",
-    "normalization": "rules stated per task"
-  },
-  "sensitive_entities": [],
-  "task_requirements": [],
-  "explicitly_not_required": [],
-  "strategy_rationale": {}
-}
-```
-
-Freeze invariants:
-
-1. `raw_input`, `user_instruction`, output schema, ground truth, and oracle are identical across strategies.
-2. Strategy-specific transformed inputs are generated from the same gold annotations; they are not separate hand-authored prompts.
-3. Record IDs and other benchmark control identifiers are non-sensitive unless a task explicitly says otherwise.
-4. The Agent never receives `ground_truth`, oracle details, requirement annotations, representation ledgers, or strategy labels.
-5. Output prose is disallowed. The oracle parses one JSON value matching the frozen schema.
-
-## 4. Annotation Specification
-
-### 4.1 Sensitive Entity
-
-```json
-{
-  "occurrence_id": "occ_email_r1",
-  "source_path": "$.records[0].email",
-  "entity_type": "EMAIL",
-  "entity_identity": "email_alice_northwind",
-  "raw_value": "alice@northwind.example",
-  "sensitive_properties": {
-    "domain": "northwind.example",
-    "domain_class": "corporate"
-  }
-}
-```
-
-- `occurrence_id` identifies one appearance at one source path.
-- `entity_type` is the gold semantic type. Baselines do not automatically expose it.
-- `entity_identity` is present only when occurrences must be known to refer to the same underlying entity. It is construction-side metadata.
-- `sensitive_properties` contains only benchmark-declared properties that may be required or explicitly withheld. It is not sent wholesale to the Agent.
-- `raw_value` is evaluator-side data and is never Agent-visible unless the chosen representation is `RAW_VALUE` at the Agent boundary.
-
-### 4.2 Task Requirement
-
-```json
-{
-  "requirement_id": "req_same_domain",
-  "kind": "required_property | required_relation",
-  "name": "same_email_domain",
-  "target": ["occ_email_r1", "occ_email_r2"],
-  "exact_value_required": false,
-  "required_at_boundary": "AGENT | POST_RESTORE_OUTPUT | TOOL",
-  "allowed_representations": ["RELATION_ONLY", "DERIVED_PROPERTY"]
-}
-```
-
-- A required property is a unary fact about a target, such as `service_zone=EAST`.
-- A required relation is an n-ary fact, such as `before(a,b)`, `same_domain(a,b)`, or `referred(a,b)`.
-- `target` names the entity occurrences, identities, records, output field, or tool argument governed by the requirement.
-- `exact_value_required` means the target boundary must receive the exact raw value. It does **not** mean the Agent must see that raw value. `MD-TOOL-07` requires exact email after trusted restoration, not in the model prompt.
-- Anything absent from `task_requirements` is denied to Task-aware Disclosure by default.
-
-### 4.3 Disclosure Representation
-
-Every Agent-visible sensitive occurrence or explicitly emitted sensitive fact receives exactly one primary representation record. Separately emitted relations receive their own record.
-
-| Representation | What the Agent learns | What the Agent does not receive |
-|---|---|---|
-| `RAW_VALUE` | Exact surface value, its occurrence position, and any properties the Agent can infer from it. | Nothing intentionally withheld about that surface value. |
-| `COARSENED_VALUE` | A declared lower-resolution value, for example `service_zone=EAST`. | Exact address and undeclared address components. |
-| `DERIVED_PROPERTY` | A declared computed property, for example `age_rank=2`. | The raw value and other properties not implied by that property. |
-| `RELATION_ONLY` | Only a named relation among opaque record/entity references, for example `before(r2,r1)`. | Raw endpoint values and unrelated endpoint properties. |
-| `OPAQUE_TOKEN` | A stable, neutral handle and therefore occurrence linkage/equality within the frozen scope. | Raw value, entity type, format, length, and semantic properties. |
-| `REDACTED` | Only that content was removed at a particular structural position. | Value, type, identity, equality, properties, and relations. |
-
-For the same original entity, representations are not aliases for one another. `OPAQUE_TOKEN` exposes identity linkage but no age, domain, locality, order, or semantic type. `RELATION_ONLY` exposes the declared edge but need not expose a persistent entity handle outside that edge. `DERIVED_PROPERTY` exposes only its named value. A reversible map outside the Agent boundary does not turn an Agent-visible opaque token into raw Agent exposure.
-
-Required ledger fields:
-
-```json
-{
-  "boundary": "AGENT",
-  "source_occurrence_ids": ["occ_1"],
-  "representation": "OPAQUE_TOKEN",
-  "disclosed_name": "identity_handle",
-  "disclosed_value": "<E_001>",
-  "strategy": "STABLE_TOKENIZATION"
-}
-```
-
-## 5. Metrics
-
-### 5.1 Task Utility
-
-Each task returns binary `task_success` from its deterministic oracle. No LLM judge is used in v0.1.
-
-- Malformed JSON, extra fields, prose outside JSON, missing fields, or schema mismatch is failure.
-- Arrays declared as ordered must match exactly.
-- Sets are normalized only where a task explicitly declares set semantics.
-- Counts, sums, relation edges, and tool names/arguments must match their frozen ground truth.
-- Dataset utility is reported as `successful_tasks / eligible_tasks`, plus the seven individual outcomes. The individual outcomes are mandatory because the tiny task set must not be hidden behind one average.
-
-### 5.2 Privacy Exposure
-
-Exposure is computed from the actual boundary-tagged disclosure ledger, not from the number of source fields and not from an LLM's guessed inferences.
-
-Benchmark convention weights:
-
-| Representation | Points per ledger item |
-|---|---:|
-| `RAW_VALUE` | 1.00 |
-| `COARSENED_VALUE` | 0.50 |
-| `DERIVED_PROPERTY` | 0.50 |
-| `RELATION_ONLY` | 0.25 |
-| `OPAQUE_TOKEN` | 0.10 |
-| `REDACTED` | 0.00 |
-
-These weights are a transparent **benchmark convention**, not a universal privacy metric and not an information-theoretic claim. They encode only the ordinal design decision:
-
-`RAW_VALUE > COARSENED_VALUE / DERIVED_PROPERTY > RELATION_ONLY > OPAQUE_TOKEN > REDACTED`.
-
-Accounting rules:
-
-1. Count one ledger item for each transformed sensitive occurrence visible at a boundary. Repetition therefore remains visible in the raw counts.
-2. Count each separately emitted derived property or relation fact once. An n-ary relation tuple is one relation item.
-3. Do not additionally score properties merely inferable from a raw value; the raw item already receives the highest category.
-4. If one rendered item qualifies for multiple categories, assign the highest category only. Explicit additional relation/property items remain separate.
-5. Compute boundary-specific score `E_b = sum(weight(representation))`. Never merge Agent and Tool boundary scores.
-6. Compare strategies primarily within the same task. Across tasks, report the sum and macro mean of per-task scores, but retain every per-task ledger because task fact inventories differ.
-
-Mandatory exposure report columns:
-
-- raw-value occurrence count and distinct raw-value count;
-- count of items in every representation category;
-- Agent-boundary aggregate exposure score;
-- Tool-boundary raw count, category counts, and aggregate score;
-- the complete disclosure ledger or a lossless artifact reference.
-
-The aggregate score may not be reported alone.
-
-### 5.3 Relationship Preservation
-
-There is no generic relationship score. Each applicable task reports deterministic named checks:
-
-- `equality_preserved` for `MD-EQ-01`;
-- `grouping_preserved` and `aggregate_values_correct` for `MD-GROUP-02`;
-- `ordering_preserved` for `MD-ORDER-03`;
-- `coarse_location_preserved` for `MD-LOC-04`;
-- `identity_preserved` and `window_relation_preserved` for `MD-CROSS-05`;
-- `relation_edges_preserved` for `MD-GRAPH-06`;
-- `selection_preserved`, `tool_argument_property_preserved`, and `exact_recipient_after_restore` for `MD-TOOL-07`.
-
-Each check is binary and is derived directly from the parsed output or transformed fixture. Non-applicable checks are `not_applicable`, not zero.
-
-### 5.4 Restore Correctness
-
-Restore correctness is computed only for a strategy/instance that produced reversible tokens.
-
-For every model-emitted token at an output field marked restorable:
+> Disclosure layer may transform information, but must not solve the downstream task.
 
 ```text
-restore_correct = restored value exactly equals the gold raw value bound to that token
+Raw Input
+  -> Candidate Disclosure Plan
+  -> Disclosure Transformation
+  -> Transformed Agent-visible Input
+  -> Downstream Task Solver
+  -> Task Output
+  -> Success Oracle
 ```
 
-Report `restored_items`, `correctly_restored_items`, exact-match rate, unknown-token count, and accidental-raw-output count. For `MD-TOOL-07`, restore correctness is also part of task success because the tool requires the exact recipient. For other tasks it is reported independently. Fixed Redaction is `not_applicable`; Task-aware is applicable only where it chooses reversible tokens.
+The transformer receives only `task_id`, raw input, sensitive-entity annotations, gold requirements, a candidate disclosure plan, and source relations. It does not receive the user instruction, expected output schema, ground truth, or success oracle. It has no dependency on the solver or oracle modules.
 
-## 6. Experimental Contract
+The deterministic reference solver receives only `task_id`, the common instruction, and transformed input. It does not receive raw hidden fields, gold requirements, ground truth, strategy label, restoration map, or oracle configuration. The success oracle runs only after solver output exists.
 
-### 6.1 Baseline A — Fixed Redaction
+Allowed operations are occurrence-local redaction, stable/reversible tokenization, field-local coarsening, field-local unary property extraction, raw retention, and tokenized preservation of a relation already explicit in the source. Rank, duplicate group, matching pair, time-window result, argmax/argmin, aggregate, selected ticket, final recipient, degree, reachability, and other answer-equivalent transformations are prohibited.
 
-- Replace every annotated sensitive occurrence with a fresh occurrence-local neutral placeholder such as `<REDACTED_001>`.
-- Do not add type labels, stable IDs, format/length hints, properties, or relations. The numeric suffix follows occurrence order only.
-- Placeholders are never reused, including when two occurrences have the same raw value. They are not identity handles and cannot encode equality or inequality between underlying entities.
-- No restoration map exists.
-- Preserve non-sensitive structure and fields exactly.
+## 3. Search-derived Oracle MinDisclosure
 
-### 6.2 Baseline B — Stable Tokenization
+The human-authored `oracle_disclosure_plan` in the task fixture is retained only as a comparison plan. The executed `ORACLE_MIN_DISCLOSURE` plan is produced by search.
 
-- Within one task instance, all occurrences with the same gold `entity_identity` receive the same neutral token; different identities receive different tokens.
-- If `entity_identity` is absent, equality is based on exact normalized raw value as declared by that task. No cross-task or cross-instance linkage is allowed.
-- Tokens use neutral forms such as `<E_001>` and reveal no entity type, format, raw length, ordering, hash prefix, or semantic property.
-- Token assignment follows first occurrence in the already fixed input order; it must not depend on lexical/raw-value sorting.
-- Only equality/identity is intentionally preserved. No domain, age, locality, order, distance, family relation, or other property is computed or exposed.
-- A trusted task-local reversible map may restore a copied token in a declared output field. The Agent never receives that map.
+### 3.1 Frozen ordered chains
 
-### 6.3 Baseline C — Task-aware Disclosure
+Only transformations needed by the seven current tasks are included:
 
-- Begin from the same gold sensitive occurrences and same user instruction.
-- Disclose only properties and relations explicitly allowlisted by `task_requirements`.
-- Use the least expressive allowed representation that is sufficient under the frozen task annotation; everything else is an opaque token or redacted.
-- Exact raw values are Agent-visible only when `exact_value_required=true` specifically at the Agent boundary. Exact values required only after restoration remain tokenized for the Agent.
-- Do not add explanations, hints, oracle facts, task decompositions, or strategy-specific instructions.
-- Every disclosed item must appear in the boundary ledger and trace to a requirement ID.
-
-The logical disclosure plan is frozen per task. A later renderer may choose JSON field syntax, but it may not change these facts or categories after observing results:
-
-| Task | Frozen Agent-visible sensitive disclosure |
+| Field family / task | Ordered chain, least to most revealing |
 |---|---|
-| `MD-EQ-01` | Redact all four email occurrences; add only `same_email_identity(r1,r3)=true` as one `RELATION_ONLY` item. |
-| `MD-GROUP-02` | Redact all four emails; add `same_email_domain(i1,i2)=true` and `same_email_domain(i1,i4)=true` as two `RELATION_ONLY` items. `same_email_domain` is declared transitive, so no third redundant edge is emitted. |
-| `MD-ORDER-03` | Replace each date with its `oldest_rank` as four `DERIVED_PROPERTY` items. |
-| `MD-LOC-04` | Replace each address with its `service_zone` as four `COARSENED_VALUE` items. |
-| `MD-CROSS-05` | Redact all email and timestamp occurrences; add only `same_subject_within_72_hours(e1,e3)=true` as one `RELATION_ONLY` item. Absence of another pair means false under the closed-world fixture. |
-| `MD-GRAPH-06` | Redact all person-name occurrences; add the three directed clinician edges as three `RELATION_ONLY` items. Do not disclose the patient node. |
-| `MD-TOOL-07` | For selected ticket `t2`, expose its recipient as one reversible `OPAQUE_TOKEN` and its address as one `COARSENED_VALUE` (`service_zone=EAST`); redact the other four sensitive occurrences. Selection uses the already visible severity field and adds no sensitive fact. |
+| Email identity (`EQ`) | `REDACT < STABLE_TOKEN < RAW_VALUE` |
+| Contact email (`GROUP`) | `REDACT < STABLE_TOKEN < DOMAIN_HANDLE < RAW_VALUE` |
+| Date of birth | `REDACT < STABLE_TOKEN < BIRTH_YEAR < RAW_VALUE` |
+| Address (`LOC`, `TOOL`) | `REDACT < STABLE_TOKEN < SERVICE_ZONE < RAW_VALUE` |
+| Subject email (`CROSS`) | `REDACT < STABLE_TOKEN < RAW_VALUE` |
+| Timestamp | `REDACT < STABLE_TOKEN < HOUR_BUCKET < RAW_VALUE` |
+| Person name (`GRAPH`) | `REDACT < STABLE_TOKEN < RAW_VALUE` |
+| Recipient email (`TOOL`) | `REDACT < reversible STABLE_TOKEN < RAW_VALUE` |
 
-Expected Agent-boundary ledger counts provide a transformation sanity check, not a utility prediction:
+`CITY` is not present because no frozen task requires it. Choices apply uniformly to every occurrence in one field dimension; search may not selectively expose only records that participate in the answer.
 
-| Task | Fixed Redaction | Stable Tokenization | Task-aware |
+### 3.2 Search procedure
+
+For every product-space candidate:
+
+```text
+candidate plan
+  -> existing No-Solver transformer
+  -> deterministic reference solver
+  -> existing success oracle
+```
+
+A candidate is feasible exactly when task utility is `PASS`. Privacy minimality uses the component-wise partial order induced by the frozen chains. Plan A dominates B when every dimension of A is no more revealing and at least one dimension is strictly less revealing. Weighted exposure is not used to choose the plan.
+
+All undominated feasible plans are recorded. When more than one exists, the selected reporting plan is the lexicographically smallest level vector in frozen dimension order, then canonical action JSON. This tie-break is deterministic and does not imply a unique global minimum.
+
+The search may query the deterministic success oracle but cannot change the transformer, solver, task, or transformation space. Minimality is claimed only within this finite space.
+
+## 4. Baselines
+
+### `FIXED_REDACTION`
+
+Every sensitive occurrence receives a fresh occurrence-local placeholder. It does not intentionally preserve underlying entity identity and has no restoration map.
+
+### `STABLE_TOKENIZATION`
+
+- Sensitive surface values become neutral task-local opaque tokens.
+- Occurrences with the same entity identity receive the same token.
+- Non-deleted structure and source relations already present in input may remain present.
+- It derives no new property or relation and performs no cross-record semantic computation.
+- A task-local restoration map is used only for declared tool arguments.
+
+Thus Stable can solve identity/equality work and graph work whose edge structure already exists in source input. “Only preserves identity/equality” is not used as a blanket description.
+
+### `ORACLE_MIN_DISCLOSURE`
+
+The strategy executes the selected search-derived minimum feasible plan. It is an oracle benchmark reference, not an automatic requirement predictor or deployable policy.
+
+### `RAW_DISCLOSURE`
+
+All sensitive occurrences remain raw at the Agent boundary. It is a utility ceiling and maximum raw-value reference, not a recommended policy.
+
+All strategies share task instruction, record order, output schema, parser, solver, oracle, and tool/restoration topology. Only the sensitive representation differs.
+
+## 5. Disclosure ledger and metrics
+
+| Representation | Meaning | Reporting weight |
+|---|---|---:|
+| `RAW_VALUE` | Exact source value | 1.00 |
+| `COARSENED_VALUE` | Declared lower-resolution field value | 0.50 |
+| `DERIVED_PROPERTY` | Declared field-local unary property | 0.50 |
+| `RELATION_ONLY` | Declared relation already present in source | 0.25 |
+| `OPAQUE_TOKEN` | Task-local stable identity handle | 0.10 |
+| `REDACTED` | Occurrence-local removal marker | 0.00 |
+
+Weights remain a reporting convention, not a universal privacy metric and not the Oracle search objective. Reports retain task success, category counts, raw occurrence/distinct counts, separate Agent and Tool exposure, normalized Agent exposure, and the complete ledger.
+
+Every ledger item records task, strategy, boundary, source occurrence IDs, representation, disclosed name/value, requirement ID where applicable, and weight. Exposure reflects data actually sent even when the output is wrong.
+
+## 6. Tool invocation and restoration contract
+
+Every result records:
+
+- `tool_invoked`: whether a schema-valid call reached the trusted tool boundary;
+- `tool_call_valid`: whether the call matched the frozen structural tool schema;
+- `tool_call_correct`: whether the restored call exactly matched ground truth.
+
+These are independent of task success and privacy accounting. If a wrong but structurally valid call is invoked with a real value, that value remains in the Tool ledger.
+
+For `MD-TOOL-07`, Stable selects the correct ticket and its recipient token can be restored, but it cannot derive the service zone. The call is therefore `tool_invoked=true`, `tool_call_valid=true`, `tool_call_correct=false`, with Tool `RAW_VALUE=1` and Tool exposure `1.0`.
+
+Restore reporting retains restored items, correctly restored items, exact-match rate, unknown tokens, and accidental raw output.
+
+## 7. Deterministic task set and selected minima
+
+| Task | Solver work retained | Search-derived minimum | Stable expectation |
 |---|---|---|---|
-| `MD-EQ-01` | `REDACTED=4` | `OPAQUE_TOKEN=4` | `REDACTED=4, RELATION_ONLY=1` |
-| `MD-GROUP-02` | `REDACTED=4` | `OPAQUE_TOKEN=4` | `REDACTED=4, RELATION_ONLY=2` |
-| `MD-ORDER-03` | `REDACTED=4` | `OPAQUE_TOKEN=4` | `DERIVED_PROPERTY=4` |
-| `MD-LOC-04` | `REDACTED=4` | `OPAQUE_TOKEN=4` | `COARSENED_VALUE=4` |
-| `MD-CROSS-05` | `REDACTED=10` | `OPAQUE_TOKEN=10` | `REDACTED=10, RELATION_ONLY=1` |
-| `MD-GRAPH-06` | `REDACTED=9` | `OPAQUE_TOKEN=9` | `REDACTED=9, RELATION_ONLY=3` |
-| `MD-TOOL-07` | `REDACTED=6` | `OPAQUE_TOKEN=6` | `REDACTED=4, OPAQUE_TOKEN=1, COARSENED_VALUE=1` |
+| `MD-EQ-01` | Deduplicate | `STABLE_TOKEN` | PASS |
+| `MD-GROUP-02` | Group and sum | `DOMAIN_HANDLE` | FAIL |
+| `MD-ORDER-03` | Sort | `BIRTH_YEAR` | FAIL |
+| `MD-LOC-04` | Zone group/count/sum | `SERVICE_ZONE` | FAIL |
+| `MD-CROSS-05` | Identity match and 72h comparison | `STABLE_TOKEN × HOUR_BUCKET` | FAIL |
+| `MD-GRAPH-06` | Degree and two-hop reachability | `STABLE_TOKEN` plus existing source edges | PASS |
+| `MD-TOOL-07` | Select and construct call | reversible `STABLE_TOKEN × SERVICE_ZONE` | FAIL |
 
-At the Tool boundary for `MD-TOOL-07`, Stable and Task-aware each have one `RAW_VALUE` item after successful restoration. Fixed Redaction has no valid restorable item.
+Each selected plan is the only Pareto-minimal feasible plan in the current search space and matches the original human plan.
 
-### 6.4 Shared conditions
+## 8. Deterministic oracle and falsification
 
-All three strategies must share:
+Output schemas are closed. Wrong order, group, aggregate, time match, graph result, tool argument, or restoration fails. No LLM judge or fuzzy scoring is used.
 
-- identical raw task instance and record order;
-- identical user task instruction;
-- identical model and provider;
-- identical system prompt and prompt wrapper;
-- identical generation parameters, seed policy, token budget, stop rules, timeout semantics, and retry policy;
-- identical output schema and parser;
-- identical success oracle;
-- identical number of formal runs and aggregation rule;
-- identical tool schemas and trusted restoration topology where applicable.
+The strong controls are `MD-EQ-01` and `MD-GRAPH-06`; Stable and Oracle should both pass without an Oracle-only hint. The hypothesis is weakened if search needs raw Agent values on multiple tasks, cannot match Raw utility, yields answer-equivalent representations, or if Stable succeeds on most property-dependent tasks.
 
-The only intended experimental dimension is the sensitive-data representation. The Task-aware arm may use the frozen requirement annotations to transform data, but its Agent-visible task description must be byte-identical to the other arms. Oracle and annotation metadata are evaluator-side only.
+Discovery of a lower feasible plan inside the frozen chains, selective-record disclosure, or a transformer path to solver/oracle data invalidates the frozen version and requires a new versioned repair.
 
-Any strategy-specific prose, few-shot example, field reordering, schema simplification, or extra task explanation invalidates the comparison as `prompt_or_format_confounded`.
+## 9. Freeze status
 
-## 7. Pareto and falsification criteria
-
-For each task, compare `(task_success, Agent exposure score)` and retain the full category counts. One strategy Pareto-dominates another on a task if it has no lower utility, no higher Agent exposure, and is strictly better on at least one of those two dimensions.
-
-Evidence supporting the hypothesis requires both:
-
-1. Task-aware shows a Pareto improvement over Stable Tokenization either at comparable utility with lower exposure or at comparable exposure with higher utility; and
-2. the improvement repeats in at least two distinct non-equivalent capability families among grouping, ordering, coarse location, cross-record relation, and tool/property disclosure.
-
-`MD-EQ-01` and `MD-GRAPH-06` are controls and are not sufficient evidence by themselves. A win only on one hand-built task is exploratory, not support.
-
-The hypothesis is weakened or rejected for v0.1 when any of the following occurs:
-
-- Stable Tokenization reaches the same utility with equal or lower exposure on at least six of seven tasks.
-- Task-aware cannot deterministically derive or correctly render required properties/relations from gold annotations.
-- Task-aware requires raw Agent exposure for three or more tasks to preserve utility.
-- Task-aware has no Pareto improvement over Stable Tokenization in at least two distinct non-control capability families.
-- Apparent gains disappear when prompt wrapper, field order, output schema, and generation configuration are equalized.
-- Gains occur only in `MD-TOOL-07` or another single specially constructed fixture.
-- Restoration or ledger accounting is strategy-dependent, incomplete, or not auditable.
-
-The result may also be mixed: Stable may be sufficient for identity/equality and graph tasks while Task-aware adds value only for property- or comparison-dependent tasks. That mixed result is an intended, falsifiable outcome.
-
-## 8. Required result table
-
-Every formal report must include at least:
-
-| task_id | strategy | task_success | named relation checks | raw occurrences | raw distinct | coarsened | derived | relation-only | opaque | redacted | Agent exposure | Tool exposure | restore rate | validity |
-|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-
-`validity` is one of `valid`, `schema_invalid`, `prompt_or_format_confounded`, `execution_invalid`, or `oracle_invalid`. Invalid observations remain reported and are not silently rerun after outcomes are seen.
-
-## 9. Freeze boundary and implementation readiness
-
-This specification is sufficient to begin a **minimal, local experimental implementation** consisting of fixture loading, three transformations, a disclosure ledger, exact JSON parsing, restoration, and deterministic oracles. It is not yet sufficient for a formal LLM experiment.
-
-Before a formal run, freeze in a new versioned execution manifest:
-
-- exact model/provider/version and availability;
-- system prompt and byte-level prompt renderer for each transformed input;
-- generation configuration, seed/repetition policy, budgets, timeouts, and retry rules;
-- exact token and relation serialization syntax;
-- transformation correctness tests from raw fixture to disclosure ledger;
-- eligibility, invalid-run, and denominator policy;
-- trusted restoration and mock-tool boundary behavior;
-- artifact naming and immutable hashes for task data, prompt template, and oracle.
-
-## 10. Credibility blockers still open
-
-1. **Construct validity:** seven synthetic fixtures may overfit the hypothesis. A later version needs independently sourced variants without changing v0.1 after results are seen.
-2. **Requirement availability:** v0.1 uses gold task requirements and therefore does not measure whether a real system can infer them reliably.
-3. **Disclosure weights:** the ordinal weights are conventional and require sensitivity analysis; claims must survive reporting category counts without the weighted score.
-4. **Agent inference:** the ledger measures explicit disclosure, not all background-knowledge inference from coarsened values or relations.
-5. **Stable scope:** task-instance scope is frozen here, but alternative session/global scopes could change linkage risk and utility.
-6. **Rendering confounds:** relation-only and derived-property inputs may be easier for a model because they precompute work. This is the intended capability treatment, but byte-identical wrappers and control tasks are required to separate it from extra prompting.
-7. **Statistical reliability:** no model, repetitions, or variance protocol is frozen yet.
-8. **Detection realism:** gold entity spans avoid detector errors; results cannot be claimed as end-to-end privacy protection.
-9. **Artifact identity:** a formal run needs immutable file hashes or source-control versioning before results are collected.
+The included run remains deterministic methodology validation over `7 tasks × 4 strategies`, using Node.js built-ins with no network, external dependency, or LLM. The deterministic methodology assets are frozen as `md-bench-v0.2`. Designing or executing a formal LLM Experimental Contract is explicitly outside this correction.

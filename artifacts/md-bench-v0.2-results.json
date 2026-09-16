@@ -1,0 +1,6129 @@
+{
+  "benchmark_version": "md-bench-v0.2",
+  "status": "frozen_deterministic_benchmark",
+  "execution_kind": "deterministic_reference_solver_no_llm",
+  "oracle_search_objective": "component_wise_privacy_order_not_weighted_exposure",
+  "total_combinations": 28,
+  "strategy_summary": {
+    "FIXED_REDACTION": {
+      "successful_tasks": 0,
+      "total_tasks": 7,
+      "agent_exposure_score": 0,
+      "tool_exposure_score": 0
+    },
+    "STABLE_TOKENIZATION": {
+      "successful_tasks": 2,
+      "total_tasks": 7,
+      "agent_exposure_score": 4.55,
+      "tool_exposure_score": 1
+    },
+    "ORACLE_MIN_DISCLOSURE": {
+      "successful_tasks": 7,
+      "total_tasks": 7,
+      "agent_exposure_score": 12.55,
+      "tool_exposure_score": 1
+    },
+    "RAW_DISCLOSURE": {
+      "successful_tasks": 7,
+      "total_tasks": 7,
+      "agent_exposure_score": 38.75,
+      "tool_exposure_score": 1
+    }
+  },
+  "oracle_search": [
+    {
+      "task_id": "MD-EQ-01",
+      "objective": "component_wise_privacy_order",
+      "candidate_count": 3,
+      "feasible_count": 2,
+      "minimal_feasible_plan_count": 1,
+      "tie_break_rule": "lexicographically smallest level vector in frozen dimension order, then canonical action JSON",
+      "minimal_feasible_plans": [
+        {
+          "vector": [
+            1
+          ],
+          "selections": [
+            {
+              "dimension_id": "email",
+              "level": 1,
+              "transform_id": "STABLE_TOKEN"
+            }
+          ],
+          "actions": [
+            {
+              "occurrence_id": "eq_email_r1",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_eq_identity"
+            },
+            {
+              "occurrence_id": "eq_email_r2",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_eq_identity"
+            },
+            {
+              "occurrence_id": "eq_email_r3",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_eq_identity"
+            },
+            {
+              "occurrence_id": "eq_email_r4",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_eq_identity"
+            }
+          ]
+        }
+      ],
+      "selected_vector": [
+        1
+      ],
+      "selected_selections": [
+        {
+          "dimension_id": "email",
+          "level": 1,
+          "transform_id": "STABLE_TOKEN"
+        }
+      ],
+      "selected_plan": {
+        "actions": [
+          {
+            "occurrence_id": "eq_email_r1",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_eq_identity"
+          },
+          {
+            "occurrence_id": "eq_email_r2",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_eq_identity"
+          },
+          {
+            "occurrence_id": "eq_email_r3",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_eq_identity"
+          },
+          {
+            "occurrence_id": "eq_email_r4",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_eq_identity"
+          }
+        ]
+      },
+      "gold_plan_matches_selected": true
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "objective": "component_wise_privacy_order",
+      "candidate_count": 4,
+      "feasible_count": 2,
+      "minimal_feasible_plan_count": 1,
+      "tie_break_rule": "lexicographically smallest level vector in frozen dimension order, then canonical action JSON",
+      "minimal_feasible_plans": [
+        {
+          "vector": [
+            2
+          ],
+          "selections": [
+            {
+              "dimension_id": "contact_email",
+              "level": 2,
+              "transform_id": "DOMAIN_HANDLE"
+            }
+          ],
+          "actions": [
+            {
+              "occurrence_id": "group_email_i1",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "domain_handle",
+              "requirement_id": "req_group_domain"
+            },
+            {
+              "occurrence_id": "group_email_i2",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "domain_handle",
+              "requirement_id": "req_group_domain"
+            },
+            {
+              "occurrence_id": "group_email_i3",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "domain_handle",
+              "requirement_id": "req_group_domain"
+            },
+            {
+              "occurrence_id": "group_email_i4",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "domain_handle",
+              "requirement_id": "req_group_domain"
+            }
+          ]
+        }
+      ],
+      "selected_vector": [
+        2
+      ],
+      "selected_selections": [
+        {
+          "dimension_id": "contact_email",
+          "level": 2,
+          "transform_id": "DOMAIN_HANDLE"
+        }
+      ],
+      "selected_plan": {
+        "actions": [
+          {
+            "occurrence_id": "group_email_i1",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "domain_handle",
+            "requirement_id": "req_group_domain"
+          },
+          {
+            "occurrence_id": "group_email_i2",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "domain_handle",
+            "requirement_id": "req_group_domain"
+          },
+          {
+            "occurrence_id": "group_email_i3",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "domain_handle",
+            "requirement_id": "req_group_domain"
+          },
+          {
+            "occurrence_id": "group_email_i4",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "domain_handle",
+            "requirement_id": "req_group_domain"
+          }
+        ]
+      },
+      "gold_plan_matches_selected": true
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "objective": "component_wise_privacy_order",
+      "candidate_count": 4,
+      "feasible_count": 2,
+      "minimal_feasible_plan_count": 1,
+      "tie_break_rule": "lexicographically smallest level vector in frozen dimension order, then canonical action JSON",
+      "minimal_feasible_plans": [
+        {
+          "vector": [
+            2
+          ],
+          "selections": [
+            {
+              "dimension_id": "date_of_birth",
+              "level": 2,
+              "transform_id": "BIRTH_YEAR"
+            }
+          ],
+          "actions": [
+            {
+              "occurrence_id": "order_dob_p1",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "birth_year",
+              "requirement_id": "req_order_year"
+            },
+            {
+              "occurrence_id": "order_dob_p2",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "birth_year",
+              "requirement_id": "req_order_year"
+            },
+            {
+              "occurrence_id": "order_dob_p3",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "birth_year",
+              "requirement_id": "req_order_year"
+            },
+            {
+              "occurrence_id": "order_dob_p4",
+              "representation": "DERIVED_PROPERTY",
+              "property_name": "birth_year",
+              "requirement_id": "req_order_year"
+            }
+          ]
+        }
+      ],
+      "selected_vector": [
+        2
+      ],
+      "selected_selections": [
+        {
+          "dimension_id": "date_of_birth",
+          "level": 2,
+          "transform_id": "BIRTH_YEAR"
+        }
+      ],
+      "selected_plan": {
+        "actions": [
+          {
+            "occurrence_id": "order_dob_p1",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "birth_year",
+            "requirement_id": "req_order_year"
+          },
+          {
+            "occurrence_id": "order_dob_p2",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "birth_year",
+            "requirement_id": "req_order_year"
+          },
+          {
+            "occurrence_id": "order_dob_p3",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "birth_year",
+            "requirement_id": "req_order_year"
+          },
+          {
+            "occurrence_id": "order_dob_p4",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "birth_year",
+            "requirement_id": "req_order_year"
+          }
+        ]
+      },
+      "gold_plan_matches_selected": true
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "objective": "component_wise_privacy_order",
+      "candidate_count": 4,
+      "feasible_count": 2,
+      "minimal_feasible_plan_count": 1,
+      "tie_break_rule": "lexicographically smallest level vector in frozen dimension order, then canonical action JSON",
+      "minimal_feasible_plans": [
+        {
+          "vector": [
+            2
+          ],
+          "selections": [
+            {
+              "dimension_id": "address",
+              "level": 2,
+              "transform_id": "SERVICE_ZONE"
+            }
+          ],
+          "actions": [
+            {
+              "occurrence_id": "loc_address_q1",
+              "representation": "COARSENED_VALUE",
+              "property_name": "service_zone",
+              "requirement_id": "req_loc_zone"
+            },
+            {
+              "occurrence_id": "loc_address_q2",
+              "representation": "COARSENED_VALUE",
+              "property_name": "service_zone",
+              "requirement_id": "req_loc_zone"
+            },
+            {
+              "occurrence_id": "loc_address_q3",
+              "representation": "COARSENED_VALUE",
+              "property_name": "service_zone",
+              "requirement_id": "req_loc_zone"
+            },
+            {
+              "occurrence_id": "loc_address_q4",
+              "representation": "COARSENED_VALUE",
+              "property_name": "service_zone",
+              "requirement_id": "req_loc_zone"
+            }
+          ]
+        }
+      ],
+      "selected_vector": [
+        2
+      ],
+      "selected_selections": [
+        {
+          "dimension_id": "address",
+          "level": 2,
+          "transform_id": "SERVICE_ZONE"
+        }
+      ],
+      "selected_plan": {
+        "actions": [
+          {
+            "occurrence_id": "loc_address_q1",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone",
+            "requirement_id": "req_loc_zone"
+          },
+          {
+            "occurrence_id": "loc_address_q2",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone",
+            "requirement_id": "req_loc_zone"
+          },
+          {
+            "occurrence_id": "loc_address_q3",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone",
+            "requirement_id": "req_loc_zone"
+          },
+          {
+            "occurrence_id": "loc_address_q4",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone",
+            "requirement_id": "req_loc_zone"
+          }
+        ]
+      },
+      "gold_plan_matches_selected": true
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "objective": "component_wise_privacy_order",
+      "candidate_count": 12,
+      "feasible_count": 4,
+      "minimal_feasible_plan_count": 1,
+      "tie_break_rule": "lexicographically smallest level vector in frozen dimension order, then canonical action JSON",
+      "minimal_feasible_plans": [
+        {
+          "vector": [
+            1,
+            2
+          ],
+          "selections": [
+            {
+              "dimension_id": "subject_email",
+              "level": 1,
+              "transform_id": "STABLE_TOKEN"
+            },
+            {
+              "dimension_id": "timestamp",
+              "level": 2,
+              "transform_id": "HOUR_BUCKET"
+            }
+          ],
+          "actions": [
+            {
+              "occurrence_id": "cross_email_e1",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_cross_identity"
+            },
+            {
+              "occurrence_id": "cross_email_e2",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_cross_identity"
+            },
+            {
+              "occurrence_id": "cross_email_e3",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_cross_identity"
+            },
+            {
+              "occurrence_id": "cross_email_e4",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_cross_identity"
+            },
+            {
+              "occurrence_id": "cross_email_e5",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_cross_identity"
+            },
+            {
+              "occurrence_id": "cross_time_e1",
+              "representation": "COARSENED_VALUE",
+              "property_name": "timestamp_hour",
+              "requirement_id": "req_cross_hour"
+            },
+            {
+              "occurrence_id": "cross_time_e2",
+              "representation": "COARSENED_VALUE",
+              "property_name": "timestamp_hour",
+              "requirement_id": "req_cross_hour"
+            },
+            {
+              "occurrence_id": "cross_time_e3",
+              "representation": "COARSENED_VALUE",
+              "property_name": "timestamp_hour",
+              "requirement_id": "req_cross_hour"
+            },
+            {
+              "occurrence_id": "cross_time_e4",
+              "representation": "COARSENED_VALUE",
+              "property_name": "timestamp_hour",
+              "requirement_id": "req_cross_hour"
+            },
+            {
+              "occurrence_id": "cross_time_e5",
+              "representation": "COARSENED_VALUE",
+              "property_name": "timestamp_hour",
+              "requirement_id": "req_cross_hour"
+            }
+          ]
+        }
+      ],
+      "selected_vector": [
+        1,
+        2
+      ],
+      "selected_selections": [
+        {
+          "dimension_id": "subject_email",
+          "level": 1,
+          "transform_id": "STABLE_TOKEN"
+        },
+        {
+          "dimension_id": "timestamp",
+          "level": 2,
+          "transform_id": "HOUR_BUCKET"
+        }
+      ],
+      "selected_plan": {
+        "actions": [
+          {
+            "occurrence_id": "cross_email_e1",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_cross_identity"
+          },
+          {
+            "occurrence_id": "cross_email_e2",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_cross_identity"
+          },
+          {
+            "occurrence_id": "cross_email_e3",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_cross_identity"
+          },
+          {
+            "occurrence_id": "cross_email_e4",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_cross_identity"
+          },
+          {
+            "occurrence_id": "cross_email_e5",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_cross_identity"
+          },
+          {
+            "occurrence_id": "cross_time_e1",
+            "representation": "COARSENED_VALUE",
+            "property_name": "timestamp_hour",
+            "requirement_id": "req_cross_hour"
+          },
+          {
+            "occurrence_id": "cross_time_e2",
+            "representation": "COARSENED_VALUE",
+            "property_name": "timestamp_hour",
+            "requirement_id": "req_cross_hour"
+          },
+          {
+            "occurrence_id": "cross_time_e3",
+            "representation": "COARSENED_VALUE",
+            "property_name": "timestamp_hour",
+            "requirement_id": "req_cross_hour"
+          },
+          {
+            "occurrence_id": "cross_time_e4",
+            "representation": "COARSENED_VALUE",
+            "property_name": "timestamp_hour",
+            "requirement_id": "req_cross_hour"
+          },
+          {
+            "occurrence_id": "cross_time_e5",
+            "representation": "COARSENED_VALUE",
+            "property_name": "timestamp_hour",
+            "requirement_id": "req_cross_hour"
+          }
+        ]
+      },
+      "gold_plan_matches_selected": true
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "objective": "component_wise_privacy_order",
+      "candidate_count": 3,
+      "feasible_count": 2,
+      "minimal_feasible_plan_count": 1,
+      "tie_break_rule": "lexicographically smallest level vector in frozen dimension order, then canonical action JSON",
+      "minimal_feasible_plans": [
+        {
+          "vector": [
+            1
+          ],
+          "selections": [
+            {
+              "dimension_id": "person_name",
+              "level": 1,
+              "transform_id": "STABLE_TOKEN"
+            }
+          ],
+          "actions": [
+            {
+              "occurrence_id": "graph_g1_from",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_graph_identity"
+            },
+            {
+              "occurrence_id": "graph_g1_to",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_graph_identity"
+            },
+            {
+              "occurrence_id": "graph_g2_from",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_graph_identity"
+            },
+            {
+              "occurrence_id": "graph_g2_to",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_graph_identity"
+            },
+            {
+              "occurrence_id": "graph_g3_from",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_graph_identity"
+            },
+            {
+              "occurrence_id": "graph_g3_to",
+              "representation": "OPAQUE_TOKEN",
+              "requirement_id": "req_graph_identity"
+            }
+          ]
+        }
+      ],
+      "selected_vector": [
+        1
+      ],
+      "selected_selections": [
+        {
+          "dimension_id": "person_name",
+          "level": 1,
+          "transform_id": "STABLE_TOKEN"
+        }
+      ],
+      "selected_plan": {
+        "actions": [
+          {
+            "occurrence_id": "graph_g1_from",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_graph_identity"
+          },
+          {
+            "occurrence_id": "graph_g1_to",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_graph_identity"
+          },
+          {
+            "occurrence_id": "graph_g2_from",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_graph_identity"
+          },
+          {
+            "occurrence_id": "graph_g2_to",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_graph_identity"
+          },
+          {
+            "occurrence_id": "graph_g3_from",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_graph_identity"
+          },
+          {
+            "occurrence_id": "graph_g3_to",
+            "representation": "OPAQUE_TOKEN",
+            "requirement_id": "req_graph_identity"
+          }
+        ]
+      },
+      "gold_plan_matches_selected": true
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "objective": "component_wise_privacy_order",
+      "candidate_count": 12,
+      "feasible_count": 4,
+      "minimal_feasible_plan_count": 1,
+      "tie_break_rule": "lexicographically smallest level vector in frozen dimension order, then canonical action JSON",
+      "minimal_feasible_plans": [
+        {
+          "vector": [
+            1,
+            2
+          ],
+          "selections": [
+            {
+              "dimension_id": "recipient_email",
+              "level": 1,
+              "transform_id": "STABLE_TOKEN"
+            },
+            {
+              "dimension_id": "address",
+              "level": 2,
+              "transform_id": "SERVICE_ZONE"
+            }
+          ],
+          "actions": [
+            {
+              "occurrence_id": "tool_email_t1",
+              "representation": "OPAQUE_TOKEN",
+              "reversible": true,
+              "requirement_id": "req_tool_recipient"
+            },
+            {
+              "occurrence_id": "tool_email_t2",
+              "representation": "OPAQUE_TOKEN",
+              "reversible": true,
+              "requirement_id": "req_tool_recipient"
+            },
+            {
+              "occurrence_id": "tool_email_t3",
+              "representation": "OPAQUE_TOKEN",
+              "reversible": true,
+              "requirement_id": "req_tool_recipient"
+            },
+            {
+              "occurrence_id": "tool_address_t1",
+              "representation": "COARSENED_VALUE",
+              "property_name": "service_zone",
+              "requirement_id": "req_tool_zone"
+            },
+            {
+              "occurrence_id": "tool_address_t2",
+              "representation": "COARSENED_VALUE",
+              "property_name": "service_zone",
+              "requirement_id": "req_tool_zone"
+            },
+            {
+              "occurrence_id": "tool_address_t3",
+              "representation": "COARSENED_VALUE",
+              "property_name": "service_zone",
+              "requirement_id": "req_tool_zone"
+            }
+          ]
+        }
+      ],
+      "selected_vector": [
+        1,
+        2
+      ],
+      "selected_selections": [
+        {
+          "dimension_id": "recipient_email",
+          "level": 1,
+          "transform_id": "STABLE_TOKEN"
+        },
+        {
+          "dimension_id": "address",
+          "level": 2,
+          "transform_id": "SERVICE_ZONE"
+        }
+      ],
+      "selected_plan": {
+        "actions": [
+          {
+            "occurrence_id": "tool_email_t1",
+            "representation": "OPAQUE_TOKEN",
+            "reversible": true,
+            "requirement_id": "req_tool_recipient"
+          },
+          {
+            "occurrence_id": "tool_email_t2",
+            "representation": "OPAQUE_TOKEN",
+            "reversible": true,
+            "requirement_id": "req_tool_recipient"
+          },
+          {
+            "occurrence_id": "tool_email_t3",
+            "representation": "OPAQUE_TOKEN",
+            "reversible": true,
+            "requirement_id": "req_tool_recipient"
+          },
+          {
+            "occurrence_id": "tool_address_t1",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone",
+            "requirement_id": "req_tool_zone"
+          },
+          {
+            "occurrence_id": "tool_address_t2",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone",
+            "requirement_id": "req_tool_zone"
+          },
+          {
+            "occurrence_id": "tool_address_t3",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone",
+            "requirement_id": "req_tool_zone"
+          }
+        ]
+      },
+      "gold_plan_matches_selected": true
+    }
+  ],
+  "results": [
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "FIXED_REDACTION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "equality_preserved": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 4
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 4
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-EQ-01/FIXED_REDACTION",
+        "ledger": [
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_001>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_002>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_003>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r4"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_004>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          }
+        ]
+      },
+      "agent_input": {
+        "records": [
+          {
+            "record_id": "r1",
+            "email": "<REDACTED_001>"
+          },
+          {
+            "record_id": "r2",
+            "email": "<REDACTED_002>"
+          },
+          {
+            "record_id": "r3",
+            "email": "<REDACTED_003>"
+          },
+          {
+            "record_id": "r4",
+            "email": "<REDACTED_004>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "duplicate_groups": []
+      },
+      "restored_output": {
+        "duplicate_groups": []
+      }
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "equality_preserved": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 4,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 4,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0.4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-EQ-01/STABLE_TOKENIZATION",
+        "ledger": [
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          }
+        ]
+      },
+      "agent_input": {
+        "records": [
+          {
+            "record_id": "r1",
+            "email": "<E_001>"
+          },
+          {
+            "record_id": "r2",
+            "email": "<E_002>"
+          },
+          {
+            "record_id": "r3",
+            "email": "<E_001>"
+          },
+          {
+            "record_id": "r4",
+            "email": "<E_003>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "duplicate_groups": [
+          [
+            "r1",
+            "r3"
+          ]
+        ]
+      },
+      "restored_output": {
+        "duplicate_groups": [
+          [
+            "r1",
+            "r3"
+          ]
+        ]
+      }
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "equality_preserved": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 4,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 4,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0.4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.1,
+        "oracle_relative_raw_value_reduction": 1,
+        "ledger_reference": "MD-EQ-01/ORACLE_MIN_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_eq_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": "req_eq_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_eq_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": "req_eq_identity",
+            "exposure_weight": 0.1
+          }
+        ]
+      },
+      "agent_input": {
+        "records": [
+          {
+            "record_id": "r1",
+            "email": "<E_001>"
+          },
+          {
+            "record_id": "r2",
+            "email": "<E_002>"
+          },
+          {
+            "record_id": "r3",
+            "email": "<E_001>"
+          },
+          {
+            "record_id": "r4",
+            "email": "<E_003>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "duplicate_groups": [
+          [
+            "r1",
+            "r3"
+          ]
+        ]
+      },
+      "restored_output": {
+        "duplicate_groups": [
+          [
+            "r1",
+            "r3"
+          ]
+        ]
+      }
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "equality_preserved": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 4,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 4,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 4,
+          "raw_distinct_count": 3,
+          "exposure_score": 4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-EQ-01/RAW_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "alice@northwind.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "bob@contoso.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "alice@northwind.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-EQ-01",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "eq_email_r4"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "carol@northwind.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "records": [
+          {
+            "record_id": "r1",
+            "email": "alice@northwind.example"
+          },
+          {
+            "record_id": "r2",
+            "email": "bob@contoso.example"
+          },
+          {
+            "record_id": "r3",
+            "email": "alice@northwind.example"
+          },
+          {
+            "record_id": "r4",
+            "email": "carol@northwind.example"
+          }
+        ]
+      },
+      "candidate_output": {
+        "duplicate_groups": [
+          [
+            "r1",
+            "r3"
+          ]
+        ]
+      },
+      "restored_output": {
+        "duplicate_groups": [
+          [
+            "r1",
+            "r3"
+          ]
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "FIXED_REDACTION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": false,
+        "aggregate_values_correct": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 4
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 4
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-GROUP-02/FIXED_REDACTION",
+        "ledger": [
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_001>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_002>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_003>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i4"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_004>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          }
+        ]
+      },
+      "agent_input": {
+        "invoices": [
+          {
+            "invoice_id": "i1",
+            "contact_email": "<REDACTED_001>",
+            "amount": 20
+          },
+          {
+            "invoice_id": "i2",
+            "contact_email": "<REDACTED_002>",
+            "amount": 35
+          },
+          {
+            "invoice_id": "i3",
+            "contact_email": "<REDACTED_003>",
+            "amount": 40
+          },
+          {
+            "invoice_id": "i4",
+            "contact_email": "<REDACTED_004>",
+            "amount": 5
+          }
+        ]
+      },
+      "candidate_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1"
+            ],
+            "total_amount": 20
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i2"
+            ],
+            "total_amount": 35
+          },
+          {
+            "group_id": "g3",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          },
+          {
+            "group_id": "g4",
+            "invoice_ids": [
+              "i4"
+            ],
+            "total_amount": 5
+          }
+        ]
+      },
+      "restored_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1"
+            ],
+            "total_amount": 20
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i2"
+            ],
+            "total_amount": 35
+          },
+          {
+            "group_id": "g3",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          },
+          {
+            "group_id": "g4",
+            "invoice_ids": [
+              "i4"
+            ],
+            "total_amount": 5
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "STABLE_TOKENIZATION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": false,
+        "aggregate_values_correct": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 4,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 4,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0.4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-GROUP-02/STABLE_TOKENIZATION",
+        "ledger": [
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_004>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          }
+        ]
+      },
+      "agent_input": {
+        "invoices": [
+          {
+            "invoice_id": "i1",
+            "contact_email": "<E_001>",
+            "amount": 20
+          },
+          {
+            "invoice_id": "i2",
+            "contact_email": "<E_002>",
+            "amount": 35
+          },
+          {
+            "invoice_id": "i3",
+            "contact_email": "<E_003>",
+            "amount": 40
+          },
+          {
+            "invoice_id": "i4",
+            "contact_email": "<E_004>",
+            "amount": 5
+          }
+        ]
+      },
+      "candidate_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1"
+            ],
+            "total_amount": 20
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i2"
+            ],
+            "total_amount": 35
+          },
+          {
+            "group_id": "g3",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          },
+          {
+            "group_id": "g4",
+            "invoice_ids": [
+              "i4"
+            ],
+            "total_amount": 5
+          }
+        ]
+      },
+      "restored_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1"
+            ],
+            "total_amount": 20
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i2"
+            ],
+            "total_amount": 35
+          },
+          {
+            "group_id": "g3",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          },
+          {
+            "group_id": "g4",
+            "invoice_ids": [
+              "i4"
+            ],
+            "total_amount": 5
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": true,
+        "aggregate_values_correct": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 4,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 4,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 2
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.5,
+        "oracle_relative_raw_value_reduction": 1,
+        "ledger_reference": "MD-GROUP-02/ORACLE_MIN_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i1"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "domain_handle",
+            "disclosed_value": "<DOMAIN_001>",
+            "requirement_id": "req_group_domain",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i2"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "domain_handle",
+            "disclosed_value": "<DOMAIN_001>",
+            "requirement_id": "req_group_domain",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i3"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "domain_handle",
+            "disclosed_value": "<DOMAIN_002>",
+            "requirement_id": "req_group_domain",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i4"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "domain_handle",
+            "disclosed_value": "<DOMAIN_001>",
+            "requirement_id": "req_group_domain",
+            "exposure_weight": 0.5
+          }
+        ]
+      },
+      "agent_input": {
+        "invoices": [
+          {
+            "invoice_id": "i1",
+            "contact_email": "<DOMAIN_001>",
+            "amount": 20
+          },
+          {
+            "invoice_id": "i2",
+            "contact_email": "<DOMAIN_001>",
+            "amount": 35
+          },
+          {
+            "invoice_id": "i3",
+            "contact_email": "<DOMAIN_002>",
+            "amount": 40
+          },
+          {
+            "invoice_id": "i4",
+            "contact_email": "<DOMAIN_001>",
+            "amount": 5
+          }
+        ]
+      },
+      "candidate_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1",
+              "i2",
+              "i4"
+            ],
+            "total_amount": 60
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          }
+        ]
+      },
+      "restored_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1",
+              "i2",
+              "i4"
+            ],
+            "total_amount": 60
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "RAW_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": true,
+        "aggregate_values_correct": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 4,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 4,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 4,
+          "raw_distinct_count": 4,
+          "exposure_score": 4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-GROUP-02/RAW_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "ana@northwind.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "ben@northwind.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "cy@contoso.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GROUP-02",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "group_email_i4"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "dee@northwind.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "invoices": [
+          {
+            "invoice_id": "i1",
+            "contact_email": "ana@northwind.example",
+            "amount": 20
+          },
+          {
+            "invoice_id": "i2",
+            "contact_email": "ben@northwind.example",
+            "amount": 35
+          },
+          {
+            "invoice_id": "i3",
+            "contact_email": "cy@contoso.example",
+            "amount": 40
+          },
+          {
+            "invoice_id": "i4",
+            "contact_email": "dee@northwind.example",
+            "amount": 5
+          }
+        ]
+      },
+      "candidate_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1",
+              "i2",
+              "i4"
+            ],
+            "total_amount": 60
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          }
+        ]
+      },
+      "restored_output": {
+        "groups": [
+          {
+            "group_id": "g1",
+            "invoice_ids": [
+              "i1",
+              "i2",
+              "i4"
+            ],
+            "total_amount": 60
+          },
+          {
+            "group_id": "g2",
+            "invoice_ids": [
+              "i3"
+            ],
+            "total_amount": 40
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "FIXED_REDACTION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "ordering_preserved": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 4
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 4
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-ORDER-03/FIXED_REDACTION",
+        "ledger": [
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_001>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_002>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_003>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p4"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_004>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          }
+        ]
+      },
+      "agent_input": {
+        "people": [
+          {
+            "record_id": "p1",
+            "date_of_birth": "<REDACTED_001>"
+          },
+          {
+            "record_id": "p2",
+            "date_of_birth": "<REDACTED_002>"
+          },
+          {
+            "record_id": "p3",
+            "date_of_birth": "<REDACTED_003>"
+          },
+          {
+            "record_id": "p4",
+            "date_of_birth": "<REDACTED_004>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "ordered_record_ids": [
+          "p1",
+          "p2",
+          "p3",
+          "p4"
+        ]
+      },
+      "restored_output": {
+        "ordered_record_ids": [
+          "p1",
+          "p2",
+          "p3",
+          "p4"
+        ]
+      }
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "STABLE_TOKENIZATION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "ordering_preserved": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 4,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 4,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0.4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-ORDER-03/STABLE_TOKENIZATION",
+        "ledger": [
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_004>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          }
+        ]
+      },
+      "agent_input": {
+        "people": [
+          {
+            "record_id": "p1",
+            "date_of_birth": "<E_001>"
+          },
+          {
+            "record_id": "p2",
+            "date_of_birth": "<E_002>"
+          },
+          {
+            "record_id": "p3",
+            "date_of_birth": "<E_003>"
+          },
+          {
+            "record_id": "p4",
+            "date_of_birth": "<E_004>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "ordered_record_ids": [
+          "p1",
+          "p2",
+          "p3",
+          "p4"
+        ]
+      },
+      "restored_output": {
+        "ordered_record_ids": [
+          "p1",
+          "p2",
+          "p3",
+          "p4"
+        ]
+      }
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "ordering_preserved": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 4,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 4,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 2
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.5,
+        "oracle_relative_raw_value_reduction": 1,
+        "ledger_reference": "MD-ORDER-03/ORACLE_MIN_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p1"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "birth_year",
+            "disclosed_value": 1994,
+            "requirement_id": "req_order_year",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p2"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "birth_year",
+            "disclosed_value": 1981,
+            "requirement_id": "req_order_year",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p3"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "birth_year",
+            "disclosed_value": 2000,
+            "requirement_id": "req_order_year",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p4"
+            ],
+            "representation": "DERIVED_PROPERTY",
+            "disclosed_name": "birth_year",
+            "disclosed_value": 1988,
+            "requirement_id": "req_order_year",
+            "exposure_weight": 0.5
+          }
+        ]
+      },
+      "agent_input": {
+        "people": [
+          {
+            "record_id": "p1",
+            "date_of_birth": 1994
+          },
+          {
+            "record_id": "p2",
+            "date_of_birth": 1981
+          },
+          {
+            "record_id": "p3",
+            "date_of_birth": 2000
+          },
+          {
+            "record_id": "p4",
+            "date_of_birth": 1988
+          }
+        ]
+      },
+      "candidate_output": {
+        "ordered_record_ids": [
+          "p2",
+          "p4",
+          "p1",
+          "p3"
+        ]
+      },
+      "restored_output": {
+        "ordered_record_ids": [
+          "p2",
+          "p4",
+          "p1",
+          "p3"
+        ]
+      }
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "RAW_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "ordering_preserved": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 4,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 4,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 4,
+          "raw_distinct_count": 4,
+          "exposure_score": 4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-ORDER-03/RAW_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "1994-06-12",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "1981-11-03",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "2000-01-25",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-ORDER-03",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "order_dob_p4"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "1988-09-17",
+            "requirement_id": null,
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "people": [
+          {
+            "record_id": "p1",
+            "date_of_birth": "1994-06-12"
+          },
+          {
+            "record_id": "p2",
+            "date_of_birth": "1981-11-03"
+          },
+          {
+            "record_id": "p3",
+            "date_of_birth": "2000-01-25"
+          },
+          {
+            "record_id": "p4",
+            "date_of_birth": "1988-09-17"
+          }
+        ]
+      },
+      "candidate_output": {
+        "ordered_record_ids": [
+          "p2",
+          "p4",
+          "p1",
+          "p3"
+        ]
+      },
+      "restored_output": {
+        "ordered_record_ids": [
+          "p2",
+          "p4",
+          "p1",
+          "p3"
+        ]
+      }
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "FIXED_REDACTION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": false,
+        "aggregate_values_correct": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 4
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 4
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-LOC-04/FIXED_REDACTION",
+        "ledger": [
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_001>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_002>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_003>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q4"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_004>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          }
+        ]
+      },
+      "agent_input": {
+        "requests": [
+          {
+            "request_id": "q1",
+            "address": "<REDACTED_001>",
+            "amount": 15
+          },
+          {
+            "request_id": "q2",
+            "address": "<REDACTED_002>",
+            "amount": 20
+          },
+          {
+            "request_id": "q3",
+            "address": "<REDACTED_003>",
+            "amount": 30
+          },
+          {
+            "request_id": "q4",
+            "address": "<REDACTED_004>",
+            "amount": 5
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 0,
+            "total_amount": 0
+          },
+          {
+            "zone": "EAST",
+            "count": 0,
+            "total_amount": 0
+          }
+        ]
+      },
+      "restored_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 0,
+            "total_amount": 0
+          },
+          {
+            "zone": "EAST",
+            "count": 0,
+            "total_amount": 0
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "STABLE_TOKENIZATION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": false,
+        "aggregate_values_correct": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 4,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 4,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0.4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-LOC-04/STABLE_TOKENIZATION",
+        "ledger": [
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_004>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          }
+        ]
+      },
+      "agent_input": {
+        "requests": [
+          {
+            "request_id": "q1",
+            "address": "<E_001>",
+            "amount": 15
+          },
+          {
+            "request_id": "q2",
+            "address": "<E_002>",
+            "amount": 20
+          },
+          {
+            "request_id": "q3",
+            "address": "<E_003>",
+            "amount": 30
+          },
+          {
+            "request_id": "q4",
+            "address": "<E_004>",
+            "amount": 5
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 0,
+            "total_amount": 0
+          },
+          {
+            "zone": "EAST",
+            "count": 0,
+            "total_amount": 0
+          }
+        ]
+      },
+      "restored_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 0,
+            "total_amount": 0
+          },
+          {
+            "zone": "EAST",
+            "count": 0,
+            "total_amount": 0
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": true,
+        "aggregate_values_correct": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 4,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 4,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 2
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.5,
+        "oracle_relative_raw_value_reduction": 1,
+        "ledger_reference": "MD-LOC-04/ORACLE_MIN_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q1"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "service_zone",
+            "disclosed_value": "NORTH",
+            "requirement_id": "req_loc_zone",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q2"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "service_zone",
+            "disclosed_value": "EAST",
+            "requirement_id": "req_loc_zone",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q3"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "service_zone",
+            "disclosed_value": "EAST",
+            "requirement_id": "req_loc_zone",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q4"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "service_zone",
+            "disclosed_value": "NORTH",
+            "requirement_id": "req_loc_zone",
+            "exposure_weight": 0.5
+          }
+        ]
+      },
+      "agent_input": {
+        "requests": [
+          {
+            "request_id": "q1",
+            "address": "NORTH",
+            "amount": 15
+          },
+          {
+            "request_id": "q2",
+            "address": "EAST",
+            "amount": 20
+          },
+          {
+            "request_id": "q3",
+            "address": "EAST",
+            "amount": 30
+          },
+          {
+            "request_id": "q4",
+            "address": "NORTH",
+            "amount": 5
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 2,
+            "total_amount": 20
+          },
+          {
+            "zone": "EAST",
+            "count": 2,
+            "total_amount": 50
+          }
+        ]
+      },
+      "restored_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 2,
+            "total_amount": 20
+          },
+          {
+            "zone": "EAST",
+            "count": 2,
+            "total_amount": 50
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "RAW_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "grouping_preserved": true,
+        "aggregate_values_correct": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 4,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 4,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 4,
+          "raw_distinct_count": 4,
+          "exposure_score": 4
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-LOC-04/RAW_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "18 Harbor St, Haidian, Beijing 100080",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "7 Lake Rd, Pudong, Shanghai 200120",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "99 Pine Ave, Xihu, Hangzhou 310013",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-LOC-04",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "loc_address_q4"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "4 North Rd, Chaoyang, Beijing 100020",
+            "requirement_id": null,
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "requests": [
+          {
+            "request_id": "q1",
+            "address": "18 Harbor St, Haidian, Beijing 100080",
+            "amount": 15
+          },
+          {
+            "request_id": "q2",
+            "address": "7 Lake Rd, Pudong, Shanghai 200120",
+            "amount": 20
+          },
+          {
+            "request_id": "q3",
+            "address": "99 Pine Ave, Xihu, Hangzhou 310013",
+            "amount": 30
+          },
+          {
+            "request_id": "q4",
+            "address": "4 North Rd, Chaoyang, Beijing 100020",
+            "amount": 5
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 2,
+            "total_amount": 20
+          },
+          {
+            "zone": "EAST",
+            "count": 2,
+            "total_amount": 50
+          }
+        ]
+      },
+      "restored_output": {
+        "zone_summaries": [
+          {
+            "zone": "NORTH",
+            "count": 2,
+            "total_amount": 20
+          },
+          {
+            "zone": "EAST",
+            "count": 2,
+            "total_amount": 50
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "FIXED_REDACTION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "identity_preserved": false,
+        "window_relation_preserved": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 10
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 10
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-CROSS-05/FIXED_REDACTION",
+        "ledger": [
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_001>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_002>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_003>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_004>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_005>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_006>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e4"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_007>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e4"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_008>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e5"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_009>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e5"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_010>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          }
+        ]
+      },
+      "agent_input": {
+        "events": [
+          {
+            "event_id": "e1",
+            "subject_email": "<REDACTED_001>",
+            "timestamp": "<REDACTED_002>"
+          },
+          {
+            "event_id": "e2",
+            "subject_email": "<REDACTED_003>",
+            "timestamp": "<REDACTED_004>"
+          },
+          {
+            "event_id": "e3",
+            "subject_email": "<REDACTED_005>",
+            "timestamp": "<REDACTED_006>"
+          },
+          {
+            "event_id": "e4",
+            "subject_email": "<REDACTED_007>",
+            "timestamp": "<REDACTED_008>"
+          },
+          {
+            "event_id": "e5",
+            "subject_email": "<REDACTED_009>",
+            "timestamp": "<REDACTED_010>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "event_pairs": []
+      },
+      "restored_output": {
+        "event_pairs": []
+      }
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "STABLE_TOKENIZATION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "identity_preserved": false,
+        "window_relation_preserved": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 10,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 10,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0.9999999999999999
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.09999999999999999,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-CROSS-05/STABLE_TOKENIZATION",
+        "ledger": [
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_004>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_005>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_006>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e5"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e5"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_007>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          }
+        ]
+      },
+      "agent_input": {
+        "events": [
+          {
+            "event_id": "e1",
+            "subject_email": "<E_001>",
+            "timestamp": "<E_002>"
+          },
+          {
+            "event_id": "e2",
+            "subject_email": "<E_003>",
+            "timestamp": "<E_004>"
+          },
+          {
+            "event_id": "e3",
+            "subject_email": "<E_001>",
+            "timestamp": "<E_005>"
+          },
+          {
+            "event_id": "e4",
+            "subject_email": "<E_001>",
+            "timestamp": "<E_006>"
+          },
+          {
+            "event_id": "e5",
+            "subject_email": "<E_003>",
+            "timestamp": "<E_007>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "event_pairs": []
+      },
+      "restored_output": {
+        "event_pairs": []
+      }
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "identity_preserved": true,
+        "window_relation_preserved": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 5,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 5,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 5,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 5,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 3
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.3,
+        "oracle_relative_raw_value_reduction": 1,
+        "ledger_reference": "MD-CROSS-05/ORACLE_MIN_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_cross_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": "req_cross_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_cross_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e4"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_cross_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e5"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": "req_cross_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e1"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "timestamp_hour",
+            "disclosed_value": "2026-04-01T09:00Z",
+            "requirement_id": "req_cross_hour",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e2"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "timestamp_hour",
+            "disclosed_value": "2026-04-01T12:00Z",
+            "requirement_id": "req_cross_hour",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e3"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "timestamp_hour",
+            "disclosed_value": "2026-04-03T08:00Z",
+            "requirement_id": "req_cross_hour",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e4"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "timestamp_hour",
+            "disclosed_value": "2026-04-10T09:00Z",
+            "requirement_id": "req_cross_hour",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e5"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "timestamp_hour",
+            "disclosed_value": "2026-04-05T13:00Z",
+            "requirement_id": "req_cross_hour",
+            "exposure_weight": 0.5
+          }
+        ]
+      },
+      "agent_input": {
+        "events": [
+          {
+            "event_id": "e1",
+            "subject_email": "<E_001>",
+            "timestamp": "2026-04-01T09:00Z"
+          },
+          {
+            "event_id": "e2",
+            "subject_email": "<E_002>",
+            "timestamp": "2026-04-01T12:00Z"
+          },
+          {
+            "event_id": "e3",
+            "subject_email": "<E_001>",
+            "timestamp": "2026-04-03T08:00Z"
+          },
+          {
+            "event_id": "e4",
+            "subject_email": "<E_001>",
+            "timestamp": "2026-04-10T09:00Z"
+          },
+          {
+            "event_id": "e5",
+            "subject_email": "<E_002>",
+            "timestamp": "2026-04-05T13:00Z"
+          }
+        ]
+      },
+      "candidate_output": {
+        "event_pairs": [
+          [
+            "e1",
+            "e3"
+          ]
+        ]
+      },
+      "restored_output": {
+        "event_pairs": [
+          [
+            "e1",
+            "e3"
+          ]
+        ]
+      }
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "identity_preserved": true,
+        "window_relation_preserved": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 10,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 10,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 10,
+          "raw_distinct_count": 7,
+          "exposure_score": 10
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-CROSS-05/RAW_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "lee@sample.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "2026-04-01T09:00:00Z",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "kim@sample.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "2026-04-01T12:00:00Z",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "lee@sample.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "2026-04-03T08:00:00Z",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e4"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "lee@sample.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e4"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "2026-04-10T09:00:00Z",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_email_e5"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "kim@sample.example",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-CROSS-05",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "cross_time_e5"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "2026-04-05T13:00:00Z",
+            "requirement_id": null,
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "events": [
+          {
+            "event_id": "e1",
+            "subject_email": "lee@sample.example",
+            "timestamp": "2026-04-01T09:00:00Z"
+          },
+          {
+            "event_id": "e2",
+            "subject_email": "kim@sample.example",
+            "timestamp": "2026-04-01T12:00:00Z"
+          },
+          {
+            "event_id": "e3",
+            "subject_email": "lee@sample.example",
+            "timestamp": "2026-04-03T08:00:00Z"
+          },
+          {
+            "event_id": "e4",
+            "subject_email": "lee@sample.example",
+            "timestamp": "2026-04-10T09:00:00Z"
+          },
+          {
+            "event_id": "e5",
+            "subject_email": "kim@sample.example",
+            "timestamp": "2026-04-05T13:00:00Z"
+          }
+        ]
+      },
+      "candidate_output": {
+        "event_pairs": [
+          [
+            "e1",
+            "e3"
+          ]
+        ]
+      },
+      "restored_output": {
+        "event_pairs": [
+          [
+            "e1",
+            "e3"
+          ]
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "FIXED_REDACTION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "source_edges_preserved": false,
+        "graph_computation_correct": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 6
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 6
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-GRAPH-06/FIXED_REDACTION",
+        "ledger": [
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_from"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_001>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_to"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_002>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_from"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_003>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_to"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_004>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_from"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_005>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_to"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_006>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          }
+        ]
+      },
+      "agent_input": {
+        "edges": [
+          {
+            "edge_id": "g1",
+            "from": "<REDACTED_001>",
+            "to": "<REDACTED_002>"
+          },
+          {
+            "edge_id": "g2",
+            "from": "<REDACTED_003>",
+            "to": "<REDACTED_004>"
+          },
+          {
+            "edge_id": "g3",
+            "from": "<REDACTED_005>",
+            "to": "<REDACTED_006>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 0
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          },
+          {
+            "node": "n4",
+            "degree": 0
+          },
+          {
+            "node": "n5",
+            "degree": 1
+          },
+          {
+            "node": "n6",
+            "degree": 0
+          }
+        ],
+        "reachable_from_n1_in_two_hops": []
+      },
+      "restored_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 0
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          },
+          {
+            "node": "n4",
+            "degree": 0
+          },
+          {
+            "node": "n5",
+            "degree": 1
+          },
+          {
+            "node": "n6",
+            "degree": 0
+          }
+        ],
+        "reachable_from_n1_in_two_hops": []
+      }
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "source_edges_preserved": true,
+        "graph_computation_correct": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 3,
+        "OPAQUE_TOKEN": 6,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 3,
+            "OPAQUE_TOKEN": 6,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 1.35
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.2,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-GRAPH-06/STABLE_TOKENIZATION",
+        "ledger": [
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_from"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_to"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_from"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_to"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_from"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_to"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_from",
+              "graph_g1_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g1"
+            },
+            "requirement_id": null,
+            "exposure_weight": 0.25
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_from",
+              "graph_g2_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g2"
+            },
+            "requirement_id": null,
+            "exposure_weight": 0.25
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_from",
+              "graph_g3_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g3"
+            },
+            "requirement_id": null,
+            "exposure_weight": 0.25
+          }
+        ]
+      },
+      "agent_input": {
+        "edges": [
+          {
+            "edge_id": "g1",
+            "from": "<E_001>",
+            "to": "<E_002>"
+          },
+          {
+            "edge_id": "g2",
+            "from": "<E_002>",
+            "to": "<E_003>"
+          },
+          {
+            "edge_id": "g3",
+            "from": "<E_003>",
+            "to": "<E_001>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 1
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          }
+        ],
+        "reachable_from_n1_in_two_hops": [
+          "n3"
+        ]
+      },
+      "restored_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 1
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          }
+        ],
+        "reachable_from_n1_in_two_hops": [
+          "n3"
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "source_edges_preserved": true,
+        "graph_computation_correct": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 3,
+        "OPAQUE_TOKEN": 6,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 3,
+            "OPAQUE_TOKEN": 6,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 1.35
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0.2,
+        "oracle_relative_raw_value_reduction": 1,
+        "ledger_reference": "MD-GRAPH-06/ORACLE_MIN_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_from"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_graph_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_to"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": "req_graph_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_from"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": "req_graph_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_to"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": "req_graph_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_from"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": "req_graph_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_to"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_graph_identity",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_from",
+              "graph_g1_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g1"
+            },
+            "requirement_id": "req_graph_source_edges",
+            "exposure_weight": 0.25
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_from",
+              "graph_g2_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g2"
+            },
+            "requirement_id": "req_graph_source_edges",
+            "exposure_weight": 0.25
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_from",
+              "graph_g3_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g3"
+            },
+            "requirement_id": "req_graph_source_edges",
+            "exposure_weight": 0.25
+          }
+        ]
+      },
+      "agent_input": {
+        "edges": [
+          {
+            "edge_id": "g1",
+            "from": "<E_001>",
+            "to": "<E_002>"
+          },
+          {
+            "edge_id": "g2",
+            "from": "<E_002>",
+            "to": "<E_003>"
+          },
+          {
+            "edge_id": "g3",
+            "from": "<E_003>",
+            "to": "<E_001>"
+          }
+        ]
+      },
+      "candidate_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 1
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          }
+        ],
+        "reachable_from_n1_in_two_hops": [
+          "n3"
+        ]
+      },
+      "restored_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 1
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          }
+        ],
+        "reachable_from_n1_in_two_hops": [
+          "n3"
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "source_edges_preserved": true,
+        "graph_computation_correct": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": false,
+        "tool_call_valid": null,
+        "tool_call_correct": null
+      },
+      "representation_counts": {
+        "RAW_VALUE": 6,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 3,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 6,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 3,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 6,
+          "raw_distinct_count": 3,
+          "exposure_score": 6.75
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-GRAPH-06/RAW_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_from"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "Mira Chen",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_to"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "Luis Gomez",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_from"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "Luis Gomez",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_to"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "Sara Ito",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_from"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "Sara Ito",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_to"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "Mira Chen",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g1_from",
+              "graph_g1_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g1"
+            },
+            "requirement_id": null,
+            "exposure_weight": 0.25
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g2_from",
+              "graph_g2_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g2"
+            },
+            "requirement_id": null,
+            "exposure_weight": 0.25
+          },
+          {
+            "task_id": "MD-GRAPH-06",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "graph_g3_from",
+              "graph_g3_to"
+            ],
+            "representation": "RELATION_ONLY",
+            "disclosed_name": "source_directed_edge",
+            "disclosed_value": {
+              "source_relation_id": "g3"
+            },
+            "requirement_id": null,
+            "exposure_weight": 0.25
+          }
+        ]
+      },
+      "agent_input": {
+        "edges": [
+          {
+            "edge_id": "g1",
+            "from": "Mira Chen",
+            "to": "Luis Gomez"
+          },
+          {
+            "edge_id": "g2",
+            "from": "Luis Gomez",
+            "to": "Sara Ito"
+          },
+          {
+            "edge_id": "g3",
+            "from": "Sara Ito",
+            "to": "Mira Chen"
+          }
+        ]
+      },
+      "candidate_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 1
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          }
+        ],
+        "reachable_from_n1_in_two_hops": [
+          "n3"
+        ]
+      },
+      "restored_output": {
+        "out_degree": [
+          {
+            "node": "n1",
+            "degree": 1
+          },
+          {
+            "node": "n2",
+            "degree": 1
+          },
+          {
+            "node": "n3",
+            "degree": 1
+          }
+        ],
+        "reachable_from_n1_in_two_hops": [
+          "n3"
+        ]
+      }
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "FIXED_REDACTION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "selection_preserved": true,
+        "tool_argument_property_preserved": false,
+        "exact_recipient_after_restore": false
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": true,
+        "tool_call_valid": true,
+        "tool_call_correct": false
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 6
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 6
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0
+        },
+        "normalized_exposure": 0,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-TOOL-07/FIXED_REDACTION",
+        "ledger": [
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_001>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t1"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_002>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_003>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t2"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_004>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_005>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "FIXED_REDACTION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t3"
+            ],
+            "representation": "REDACTED",
+            "disclosed_name": "redacted",
+            "disclosed_value": "<REDACTED_006>",
+            "requirement_id": null,
+            "exposure_weight": 0
+          }
+        ]
+      },
+      "agent_input": {
+        "tickets": [
+          {
+            "ticket_id": "t1",
+            "severity": 2,
+            "recipient_email": "<REDACTED_001>",
+            "address": "<REDACTED_002>"
+          },
+          {
+            "ticket_id": "t2",
+            "severity": 5,
+            "recipient_email": "<REDACTED_003>",
+            "address": "<REDACTED_004>"
+          },
+          {
+            "ticket_id": "t3",
+            "severity": 3,
+            "recipient_email": "<REDACTED_005>",
+            "address": "<REDACTED_006>"
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "<REDACTED_003>",
+          "service_zone": "UNKNOWN"
+        }
+      },
+      "restored_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "<REDACTED_003>",
+          "service_zone": "UNKNOWN"
+        }
+      }
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "STABLE_TOKENIZATION",
+      "task_success": false,
+      "validity": "valid",
+      "relationship_checks": {
+        "selection_preserved": true,
+        "tool_argument_property_preserved": false,
+        "exact_recipient_after_restore": true
+      },
+      "restore_correctness": {
+        "applicable": true,
+        "restored_items": 1,
+        "correctly_restored_items": 1,
+        "exact_match_rate": 1,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": true,
+        "tool_call_valid": true,
+        "tool_call_correct": false
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 6,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 6,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 0.6
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 1,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 1,
+          "raw_distinct_count": 1,
+          "exposure_score": 1
+        },
+        "normalized_exposure": 0.09999999999999999,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-TOOL-07/STABLE_TOKENIZATION",
+        "ledger": [
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_004>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_005>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_006>",
+            "requirement_id": null,
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "STABLE_TOKENIZATION",
+            "boundary": "TOOL",
+            "source_occurrence_ids": [
+              "tool_email_t2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "recipient",
+            "disclosed_value": "omar.khan@example.com",
+            "requirement_id": null,
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "tickets": [
+          {
+            "ticket_id": "t1",
+            "severity": 2,
+            "recipient_email": "<E_001>",
+            "address": "<E_002>"
+          },
+          {
+            "ticket_id": "t2",
+            "severity": 5,
+            "recipient_email": "<E_003>",
+            "address": "<E_004>"
+          },
+          {
+            "ticket_id": "t3",
+            "severity": 3,
+            "recipient_email": "<E_005>",
+            "address": "<E_006>"
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "<E_003>",
+          "service_zone": "UNKNOWN"
+        }
+      },
+      "restored_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "omar.khan@example.com",
+          "service_zone": "UNKNOWN"
+        }
+      }
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "selection_preserved": true,
+        "tool_argument_property_preserved": true,
+        "exact_recipient_after_restore": true
+      },
+      "restore_correctness": {
+        "applicable": true,
+        "restored_items": 1,
+        "correctly_restored_items": 1,
+        "exact_match_rate": 1,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": true,
+        "tool_call_valid": true,
+        "tool_call_correct": true
+      },
+      "representation_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 3,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 3,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 0,
+            "COARSENED_VALUE": 3,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 3,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 0,
+          "raw_distinct_count": 0,
+          "exposure_score": 1.8
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 1,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 1,
+          "raw_distinct_count": 1,
+          "exposure_score": 1
+        },
+        "normalized_exposure": 0.3,
+        "oracle_relative_raw_value_reduction": 1,
+        "ledger_reference": "MD-TOOL-07/ORACLE_MIN_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t1"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_001>",
+            "requirement_id": "req_tool_recipient",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t2"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_002>",
+            "requirement_id": "req_tool_recipient",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t3"
+            ],
+            "representation": "OPAQUE_TOKEN",
+            "disclosed_name": "identity_handle",
+            "disclosed_value": "<E_003>",
+            "requirement_id": "req_tool_recipient",
+            "exposure_weight": 0.1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t1"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "service_zone",
+            "disclosed_value": "NORTH",
+            "requirement_id": "req_tool_zone",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t2"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "service_zone",
+            "disclosed_value": "EAST",
+            "requirement_id": "req_tool_zone",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t3"
+            ],
+            "representation": "COARSENED_VALUE",
+            "disclosed_name": "service_zone",
+            "disclosed_value": "EAST",
+            "requirement_id": "req_tool_zone",
+            "exposure_weight": 0.5
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "ORACLE_MIN_DISCLOSURE",
+            "boundary": "TOOL",
+            "source_occurrence_ids": [
+              "tool_email_t2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "recipient",
+            "disclosed_value": "omar.khan@example.com",
+            "requirement_id": "req_tool_recipient",
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "tickets": [
+          {
+            "ticket_id": "t1",
+            "severity": 2,
+            "recipient_email": "<E_001>",
+            "address": "NORTH"
+          },
+          {
+            "ticket_id": "t2",
+            "severity": 5,
+            "recipient_email": "<E_002>",
+            "address": "EAST"
+          },
+          {
+            "ticket_id": "t3",
+            "severity": 3,
+            "recipient_email": "<E_003>",
+            "address": "EAST"
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "<E_002>",
+          "service_zone": "EAST"
+        }
+      },
+      "restored_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "omar.khan@example.com",
+          "service_zone": "EAST"
+        }
+      }
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "RAW_DISCLOSURE",
+      "task_success": true,
+      "validity": "valid",
+      "relationship_checks": {
+        "selection_preserved": true,
+        "tool_argument_property_preserved": true,
+        "exact_recipient_after_restore": true
+      },
+      "restore_correctness": {
+        "applicable": false,
+        "restored_items": 0,
+        "correctly_restored_items": 0,
+        "exact_match_rate": null,
+        "unknown_token_count": 0,
+        "accidental_raw_output_count": 0
+      },
+      "tool_status": {
+        "tool_invoked": true,
+        "tool_call_valid": true,
+        "tool_call_correct": true
+      },
+      "representation_counts": {
+        "RAW_VALUE": 6,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "exposure": {
+        "agent": {
+          "category_counts": {
+            "RAW_VALUE": 6,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 6,
+          "raw_distinct_count": 6,
+          "exposure_score": 6
+        },
+        "tool": {
+          "category_counts": {
+            "RAW_VALUE": 1,
+            "COARSENED_VALUE": 0,
+            "DERIVED_PROPERTY": 0,
+            "RELATION_ONLY": 0,
+            "OPAQUE_TOKEN": 0,
+            "REDACTED": 0
+          },
+          "raw_exposure_count": 1,
+          "raw_distinct_count": 1,
+          "exposure_score": 1
+        },
+        "normalized_exposure": 1,
+        "oracle_relative_raw_value_reduction": null,
+        "ledger_reference": "MD-TOOL-07/RAW_DISCLOSURE",
+        "ledger": [
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "mei.lin@example.com",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t1"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "18 Harbor St, Haidian, Beijing 100080",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "omar.khan@example.com",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "7 Lake Rd, Pudong, Shanghai 200120",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_email_t3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "ines.rossi@example.com",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "AGENT",
+            "source_occurrence_ids": [
+              "tool_address_t3"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "raw_value",
+            "disclosed_value": "99 Pine Ave, Xihu, Hangzhou 310013",
+            "requirement_id": null,
+            "exposure_weight": 1
+          },
+          {
+            "task_id": "MD-TOOL-07",
+            "strategy": "RAW_DISCLOSURE",
+            "boundary": "TOOL",
+            "source_occurrence_ids": [
+              "tool_email_t2"
+            ],
+            "representation": "RAW_VALUE",
+            "disclosed_name": "recipient",
+            "disclosed_value": "omar.khan@example.com",
+            "requirement_id": null,
+            "exposure_weight": 1
+          }
+        ]
+      },
+      "agent_input": {
+        "tickets": [
+          {
+            "ticket_id": "t1",
+            "severity": 2,
+            "recipient_email": "mei.lin@example.com",
+            "address": "18 Harbor St, Haidian, Beijing 100080"
+          },
+          {
+            "ticket_id": "t2",
+            "severity": 5,
+            "recipient_email": "omar.khan@example.com",
+            "address": "7 Lake Rd, Pudong, Shanghai 200120"
+          },
+          {
+            "ticket_id": "t3",
+            "severity": 3,
+            "recipient_email": "ines.rossi@example.com",
+            "address": "99 Pine Ave, Xihu, Hangzhou 310013"
+          }
+        ],
+        "zone_rule": {
+          "NORTH": [
+            "Beijing"
+          ],
+          "EAST": [
+            "Shanghai",
+            "Hangzhou"
+          ]
+        }
+      },
+      "candidate_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "omar.khan@example.com",
+          "service_zone": "EAST"
+        }
+      },
+      "restored_output": {
+        "tool": "dispatch_visit",
+        "arguments": {
+          "ticket_id": "t2",
+          "recipient": "omar.khan@example.com",
+          "service_zone": "EAST"
+        }
+      }
+    }
+  ]
+}
