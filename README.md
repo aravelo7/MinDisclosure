@@ -49,7 +49,7 @@ The frozen specification is in [docs/benchmark-spec.md](docs/benchmark-spec.md),
 
 The following work informed the benchmark boundary and is not a runtime dependency:
 
-- [Presidio](https://github.com/microsoft/presidio): configurable detection and anonymization operations.
+- [Presidio](https://github.com/data-privacy-stack/presidio): configurable detection and anonymization operations.
 - [pii-proxy](https://github.com/daslabhq/pii-proxy): stable substitution and round-trip restoration.
 - [og-local](https://github.com/outgate-ai/og-local): opaque placeholder substitution and response restoration.
 - [Operationalizing Data Minimization](https://github.com/PEACH-Research-Lab/Operationalize-Data-Minimization): privacy transformations searched under a downstream utility constraint.
