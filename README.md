@@ -34,6 +34,6 @@ The frozen specification is in [docs/benchmark-spec.md](docs/benchmark-spec.md),
 
 The following projects were consulted as prior art and are not benchmark dependencies:
 
-- [Presidio](https://github.com/microsoft/presidio): detection plus configurable replace, redact, hash, mask, encrypt, and custom anonymization operations. Its documentation warns that automated detection is not guaranteed to find every sensitive item.
+- [Presidio](https://github.com/data-privacy-stack/presidio): detection plus configurable replace, redact, hash, mask, encrypt, and custom anonymization operations. Its documentation warns that automated detection is not guaranteed to find every sensitive item.
 - [pii-proxy](https://github.com/daslabhq/pii-proxy): bijective plausible-value substitution, stable mapping, structured-object masking, and deterministic round-trip restoration; its documented failure modes include surface-property inference and broken cross-entity coherence.
 - [og-local](https://github.com/outgate-ai/og-local): opaque placeholder substitution over prompt/tool fields, deterministic same-value placeholders within a session, and response restoration.
