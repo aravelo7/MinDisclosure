@@ -1,0 +1,210 @@
+{
+  "experiment_id": "md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation",
+  "experiment_contract_version": "llm-experiment-contract-v0.1",
+  "benchmark_version": "md-bench-v0.2",
+  "benchmark_tag": "md-bench-v0.2",
+  "benchmark_commit": "932f16e2ccf4dab64995f11a70a054ae19b52b04",
+  "run_id": "run-007",
+  "run_order": 7,
+  "task_id": "MD-LOC-04",
+  "strategy": "ORACLE_MIN_DISCLOSURE",
+  "repetition_index": 1,
+  "block_id": "rep-1/MD-LOC-04",
+  "latin_row_index": 3,
+  "strategy_position": 3,
+  "status": "PROVIDER_FAILED",
+  "provider": "DeepSeek",
+  "requested_model": "deepseek-flash",
+  "documented_serving_model": "DeepSeek-V4.1-Flash",
+  "returned_model": null,
+  "request_config": {
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "top_p": "omitted",
+    "max_output_tokens": 256,
+    "stream": false,
+    "tools": "omitted",
+    "tool_choice": "omitted",
+    "user": "omitted",
+    "previous_response_id": "omitted",
+    "conversation_state": "omitted",
+    "structured_output": "text.format.type=json_schema"
+  },
+  "renderer_sha256": "6df7244663d34f7d0914e1a537e4b86d1deb7d2c3ea251203854dca43669fe50",
+  "schema_sha256": "bcc1458485d65713100149dfa6426abcb714ec38329aa7e99d918a26428674f1",
+  "fixture_sha256": "b3e851e913b0be339dfaab4533c416dc1c5e80bc7feea4d2aba8e5c3d8968aa2",
+  "manifest_sha256": "71c237b9d17fe6d2291b7cfce1a598b3a4e6314f4c4601b4200023794321e224",
+  "request_sha256": "b7956dfac7b86df15e5f6df48fba459189f9bb1599204e2e6b227cd468e49876",
+  "request": {
+    "model": "deepseek-flash",
+    "instructions": "Complete the provided task using only the provided input data. Return only the structured result. Do not explain your reasoning.",
+    "input": "Task:\nFor each service zone, return request count and total amount in zone_rule order.\n\nInput data:\n{\"requests\":[{\"address\":\"NORTH\",\"amount\":15,\"request_id\":\"q1\"},{\"address\":\"EAST\",\"amount\":20,\"request_id\":\"q2\"},{\"address\":\"EAST\",\"amount\":30,\"request_id\":\"q3\"},{\"address\":\"NORTH\",\"amount\":5,\"request_id\":\"q4\"}],\"zone_rule\":{\"EAST\":[\"Shanghai\",\"Hangzhou\"],\"NORTH\":[\"Beijing\"]}}",
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "max_output_tokens": 256,
+    "stream": false,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "min_disclosure_md_loc_04_v0_1",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "zone_summaries"
+          ],
+          "properties": {
+            "zone_summaries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "zone",
+                  "count",
+                  "total_amount"
+                ],
+                "properties": {
+                  "zone": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer"
+                  },
+                  "total_amount": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_id": null,
+  "provider_status": null,
+  "http_status": 429,
+  "attempt_count": 1,
+  "retry_count": 0,
+  "retry_reason": null,
+  "failure_reason": "RETRY_AFTER_EXCEEDS_CAP",
+  "provider_latency_ms": 10,
+  "retry_wait_ms": 0,
+  "wall_time_ms": 10,
+  "usage": null,
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "dispatched": true,
+      "started_offset_ms": 0,
+      "completed_offset_ms": 10,
+      "request_sha256": "b7956dfac7b86df15e5f6df48fba459189f9bb1599204e2e6b227cd468e49876",
+      "http_status": 429,
+      "latency_ms": 10,
+      "response": null,
+      "transport_failure": false,
+      "error": {
+        "code": "HTTP_429",
+        "message": "scripted transient failure"
+      },
+      "retry_after": "121",
+      "retry_decision": {
+        "retry": false,
+        "reason": "RETRY_AFTER_EXCEEDS_CAP",
+        "retry_after_ms": 121000
+      }
+    }
+  ],
+  "raw_output": null,
+  "parsed_output": null,
+  "schema_status": "not_evaluated",
+  "schema_error": null,
+  "oracle_result": null,
+  "exposure": {
+    "agent": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 4,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 2
+    },
+    "tool": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0
+    },
+    "ledger_reference": "MD-LOC-04/ORACLE_MIN_DISCLOSURE",
+    "ledger": [
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "ORACLE_MIN_DISCLOSURE",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q1"
+        ],
+        "representation": "COARSENED_VALUE",
+        "disclosed_name": "service_zone",
+        "disclosed_value": "NORTH",
+        "requirement_id": "req_loc_zone",
+        "exposure_weight": 0.5
+      },
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "ORACLE_MIN_DISCLOSURE",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q2"
+        ],
+        "representation": "COARSENED_VALUE",
+        "disclosed_name": "service_zone",
+        "disclosed_value": "EAST",
+        "requirement_id": "req_loc_zone",
+        "exposure_weight": 0.5
+      },
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "ORACLE_MIN_DISCLOSURE",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q3"
+        ],
+        "representation": "COARSENED_VALUE",
+        "disclosed_name": "service_zone",
+        "disclosed_value": "EAST",
+        "requirement_id": "req_loc_zone",
+        "exposure_weight": 0.5
+      },
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "ORACLE_MIN_DISCLOSURE",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q4"
+        ],
+        "representation": "COARSENED_VALUE",
+        "disclosed_name": "service_zone",
+        "disclosed_value": "NORTH",
+        "requirement_id": "req_loc_zone",
+        "exposure_weight": 0.5
+      }
+    ]
+  },
+  "artifact_sha256": "d6a3bf1a901205964b333e1eced2456b0053e5238bffa23f9a277a021b972331"
+}

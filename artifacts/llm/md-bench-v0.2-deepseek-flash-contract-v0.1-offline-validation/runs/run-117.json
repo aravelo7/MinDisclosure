@@ -1,0 +1,326 @@
+{
+  "experiment_id": "md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation",
+  "experiment_contract_version": "llm-experiment-contract-v0.1",
+  "benchmark_version": "md-bench-v0.2",
+  "benchmark_tag": "md-bench-v0.2",
+  "benchmark_commit": "932f16e2ccf4dab64995f11a70a054ae19b52b04",
+  "run_id": "run-117",
+  "run_order": 117,
+  "task_id": "MD-GROUP-02",
+  "strategy": "STABLE_TOKENIZATION",
+  "repetition_index": 5,
+  "block_id": "rep-5/MD-GROUP-02",
+  "latin_row_index": 1,
+  "strategy_position": 1,
+  "status": "COMPLETED_INCORRECT",
+  "provider": "DeepSeek",
+  "requested_model": "deepseek-flash",
+  "documented_serving_model": "DeepSeek-V4.1-Flash",
+  "returned_model": "deepseek-flash",
+  "request_config": {
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "top_p": "omitted",
+    "max_output_tokens": 256,
+    "stream": false,
+    "tools": "omitted",
+    "tool_choice": "omitted",
+    "user": "omitted",
+    "previous_response_id": "omitted",
+    "conversation_state": "omitted",
+    "structured_output": "text.format.type=json_schema"
+  },
+  "renderer_sha256": "6df7244663d34f7d0914e1a537e4b86d1deb7d2c3ea251203854dca43669fe50",
+  "schema_sha256": "5e41a17c5bb8b9ae61e3688423630c895569f326b26c4949b0d1dfa21e124e18",
+  "fixture_sha256": "b3e851e913b0be339dfaab4533c416dc1c5e80bc7feea4d2aba8e5c3d8968aa2",
+  "manifest_sha256": "71c237b9d17fe6d2291b7cfce1a598b3a4e6314f4c4601b4200023794321e224",
+  "request_sha256": "71ba0f2bde1267ccd58e28faff87cd523c1415cb969ce7c26cfb9c2270412c0d",
+  "request": {
+    "model": "deepseek-flash",
+    "instructions": "Complete the provided task using only the provided input data. Return only the structured result. Do not explain your reasoning.",
+    "input": "Task:\nGroup invoices by contact-email domain, label groups by first appearance, and return members and total amount.\n\nInput data:\n{\"invoices\":[{\"amount\":20,\"contact_email\":\"<E_001>\",\"invoice_id\":\"i1\"},{\"amount\":35,\"contact_email\":\"<E_002>\",\"invoice_id\":\"i2\"},{\"amount\":40,\"contact_email\":\"<E_003>\",\"invoice_id\":\"i3\"},{\"amount\":5,\"contact_email\":\"<E_004>\",\"invoice_id\":\"i4\"}]}",
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "max_output_tokens": 256,
+    "stream": false,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "min_disclosure_md_group_02_v0_1",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "groups"
+          ],
+          "properties": {
+            "groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "group_id",
+                  "invoice_ids",
+                  "total_amount"
+                ],
+                "properties": {
+                  "group_id": {
+                    "type": "string"
+                  },
+                  "invoice_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "total_amount": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_id": "resp_mock_run-117",
+  "provider_status": "completed",
+  "http_status": 200,
+  "attempt_count": 1,
+  "retry_count": 0,
+  "retry_reason": null,
+  "failure_reason": null,
+  "provider_latency_ms": 25,
+  "retry_wait_ms": 0,
+  "wall_time_ms": 25,
+  "usage": {
+    "input_tokens": 100,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 30,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 130
+  },
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "dispatched": true,
+      "started_offset_ms": 0,
+      "completed_offset_ms": 25,
+      "request_sha256": "71ba0f2bde1267ccd58e28faff87cd523c1415cb969ce7c26cfb9c2270412c0d",
+      "http_status": 200,
+      "latency_ms": 25,
+      "response": {
+        "id": "resp_mock_run-117",
+        "created_at": 1789574400,
+        "status": "completed",
+        "model": "deepseek-flash",
+        "output": [
+          {
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"groups\":[{\"group_id\":\"g1\",\"invoice_ids\":[\"i1\"],\"total_amount\":20},{\"group_id\":\"g2\",\"invoice_ids\":[\"i2\"],\"total_amount\":35},{\"group_id\":\"g3\",\"invoice_ids\":[\"i3\"],\"total_amount\":40},{\"group_id\":\"g4\",\"invoice_ids\":[\"i4\"],\"total_amount\":5}]}"
+              }
+            ]
+          }
+        ],
+        "usage": {
+          "input_tokens": 100,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 30,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 130
+        },
+        "error": null,
+        "incomplete_details": null
+      }
+    }
+  ],
+  "raw_output": "{\"groups\":[{\"group_id\":\"g1\",\"invoice_ids\":[\"i1\"],\"total_amount\":20},{\"group_id\":\"g2\",\"invoice_ids\":[\"i2\"],\"total_amount\":35},{\"group_id\":\"g3\",\"invoice_ids\":[\"i3\"],\"total_amount\":40},{\"group_id\":\"g4\",\"invoice_ids\":[\"i4\"],\"total_amount\":5}]}",
+  "parsed_output": {
+    "groups": [
+      {
+        "group_id": "g1",
+        "invoice_ids": [
+          "i1"
+        ],
+        "total_amount": 20
+      },
+      {
+        "group_id": "g2",
+        "invoice_ids": [
+          "i2"
+        ],
+        "total_amount": 35
+      },
+      {
+        "group_id": "g3",
+        "invoice_ids": [
+          "i3"
+        ],
+        "total_amount": 40
+      },
+      {
+        "group_id": "g4",
+        "invoice_ids": [
+          "i4"
+        ],
+        "total_amount": 5
+      }
+    ]
+  },
+  "schema_status": "valid",
+  "schema_error": null,
+  "oracle_result": {
+    "task_success": false,
+    "validity": "valid",
+    "restored_output": {
+      "groups": [
+        {
+          "group_id": "g1",
+          "invoice_ids": [
+            "i1"
+          ],
+          "total_amount": 20
+        },
+        {
+          "group_id": "g2",
+          "invoice_ids": [
+            "i2"
+          ],
+          "total_amount": 35
+        },
+        {
+          "group_id": "g3",
+          "invoice_ids": [
+            "i3"
+          ],
+          "total_amount": 40
+        },
+        {
+          "group_id": "g4",
+          "invoice_ids": [
+            "i4"
+          ],
+          "total_amount": 5
+        }
+      ]
+    },
+    "relationship_checks": {
+      "grouping_preserved": false,
+      "aggregate_values_correct": false
+    },
+    "restore_correctness": {
+      "applicable": false,
+      "restored_items": 0,
+      "correctly_restored_items": 0,
+      "exact_match_rate": null,
+      "unknown_token_count": 0,
+      "accidental_raw_output_count": 0
+    },
+    "tool_ledger": [],
+    "tool_status": {
+      "tool_invoked": false,
+      "tool_call_valid": null,
+      "tool_call_correct": null
+    }
+  },
+  "exposure": {
+    "agent": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 4,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0.4
+    },
+    "tool": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0
+    },
+    "ledger_reference": "MD-GROUP-02/STABLE_TOKENIZATION",
+    "ledger": [
+      {
+        "task_id": "MD-GROUP-02",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "group_email_i1"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_001>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GROUP-02",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "group_email_i2"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_002>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GROUP-02",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "group_email_i3"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_003>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GROUP-02",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "group_email_i4"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_004>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      }
+    ]
+  },
+  "artifact_sha256": "e4e86e73373c34354f98cd9c971fa7f29c341ad3a95ea865613638b4db08ea05"
+}

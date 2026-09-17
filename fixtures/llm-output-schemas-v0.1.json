@@ -1,0 +1,121 @@
+{
+  "contract_version": "llm-experiment-contract-v0.1",
+  "schemas": {
+    "MD-EQ-01": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["duplicate_groups"],
+      "properties": {
+        "duplicate_groups": {
+          "type": "array",
+          "items": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "MD-GROUP-02": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["groups"],
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["group_id", "invoice_ids", "total_amount"],
+            "properties": {
+              "group_id": {"type": "string"},
+              "invoice_ids": {"type": "array", "items": {"type": "string"}},
+              "total_amount": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
+    "MD-ORDER-03": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ordered_record_ids"],
+      "properties": {
+        "ordered_record_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "MD-LOC-04": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["zone_summaries"],
+      "properties": {
+        "zone_summaries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["zone", "count", "total_amount"],
+            "properties": {
+              "zone": {"type": "string"},
+              "count": {"type": "integer"},
+              "total_amount": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
+    "MD-CROSS-05": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_pairs"],
+      "properties": {
+        "event_pairs": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "MD-GRAPH-06": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["out_degree", "reachable_from_n1_in_two_hops"],
+      "properties": {
+        "out_degree": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["node", "degree"],
+            "properties": {
+              "node": {"type": "string"},
+              "degree": {"type": "integer"}
+            }
+          }
+        },
+        "reachable_from_n1_in_two_hops": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "MD-TOOL-07": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "arguments"],
+      "properties": {
+        "tool": {"type": "string", "const": "dispatch_visit"},
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ticket_id", "recipient", "service_zone"],
+          "properties": {
+            "ticket_id": {"type": "string"},
+            "recipient": {"type": "string"},
+            "service_zone": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,331 @@
+{
+  "experiment_id": "md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation",
+  "experiment_contract_version": "llm-experiment-contract-v0.1",
+  "benchmark_version": "md-bench-v0.2",
+  "benchmark_tag": "md-bench-v0.2",
+  "benchmark_commit": "932f16e2ccf4dab64995f11a70a054ae19b52b04",
+  "run_id": "run-055",
+  "run_order": 55,
+  "task_id": "MD-CROSS-05",
+  "strategy": "FIXED_REDACTION",
+  "repetition_index": 2,
+  "block_id": "rep-2/MD-CROSS-05",
+  "latin_row_index": 1,
+  "strategy_position": 3,
+  "status": "COMPLETED_INCORRECT",
+  "provider": "DeepSeek",
+  "requested_model": "deepseek-flash",
+  "documented_serving_model": "DeepSeek-V4.1-Flash",
+  "returned_model": "deepseek-flash",
+  "request_config": {
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "top_p": "omitted",
+    "max_output_tokens": 256,
+    "stream": false,
+    "tools": "omitted",
+    "tool_choice": "omitted",
+    "user": "omitted",
+    "previous_response_id": "omitted",
+    "conversation_state": "omitted",
+    "structured_output": "text.format.type=json_schema"
+  },
+  "renderer_sha256": "6df7244663d34f7d0914e1a537e4b86d1deb7d2c3ea251203854dca43669fe50",
+  "schema_sha256": "955d8fdc1d887fe6a2f914b3f0caa747f0a7adeb0cca0954f793e14666f71567",
+  "fixture_sha256": "b3e851e913b0be339dfaab4533c416dc1c5e80bc7feea4d2aba8e5c3d8968aa2",
+  "manifest_sha256": "71c237b9d17fe6d2291b7cfce1a598b3a4e6314f4c4601b4200023794321e224",
+  "request_sha256": "f8b4daf078ae930ab8aa7ad1379627378b3fdbeb4297004d4302388a423bad0e",
+  "request": {
+    "model": "deepseek-flash",
+    "instructions": "Complete the provided task using only the provided input data. Return only the structured result. Do not explain your reasoning.",
+    "input": "Task:\nReturn same-subject event pairs at most 72 hours apart, earlier event first, in input-order pair order.\n\nInput data:\n{\"events\":[{\"event_id\":\"e1\",\"subject_email\":\"<REDACTED_001>\",\"timestamp\":\"<REDACTED_002>\"},{\"event_id\":\"e2\",\"subject_email\":\"<REDACTED_003>\",\"timestamp\":\"<REDACTED_004>\"},{\"event_id\":\"e3\",\"subject_email\":\"<REDACTED_005>\",\"timestamp\":\"<REDACTED_006>\"},{\"event_id\":\"e4\",\"subject_email\":\"<REDACTED_007>\",\"timestamp\":\"<REDACTED_008>\"},{\"event_id\":\"e5\",\"subject_email\":\"<REDACTED_009>\",\"timestamp\":\"<REDACTED_010>\"}]}",
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "max_output_tokens": 256,
+    "stream": false,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "min_disclosure_md_cross_05_v0_1",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_pairs"
+          ],
+          "properties": {
+            "event_pairs": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_id": "resp_mock_run-055",
+  "provider_status": "completed",
+  "http_status": 200,
+  "attempt_count": 1,
+  "retry_count": 0,
+  "retry_reason": null,
+  "failure_reason": null,
+  "provider_latency_ms": 25,
+  "retry_wait_ms": 0,
+  "wall_time_ms": 25,
+  "usage": {
+    "input_tokens": 100,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 30,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 130
+  },
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "dispatched": true,
+      "started_offset_ms": 0,
+      "completed_offset_ms": 25,
+      "request_sha256": "f8b4daf078ae930ab8aa7ad1379627378b3fdbeb4297004d4302388a423bad0e",
+      "http_status": 200,
+      "latency_ms": 25,
+      "response": {
+        "id": "resp_mock_run-055",
+        "created_at": 1789574400,
+        "status": "completed",
+        "model": "deepseek-flash",
+        "output": [
+          {
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"event_pairs\":[]}"
+              }
+            ]
+          }
+        ],
+        "usage": {
+          "input_tokens": 100,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 30,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 130
+        },
+        "error": null,
+        "incomplete_details": null
+      }
+    }
+  ],
+  "raw_output": "{\"event_pairs\":[]}",
+  "parsed_output": {
+    "event_pairs": []
+  },
+  "schema_status": "valid",
+  "schema_error": null,
+  "oracle_result": {
+    "task_success": false,
+    "validity": "valid",
+    "restored_output": {
+      "event_pairs": []
+    },
+    "relationship_checks": {
+      "identity_preserved": false,
+      "window_relation_preserved": false
+    },
+    "restore_correctness": {
+      "applicable": false,
+      "restored_items": 0,
+      "correctly_restored_items": 0,
+      "exact_match_rate": null,
+      "unknown_token_count": 0,
+      "accidental_raw_output_count": 0
+    },
+    "tool_ledger": [],
+    "tool_status": {
+      "tool_invoked": false,
+      "tool_call_valid": null,
+      "tool_call_correct": null
+    }
+  },
+  "exposure": {
+    "agent": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 10
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0
+    },
+    "tool": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0
+    },
+    "ledger_reference": "MD-CROSS-05/FIXED_REDACTION",
+    "ledger": [
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_email_e1"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_001>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_time_e1"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_002>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_email_e2"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_003>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_time_e2"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_004>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_email_e3"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_005>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_time_e3"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_006>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_email_e4"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_007>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_time_e4"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_008>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_email_e5"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_009>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      },
+      {
+        "task_id": "MD-CROSS-05",
+        "strategy": "FIXED_REDACTION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "cross_time_e5"
+        ],
+        "representation": "REDACTED",
+        "disclosed_name": "redacted",
+        "disclosed_value": "<REDACTED_010>",
+        "requirement_id": null,
+        "exposure_weight": 0
+      }
+    ]
+  },
+  "artifact_sha256": "bf1defaafba09b1d2ed4a0b47029c7787ba258d021648d2913a60eed42529a74"
+}

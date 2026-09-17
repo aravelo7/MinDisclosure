@@ -1,0 +1,287 @@
+{
+  "experiment_id": "md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation",
+  "experiment_contract_version": "llm-experiment-contract-v0.1",
+  "benchmark_version": "md-bench-v0.2",
+  "benchmark_tag": "md-bench-v0.2",
+  "benchmark_commit": "932f16e2ccf4dab64995f11a70a054ae19b52b04",
+  "run_id": "run-073",
+  "run_order": 73,
+  "task_id": "MD-LOC-04",
+  "strategy": "STABLE_TOKENIZATION",
+  "repetition_index": 3,
+  "block_id": "rep-3/MD-LOC-04",
+  "latin_row_index": 1,
+  "strategy_position": 1,
+  "status": "COMPLETED_INCORRECT",
+  "provider": "DeepSeek",
+  "requested_model": "deepseek-flash",
+  "documented_serving_model": "DeepSeek-V4.1-Flash",
+  "returned_model": "deepseek-flash",
+  "request_config": {
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "top_p": "omitted",
+    "max_output_tokens": 256,
+    "stream": false,
+    "tools": "omitted",
+    "tool_choice": "omitted",
+    "user": "omitted",
+    "previous_response_id": "omitted",
+    "conversation_state": "omitted",
+    "structured_output": "text.format.type=json_schema"
+  },
+  "renderer_sha256": "6df7244663d34f7d0914e1a537e4b86d1deb7d2c3ea251203854dca43669fe50",
+  "schema_sha256": "bcc1458485d65713100149dfa6426abcb714ec38329aa7e99d918a26428674f1",
+  "fixture_sha256": "b3e851e913b0be339dfaab4533c416dc1c5e80bc7feea4d2aba8e5c3d8968aa2",
+  "manifest_sha256": "71c237b9d17fe6d2291b7cfce1a598b3a4e6314f4c4601b4200023794321e224",
+  "request_sha256": "aaf76085b261bbd3f847d4a5ddcb0b79a8c8085000395b6a5e9c229b87b95d20",
+  "request": {
+    "model": "deepseek-flash",
+    "instructions": "Complete the provided task using only the provided input data. Return only the structured result. Do not explain your reasoning.",
+    "input": "Task:\nFor each service zone, return request count and total amount in zone_rule order.\n\nInput data:\n{\"requests\":[{\"address\":\"<E_001>\",\"amount\":15,\"request_id\":\"q1\"},{\"address\":\"<E_002>\",\"amount\":20,\"request_id\":\"q2\"},{\"address\":\"<E_003>\",\"amount\":30,\"request_id\":\"q3\"},{\"address\":\"<E_004>\",\"amount\":5,\"request_id\":\"q4\"}],\"zone_rule\":{\"EAST\":[\"Shanghai\",\"Hangzhou\"],\"NORTH\":[\"Beijing\"]}}",
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "max_output_tokens": 256,
+    "stream": false,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "min_disclosure_md_loc_04_v0_1",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "zone_summaries"
+          ],
+          "properties": {
+            "zone_summaries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "zone",
+                  "count",
+                  "total_amount"
+                ],
+                "properties": {
+                  "zone": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer"
+                  },
+                  "total_amount": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_id": "resp_mock_run-073",
+  "provider_status": "completed",
+  "http_status": 200,
+  "attempt_count": 1,
+  "retry_count": 0,
+  "retry_reason": null,
+  "failure_reason": null,
+  "provider_latency_ms": 25,
+  "retry_wait_ms": 0,
+  "wall_time_ms": 25,
+  "usage": {
+    "input_tokens": 100,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 30,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 130
+  },
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "dispatched": true,
+      "started_offset_ms": 0,
+      "completed_offset_ms": 25,
+      "request_sha256": "aaf76085b261bbd3f847d4a5ddcb0b79a8c8085000395b6a5e9c229b87b95d20",
+      "http_status": 200,
+      "latency_ms": 25,
+      "response": {
+        "id": "resp_mock_run-073",
+        "created_at": 1789574400,
+        "status": "completed",
+        "model": "deepseek-flash",
+        "output": [
+          {
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "{\"zone_summaries\":[{\"zone\":\"NORTH\",\"count\":0,\"total_amount\":0},{\"zone\":\"EAST\",\"count\":0,\"total_amount\":0}]}"
+              }
+            ]
+          }
+        ],
+        "usage": {
+          "input_tokens": 100,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 30,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 130
+        },
+        "error": null,
+        "incomplete_details": null
+      }
+    }
+  ],
+  "raw_output": "{\"zone_summaries\":[{\"zone\":\"NORTH\",\"count\":0,\"total_amount\":0},{\"zone\":\"EAST\",\"count\":0,\"total_amount\":0}]}",
+  "parsed_output": {
+    "zone_summaries": [
+      {
+        "zone": "NORTH",
+        "count": 0,
+        "total_amount": 0
+      },
+      {
+        "zone": "EAST",
+        "count": 0,
+        "total_amount": 0
+      }
+    ]
+  },
+  "schema_status": "valid",
+  "schema_error": null,
+  "oracle_result": {
+    "task_success": false,
+    "validity": "valid",
+    "restored_output": {
+      "zone_summaries": [
+        {
+          "zone": "NORTH",
+          "count": 0,
+          "total_amount": 0
+        },
+        {
+          "zone": "EAST",
+          "count": 0,
+          "total_amount": 0
+        }
+      ]
+    },
+    "relationship_checks": {
+      "grouping_preserved": false,
+      "aggregate_values_correct": false
+    },
+    "restore_correctness": {
+      "applicable": false,
+      "restored_items": 0,
+      "correctly_restored_items": 0,
+      "exact_match_rate": null,
+      "unknown_token_count": 0,
+      "accidental_raw_output_count": 0
+    },
+    "tool_ledger": [],
+    "tool_status": {
+      "tool_invoked": false,
+      "tool_call_valid": null,
+      "tool_call_correct": null
+    }
+  },
+  "exposure": {
+    "agent": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 4,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0.4
+    },
+    "tool": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0
+    },
+    "ledger_reference": "MD-LOC-04/STABLE_TOKENIZATION",
+    "ledger": [
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q1"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_001>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q2"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_002>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q3"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_003>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-LOC-04",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "loc_address_q4"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_004>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      }
+    ]
+  },
+  "artifact_sha256": "5a256d6e0e3ce9c5acff28ccf7220e891a87032dd8ef8e00cb95fca1bb5e413c"
+}

@@ -2,7 +2,7 @@
 
 Task- and Tool-Aware Minimum Disclosure for LLM Agents
 
-**Status: Research Seed / `md-bench-v0.2` Deterministic Benchmark Freeze**
+**Status: Research Seed / Frozen `md-bench-v0.2` and `llm-contract-v0.1`**
 
 ## Problem
 
@@ -27,7 +27,19 @@ For tasks that require a sensitive property beyond stable identity and existing 
 
 Oracle MinDisclosure means the minimum feasible disclosure within the frozen finite transformation space. It is an oracle benchmark reference, not a deployable method, automatic requirement predictor, or claim of global minimality.
 
-No formal LLM evaluation results are included yet.
+`llm-contract-v0.1` freezes the LLM experimental protocol against `md-bench-v0.2`, including the DeepSeek Responses request configuration, structured output schemas, five-repetition balanced block schedule, timeout/retry policy, offline harness, and validation artifact.
+
+```text
+md-bench-v0.2
+  Frozen deterministic benchmark
+
+llm-contract-v0.1
+  Frozen LLM experimental protocol
+  Offline validated
+  No live model results yet
+```
+
+No formal LLM evaluation results are included yet. The canonical offline validation artifact is in [`artifacts/llm/md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation`](artifacts/llm/md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation).
 
 ## Non-goals
 

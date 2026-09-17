@@ -1,0 +1,296 @@
+{
+  "experiment_id": "md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation",
+  "execution_mode": "offline_mock_harness_validation",
+  "formal_experiment_started": false,
+  "total_runs": 140,
+  "accounted_runs": 140,
+  "execution_type": "offline_mock",
+  "model_invoked": false,
+  "research_result": false,
+  "status_counts": {
+    "COMPLETED_CORRECT": 72,
+    "COMPLETED_INCORRECT": 57,
+    "INVALID_OUTPUT": 1,
+    "INCOMPLETE_OUTPUT": 2,
+    "PROVIDER_FAILED": 4,
+    "REQUEST_INVALID": 2,
+    "AUTH_FAILED": 1,
+    "BALANCE_FAILED": 1
+  },
+  "retry_attempts": 6,
+  "http_attempt_count": 146,
+  "provider_failure_runs": 8,
+  "utility_denominator": 140,
+  "completed_correct": 72,
+  "repetitions_per_cell": 5,
+  "independent_task_count": 7,
+  "executions_per_strategy": 35,
+  "per_task_success_frequency": [
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "FIXED_REDACTION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "FIXED_REDACTION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "FIXED_REDACTION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "FIXED_REDACTION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "FIXED_REDACTION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "FIXED_REDACTION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "FIXED_REDACTION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 0,
+      "repetitions": 5,
+      "success_frequency": 0
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 5,
+      "repetitions": 5,
+      "success_frequency": 1
+    }
+  ],
+  "strategy_macro_mean_success_frequency": {
+    "FIXED_REDACTION": 0,
+    "STABLE_TOKENIZATION": 0.2285714285714286,
+    "ORACLE_MIN_DISCLOSURE": 0.9142857142857143,
+    "RAW_DISCLOSURE": 0.9142857142857143
+  },
+  "unstable_cells": [
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "successes": 4,
+      "repetitions": 5,
+      "success_frequency": 0.8
+    }
+  ],
+  "instability_count": 8,
+  "statistical_note": "The 35 executions per strategy are repeated observations over 7 tasks, not 35 independent tasks; no ordinary Bernoulli confidence interval is reported.",
+  "secret_scan_matches": [],
+  "manifest_sha256": "71c237b9d17fe6d2291b7cfce1a598b3a4e6314f4c4601b4200023794321e224",
+  "research_claim": "none; mock execution validates harness state transitions and artifacts only",
+  "summary_sha256": "4b22e4f5a4139e2af64f55eef4b2237716814851592a7e9d8d60d3f6413dfb81"
+}

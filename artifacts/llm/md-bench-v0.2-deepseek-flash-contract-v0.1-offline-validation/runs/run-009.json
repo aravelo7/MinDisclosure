@@ -1,0 +1,303 @@
+{
+  "experiment_id": "md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation",
+  "experiment_contract_version": "llm-experiment-contract-v0.1",
+  "benchmark_version": "md-bench-v0.2",
+  "benchmark_tag": "md-bench-v0.2",
+  "benchmark_commit": "932f16e2ccf4dab64995f11a70a054ae19b52b04",
+  "run_id": "run-009",
+  "run_order": 9,
+  "task_id": "MD-GRAPH-06",
+  "strategy": "STABLE_TOKENIZATION",
+  "repetition_index": 1,
+  "block_id": "rep-1/MD-GRAPH-06",
+  "latin_row_index": 1,
+  "strategy_position": 1,
+  "status": "PROVIDER_FAILED",
+  "provider": "DeepSeek",
+  "requested_model": "deepseek-flash",
+  "documented_serving_model": "DeepSeek-V4.1-Flash",
+  "returned_model": null,
+  "request_config": {
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "top_p": "omitted",
+    "max_output_tokens": 256,
+    "stream": false,
+    "tools": "omitted",
+    "tool_choice": "omitted",
+    "user": "omitted",
+    "previous_response_id": "omitted",
+    "conversation_state": "omitted",
+    "structured_output": "text.format.type=json_schema"
+  },
+  "renderer_sha256": "6df7244663d34f7d0914e1a537e4b86d1deb7d2c3ea251203854dca43669fe50",
+  "schema_sha256": "56d035b6ccbdfa0c4dc482bb48578f4b5c2e4c618a5443c75fc8ec384b5132e8",
+  "fixture_sha256": "b3e851e913b0be339dfaab4533c416dc1c5e80bc7feea4d2aba8e5c3d8968aa2",
+  "manifest_sha256": "71c237b9d17fe6d2291b7cfce1a598b3a4e6314f4c4601b4200023794321e224",
+  "request_sha256": "57a98e556b6853213f66b184b1e842e85dff76299bf81db4040d3bf40fa3a8be",
+  "request": {
+    "model": "deepseek-flash",
+    "instructions": "Complete the provided task using only the provided input data. Return only the structured result. Do not explain your reasoning.",
+    "input": "Task:\nAssign node IDs by first endpoint appearance, return each node's out-degree, and nodes reachable from n1 in exactly two hops.\n\nInput data:\n{\"edges\":[{\"edge_id\":\"g1\",\"from\":\"<E_001>\",\"to\":\"<E_002>\"},{\"edge_id\":\"g2\",\"from\":\"<E_002>\",\"to\":\"<E_003>\"},{\"edge_id\":\"g3\",\"from\":\"<E_003>\",\"to\":\"<E_001>\"}]}",
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "max_output_tokens": 256,
+    "stream": false,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "min_disclosure_md_graph_06_v0_1",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "out_degree",
+            "reachable_from_n1_in_two_hops"
+          ],
+          "properties": {
+            "out_degree": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "node",
+                  "degree"
+                ],
+                "properties": {
+                  "node": {
+                    "type": "string"
+                  },
+                  "degree": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "reachable_from_n1_in_two_hops": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_id": null,
+  "provider_status": null,
+  "http_status": 503,
+  "attempt_count": 2,
+  "retry_count": 1,
+  "retry_reason": "HTTP_503",
+  "failure_reason": "RETRY_EXHAUSTED",
+  "provider_latency_ms": 20,
+  "retry_wait_ms": 1000,
+  "wall_time_ms": 1020,
+  "usage": null,
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "dispatched": true,
+      "started_offset_ms": 0,
+      "completed_offset_ms": 10,
+      "request_sha256": "57a98e556b6853213f66b184b1e842e85dff76299bf81db4040d3bf40fa3a8be",
+      "http_status": 503,
+      "latency_ms": 10,
+      "response": null,
+      "transport_failure": false,
+      "error": {
+        "code": "HTTP_503",
+        "message": "scripted transient failure"
+      },
+      "retry_decision": {
+        "retry": true,
+        "reason": "RETRY_ALLOWED",
+        "wait_ms": 1000,
+        "wait_source": "default-503",
+        "remaining_ms": 479990
+      }
+    },
+    {
+      "attempt_index": 2,
+      "dispatched": true,
+      "started_offset_ms": 1010,
+      "completed_offset_ms": 1020,
+      "request_sha256": "57a98e556b6853213f66b184b1e842e85dff76299bf81db4040d3bf40fa3a8be",
+      "http_status": 503,
+      "latency_ms": 10,
+      "response": null,
+      "transport_failure": false,
+      "error": {
+        "code": "HTTP_503",
+        "message": "scripted transient failure"
+      }
+    }
+  ],
+  "raw_output": null,
+  "parsed_output": null,
+  "schema_status": "not_evaluated",
+  "schema_error": null,
+  "oracle_result": null,
+  "exposure": {
+    "agent": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 3,
+        "OPAQUE_TOKEN": 6,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 1.35
+    },
+    "tool": {
+      "category_counts": {
+        "RAW_VALUE": 0,
+        "COARSENED_VALUE": 0,
+        "DERIVED_PROPERTY": 0,
+        "RELATION_ONLY": 0,
+        "OPAQUE_TOKEN": 0,
+        "REDACTED": 0
+      },
+      "raw_exposure_count": 0,
+      "exposure_score": 0
+    },
+    "ledger_reference": "MD-GRAPH-06/STABLE_TOKENIZATION",
+    "ledger": [
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g1_from"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_001>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g1_to"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_002>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g2_from"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_002>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g2_to"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_003>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g3_from"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_003>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g3_to"
+        ],
+        "representation": "OPAQUE_TOKEN",
+        "disclosed_name": "identity_handle",
+        "disclosed_value": "<E_001>",
+        "requirement_id": null,
+        "exposure_weight": 0.1
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g1_from",
+          "graph_g1_to"
+        ],
+        "representation": "RELATION_ONLY",
+        "disclosed_name": "source_directed_edge",
+        "disclosed_value": {
+          "source_relation_id": "g1"
+        },
+        "requirement_id": null,
+        "exposure_weight": 0.25
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g2_from",
+          "graph_g2_to"
+        ],
+        "representation": "RELATION_ONLY",
+        "disclosed_name": "source_directed_edge",
+        "disclosed_value": {
+          "source_relation_id": "g2"
+        },
+        "requirement_id": null,
+        "exposure_weight": 0.25
+      },
+      {
+        "task_id": "MD-GRAPH-06",
+        "strategy": "STABLE_TOKENIZATION",
+        "boundary": "AGENT",
+        "source_occurrence_ids": [
+          "graph_g3_from",
+          "graph_g3_to"
+        ],
+        "representation": "RELATION_ONLY",
+        "disclosed_name": "source_directed_edge",
+        "disclosed_value": {
+          "source_relation_id": "g3"
+        },
+        "requirement_id": null,
+        "exposure_weight": 0.25
+      }
+    ]
+  },
+  "artifact_sha256": "5d8886979fd4bba7916f26a49c7cdfd53cf00989e7ce068c42480c5f50cad34f"
+}

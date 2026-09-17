@@ -1,0 +1,1551 @@
+{
+  "experiment_contract_version": "llm-experiment-contract-v0.1",
+  "experiment_id": "md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation",
+  "execution_mode": "offline_mock_harness_validation",
+  "formal_experiment_started": false,
+  "execution_type": "offline_mock",
+  "model_invoked": false,
+  "research_result": false,
+  "contract": {
+    "document": "docs/llm-experiment-contract-v0.1.md",
+    "document_sha256": "07d5204b9a88fef9a89b58dbc20518cdabb3fcd36b1cb36450cce9ae640df75d"
+  },
+  "benchmark": {
+    "version": "md-bench-v0.2",
+    "tag": "md-bench-v0.2",
+    "commit": "932f16e2ccf4dab64995f11a70a054ae19b52b04",
+    "fixture_sha256": "b3e851e913b0be339dfaab4533c416dc1c5e80bc7feea4d2aba8e5c3d8968aa2"
+  },
+  "provider": {
+    "name": "DeepSeek",
+    "api_surface": "POST /responses",
+    "requested_model": "deepseek-flash",
+    "documented_serving_model": "DeepSeek-V4.1-Flash",
+    "provider_docs_checked_at": "2026-09-16T00:00:00Z",
+    "model_alias_mutable": true,
+    "provider_doc_notes": [
+      "deepseek-flash was documented as serving DeepSeek-V4.1-Flash at calibration time.",
+      "Models & Pricing described deepseek-v4-pro as routing to V4.1 Flash after 2026-09-14, while the Change Log described continued V4 Pro service; Pro is excluded from this experiment."
+    ]
+  },
+  "request_contract": {
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "top_p": "omitted",
+    "max_output_tokens": 256,
+    "stream": false,
+    "tools": "omitted",
+    "tool_choice": "omitted",
+    "user": "omitted",
+    "previous_response_id": "omitted",
+    "conversation_state": "omitted",
+    "structured_output": "text.format.type=json_schema"
+  },
+  "execution_contract": {
+    "repetitions": 5,
+    "repetition_purpose": "characterization of residual run-to-run instability",
+    "independent_task_count": 7,
+    "total_runs": 140,
+    "topology": "serial",
+    "concurrency": 1,
+    "run_order": {
+      "algorithm_version": "balanced-williams-blocks-v0.1",
+      "run_order_seed": "md-bench-v0.2-llm-contract-v0.1-seed-20260916",
+      "canonical_task_order": [
+        "MD-EQ-01",
+        "MD-GROUP-02",
+        "MD-ORDER-03",
+        "MD-LOC-04",
+        "MD-CROSS-05",
+        "MD-GRAPH-06",
+        "MD-TOOL-07"
+      ],
+      "strategy_symbols": {
+        "A": "FIXED_REDACTION",
+        "B": "STABLE_TOKENIZATION",
+        "C": "ORACLE_MIN_DISCLOSURE",
+        "D": "RAW_DISCLOSURE"
+      },
+      "latin_rows": [
+        [
+          "A",
+          "B",
+          "D",
+          "C"
+        ],
+        [
+          "B",
+          "C",
+          "A",
+          "D"
+        ],
+        [
+          "C",
+          "D",
+          "B",
+          "A"
+        ],
+        [
+          "D",
+          "A",
+          "C",
+          "B"
+        ]
+      ],
+      "task_order": "SHA-256 keyed deterministic ordering per repetition",
+      "block": "task x repetition; four strategies emitted contiguously"
+    },
+    "transport": {
+      "concurrency": 1,
+      "sdk_auto_retries": 0,
+      "connect_timeout_ms": 5000,
+      "attempt_timeout_ms": 180000,
+      "whole_run_wall_timeout_ms": 480000,
+      "max_retries": 1,
+      "retry_429_without_header_ms": 3000,
+      "retry_500_503_ms": 1000,
+      "retry_connection_failure_ms": 1000,
+      "retry_attempt_timeout_ms": 1000,
+      "retry_after_max_ms": 120000,
+      "jitter": false
+    },
+    "timeout_semantics": "connect_timeout_ms is a TCP/TLS phase limit inside, not additional to, attempt_timeout_ms; whole_run_wall_timeout_ms covers attempts and waits",
+    "max_attempts_per_run": 2,
+    "retryable_http_statuses": [
+      429,
+      500,
+      503
+    ],
+    "retryable_transport_failure": [
+      "connection_failure",
+      "attempt_timeout"
+    ],
+    "retry_owner": "harness-only",
+    "attempt_count_semantics": "attempts.length; pre-request validation does not count",
+    "model_output_retry": false,
+    "invalid_output_repair": "none"
+  },
+  "renderer": {
+    "version": "strategy-blind-renderer-v0.1",
+    "sha256": "6df7244663d34f7d0914e1a537e4b86d1deb7d2c3ea251203854dca43669fe50"
+  },
+  "schemas": {
+    "source": "fixtures/llm-output-schemas-v0.1.json",
+    "document_sha256": "0bf1c6d74ef4ae71e4cef16d3d4ad469f87190e7b67aa5b3c54d9ef8398f1271",
+    "set_sha256": "173100c84cde774173c5073b5e897d10e2584871b69f533798f465e90c2bea5a",
+    "per_task_sha256": {
+      "MD-EQ-01": "aa0d8015d6f295f91805f668c674022d247674c6d1cf22276b3fa94c24d6d516",
+      "MD-GROUP-02": "5e41a17c5bb8b9ae61e3688423630c895569f326b26c4949b0d1dfa21e124e18",
+      "MD-ORDER-03": "6d6039a3444e5487f482f6940c106237426c0bd1a5f9b79d02a8b4dc3335d93d",
+      "MD-LOC-04": "bcc1458485d65713100149dfa6426abcb714ec38329aa7e99d918a26428674f1",
+      "MD-CROSS-05": "955d8fdc1d887fe6a2f914b3f0caa747f0a7adeb0cca0954f793e14666f71567",
+      "MD-GRAPH-06": "56d035b6ccbdfa0c4dc482bb48578f4b5c2e4c618a5443c75fc8ec384b5132e8",
+      "MD-TOOL-07": "806c921bc13eea68040c9181319adb5bb0b5afebd9d0cab6c7ec6e5400c18d9d"
+    }
+  },
+  "runs": [
+    {
+      "run_id": "run-001",
+      "run_order": 1,
+      "task_id": "MD-EQ-01",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-002",
+      "run_order": 2,
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-003",
+      "run_order": 3,
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-004",
+      "run_order": 4,
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-005",
+      "run_order": 5,
+      "task_id": "MD-LOC-04",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-006",
+      "run_order": 6,
+      "task_id": "MD-LOC-04",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-007",
+      "run_order": 7,
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-008",
+      "run_order": 8,
+      "task_id": "MD-LOC-04",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-009",
+      "run_order": 9,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-010",
+      "run_order": 10,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-011",
+      "run_order": 11,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-012",
+      "run_order": 12,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-013",
+      "run_order": 13,
+      "task_id": "MD-TOOL-07",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-014",
+      "run_order": 14,
+      "task_id": "MD-TOOL-07",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-015",
+      "run_order": 15,
+      "task_id": "MD-TOOL-07",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-016",
+      "run_order": 16,
+      "task_id": "MD-TOOL-07",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-017",
+      "run_order": 17,
+      "task_id": "MD-CROSS-05",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-018",
+      "run_order": 18,
+      "task_id": "MD-CROSS-05",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-019",
+      "run_order": 19,
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-020",
+      "run_order": 20,
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-021",
+      "run_order": 21,
+      "task_id": "MD-GROUP-02",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-022",
+      "run_order": 22,
+      "task_id": "MD-GROUP-02",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-023",
+      "run_order": 23,
+      "task_id": "MD-GROUP-02",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-024",
+      "run_order": 24,
+      "task_id": "MD-GROUP-02",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-025",
+      "run_order": 25,
+      "task_id": "MD-ORDER-03",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-026",
+      "run_order": 26,
+      "task_id": "MD-ORDER-03",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-027",
+      "run_order": 27,
+      "task_id": "MD-ORDER-03",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-028",
+      "run_order": 28,
+      "task_id": "MD-ORDER-03",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 1,
+      "block_id": "rep-1/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-029",
+      "run_order": 29,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GRAPH-06",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-030",
+      "run_order": 30,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GRAPH-06",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-031",
+      "run_order": 31,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GRAPH-06",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-032",
+      "run_order": 32,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GRAPH-06",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-033",
+      "run_order": 33,
+      "task_id": "MD-TOOL-07",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-TOOL-07",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-034",
+      "run_order": 34,
+      "task_id": "MD-TOOL-07",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-TOOL-07",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-035",
+      "run_order": 35,
+      "task_id": "MD-TOOL-07",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-TOOL-07",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-036",
+      "run_order": 36,
+      "task_id": "MD-TOOL-07",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-TOOL-07",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-037",
+      "run_order": 37,
+      "task_id": "MD-ORDER-03",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-ORDER-03",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-038",
+      "run_order": 38,
+      "task_id": "MD-ORDER-03",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-ORDER-03",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-039",
+      "run_order": 39,
+      "task_id": "MD-ORDER-03",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-ORDER-03",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-040",
+      "run_order": 40,
+      "task_id": "MD-ORDER-03",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-ORDER-03",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-041",
+      "run_order": 41,
+      "task_id": "MD-GROUP-02",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GROUP-02",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-042",
+      "run_order": 42,
+      "task_id": "MD-GROUP-02",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GROUP-02",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-043",
+      "run_order": 43,
+      "task_id": "MD-GROUP-02",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GROUP-02",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-044",
+      "run_order": 44,
+      "task_id": "MD-GROUP-02",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-GROUP-02",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-045",
+      "run_order": 45,
+      "task_id": "MD-LOC-04",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-LOC-04",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-046",
+      "run_order": 46,
+      "task_id": "MD-LOC-04",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-LOC-04",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-047",
+      "run_order": 47,
+      "task_id": "MD-LOC-04",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-LOC-04",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-048",
+      "run_order": 48,
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-LOC-04",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-049",
+      "run_order": 49,
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-EQ-01",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-050",
+      "run_order": 50,
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-EQ-01",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-051",
+      "run_order": 51,
+      "task_id": "MD-EQ-01",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-EQ-01",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-052",
+      "run_order": 52,
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-EQ-01",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-053",
+      "run_order": 53,
+      "task_id": "MD-CROSS-05",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-CROSS-05",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-054",
+      "run_order": 54,
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-CROSS-05",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-055",
+      "run_order": 55,
+      "task_id": "MD-CROSS-05",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-CROSS-05",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-056",
+      "run_order": 56,
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 2,
+      "block_id": "rep-2/MD-CROSS-05",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-057",
+      "run_order": 57,
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-CROSS-05",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-058",
+      "run_order": 58,
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-CROSS-05",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-059",
+      "run_order": 59,
+      "task_id": "MD-CROSS-05",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-CROSS-05",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-060",
+      "run_order": 60,
+      "task_id": "MD-CROSS-05",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-CROSS-05",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-061",
+      "run_order": 61,
+      "task_id": "MD-ORDER-03",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-ORDER-03",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-062",
+      "run_order": 62,
+      "task_id": "MD-ORDER-03",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-ORDER-03",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-063",
+      "run_order": 63,
+      "task_id": "MD-ORDER-03",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-ORDER-03",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-064",
+      "run_order": 64,
+      "task_id": "MD-ORDER-03",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-ORDER-03",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-065",
+      "run_order": 65,
+      "task_id": "MD-GROUP-02",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GROUP-02",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-066",
+      "run_order": 66,
+      "task_id": "MD-GROUP-02",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GROUP-02",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-067",
+      "run_order": 67,
+      "task_id": "MD-GROUP-02",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GROUP-02",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-068",
+      "run_order": 68,
+      "task_id": "MD-GROUP-02",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GROUP-02",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-069",
+      "run_order": 69,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GRAPH-06",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-070",
+      "run_order": 70,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GRAPH-06",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-071",
+      "run_order": 71,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GRAPH-06",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-072",
+      "run_order": 72,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-GRAPH-06",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-073",
+      "run_order": 73,
+      "task_id": "MD-LOC-04",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-LOC-04",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-074",
+      "run_order": 74,
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-LOC-04",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-075",
+      "run_order": 75,
+      "task_id": "MD-LOC-04",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-LOC-04",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-076",
+      "run_order": 76,
+      "task_id": "MD-LOC-04",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-LOC-04",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-077",
+      "run_order": 77,
+      "task_id": "MD-TOOL-07",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-TOOL-07",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-078",
+      "run_order": 78,
+      "task_id": "MD-TOOL-07",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-TOOL-07",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-079",
+      "run_order": 79,
+      "task_id": "MD-TOOL-07",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-TOOL-07",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-080",
+      "run_order": 80,
+      "task_id": "MD-TOOL-07",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-TOOL-07",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-081",
+      "run_order": 81,
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-EQ-01",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-082",
+      "run_order": 82,
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-EQ-01",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-083",
+      "run_order": 83,
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-EQ-01",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-084",
+      "run_order": 84,
+      "task_id": "MD-EQ-01",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 3,
+      "block_id": "rep-3/MD-EQ-01",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-085",
+      "run_order": 85,
+      "task_id": "MD-TOOL-07",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-TOOL-07",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-086",
+      "run_order": 86,
+      "task_id": "MD-TOOL-07",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-TOOL-07",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-087",
+      "run_order": 87,
+      "task_id": "MD-TOOL-07",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-TOOL-07",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-088",
+      "run_order": 88,
+      "task_id": "MD-TOOL-07",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-TOOL-07",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-089",
+      "run_order": 89,
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-CROSS-05",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-090",
+      "run_order": 90,
+      "task_id": "MD-CROSS-05",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-CROSS-05",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-091",
+      "run_order": 91,
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-CROSS-05",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-092",
+      "run_order": 92,
+      "task_id": "MD-CROSS-05",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-CROSS-05",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-093",
+      "run_order": 93,
+      "task_id": "MD-ORDER-03",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-ORDER-03",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-094",
+      "run_order": 94,
+      "task_id": "MD-ORDER-03",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-ORDER-03",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-095",
+      "run_order": 95,
+      "task_id": "MD-ORDER-03",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-ORDER-03",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-096",
+      "run_order": 96,
+      "task_id": "MD-ORDER-03",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-ORDER-03",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-097",
+      "run_order": 97,
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-EQ-01",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-098",
+      "run_order": 98,
+      "task_id": "MD-EQ-01",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-EQ-01",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-099",
+      "run_order": 99,
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-EQ-01",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-100",
+      "run_order": 100,
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-EQ-01",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-101",
+      "run_order": 101,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GRAPH-06",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-102",
+      "run_order": 102,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GRAPH-06",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-103",
+      "run_order": 103,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GRAPH-06",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-104",
+      "run_order": 104,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GRAPH-06",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-105",
+      "run_order": 105,
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-LOC-04",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-106",
+      "run_order": 106,
+      "task_id": "MD-LOC-04",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-LOC-04",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-107",
+      "run_order": 107,
+      "task_id": "MD-LOC-04",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-LOC-04",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-108",
+      "run_order": 108,
+      "task_id": "MD-LOC-04",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-LOC-04",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-109",
+      "run_order": 109,
+      "task_id": "MD-GROUP-02",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GROUP-02",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-110",
+      "run_order": 110,
+      "task_id": "MD-GROUP-02",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GROUP-02",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-111",
+      "run_order": 111,
+      "task_id": "MD-GROUP-02",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GROUP-02",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-112",
+      "run_order": 112,
+      "task_id": "MD-GROUP-02",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 4,
+      "block_id": "rep-4/MD-GROUP-02",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-113",
+      "run_order": 113,
+      "task_id": "MD-TOOL-07",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-114",
+      "run_order": 114,
+      "task_id": "MD-TOOL-07",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-115",
+      "run_order": 115,
+      "task_id": "MD-TOOL-07",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-116",
+      "run_order": 116,
+      "task_id": "MD-TOOL-07",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-TOOL-07",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-117",
+      "run_order": 117,
+      "task_id": "MD-GROUP-02",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-118",
+      "run_order": 118,
+      "task_id": "MD-GROUP-02",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-119",
+      "run_order": 119,
+      "task_id": "MD-GROUP-02",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-120",
+      "run_order": 120,
+      "task_id": "MD-GROUP-02",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GROUP-02",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-121",
+      "run_order": 121,
+      "task_id": "MD-EQ-01",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-122",
+      "run_order": 122,
+      "task_id": "MD-EQ-01",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-123",
+      "run_order": 123,
+      "task_id": "MD-EQ-01",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-124",
+      "run_order": 124,
+      "task_id": "MD-EQ-01",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-EQ-01",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-125",
+      "run_order": 125,
+      "task_id": "MD-ORDER-03",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-126",
+      "run_order": 126,
+      "task_id": "MD-ORDER-03",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-127",
+      "run_order": 127,
+      "task_id": "MD-ORDER-03",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-128",
+      "run_order": 128,
+      "task_id": "MD-ORDER-03",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-ORDER-03",
+      "latin_row_index": 2,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-129",
+      "run_order": 129,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-130",
+      "run_order": 130,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-131",
+      "run_order": 131,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-132",
+      "run_order": 132,
+      "task_id": "MD-GRAPH-06",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-GRAPH-06",
+      "latin_row_index": 1,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-133",
+      "run_order": 133,
+      "task_id": "MD-CROSS-05",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-134",
+      "run_order": 134,
+      "task_id": "MD-CROSS-05",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-135",
+      "run_order": 135,
+      "task_id": "MD-CROSS-05",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-136",
+      "run_order": 136,
+      "task_id": "MD-CROSS-05",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-CROSS-05",
+      "latin_row_index": 0,
+      "strategy_position": 4
+    },
+    {
+      "run_id": "run-137",
+      "run_order": 137,
+      "task_id": "MD-LOC-04",
+      "strategy": "RAW_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 1
+    },
+    {
+      "run_id": "run-138",
+      "run_order": 138,
+      "task_id": "MD-LOC-04",
+      "strategy": "FIXED_REDACTION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 2
+    },
+    {
+      "run_id": "run-139",
+      "run_order": 139,
+      "task_id": "MD-LOC-04",
+      "strategy": "ORACLE_MIN_DISCLOSURE",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 3
+    },
+    {
+      "run_id": "run-140",
+      "run_order": 140,
+      "task_id": "MD-LOC-04",
+      "strategy": "STABLE_TOKENIZATION",
+      "repetition_index": 5,
+      "block_id": "rep-5/MD-LOC-04",
+      "latin_row_index": 3,
+      "strategy_position": 4
+    }
+  ],
+  "manifest_sha256": "71c237b9d17fe6d2291b7cfce1a598b3a4e6314f4c4601b4200023794321e224"
+}
