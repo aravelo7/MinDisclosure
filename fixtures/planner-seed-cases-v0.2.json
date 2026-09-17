@@ -1,0 +1,591 @@
+{
+  "seed_version": "planner-seed-cases-v0.2",
+  "schema_version": "planner-capability-schema-v0.2",
+  "catalog_version": "planner-representation-catalog-v0.2",
+  "benchmark_version": "md-bench-v0.2",
+  "seed_role": "development-and-ontology-coverage-only",
+  "generalization_claim_allowed": false,
+  "description": "Seven abstract development seeds. Trusted preconditions are explicit; no raw values, task answers, or solved relations are included.",
+  "cases": [
+    {
+      "task_id": "MD-EQ-01",
+      "trusted_context": {
+        "sources": [
+          {
+            "source_id": "ctx.intent.eq",
+            "authority_class": "USER_INTENT",
+            "supports": [{"support_type": "OPERATION", "support_ref": "op.deduplicate"}],
+            "claims": []
+          },
+          {
+            "source_id": "ctx.schema.eq",
+            "authority_class": "DATA_SCHEMA",
+            "supports": [{"support_type": "SCHEMA_FIELD", "support_ref": "records.email"}],
+            "claims": []
+          }
+        ]
+      },
+      "planner_document": {
+        "schema_version": "planner-capability-schema-v0.2",
+        "task_ir": {
+          "task_ir_version": "task-ir-v0.2",
+          "operations": [
+            {
+              "operation_id": "op.deduplicate",
+              "family": "deduplicate",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "records.email", "semantic_type": "EMAIL", "target_role": "GROUP_KEY"},
+                {"field_ref": "records.record_id", "semantic_type": "RECORD_ID", "target_role": "VALUE"}
+              ],
+              "parameters": {},
+              "depends_on": [],
+              "result_shape": "groups"
+            }
+          ],
+          "presentation": [
+            {"constraint_id": "presentation.eq.group_order", "kind": "semantic_order", "authority": "USER_INTENT", "scope": "duplicate_groups", "rule": "INPUT_ORDER"}
+          ]
+        },
+        "capability_requirements": {
+          "capability_ir_version": "information-capability-ir-v0.2",
+          "requirements": [
+            {
+              "requirement_id": "req.eq.equality",
+              "operation_ref": "op.deduplicate",
+              "targets": [{"field_ref": "records.email", "semantic_type": "EMAIL", "target_role": "GROUP_KEY"}],
+              "capability": {"family": "identity", "name": "equality", "parameters": {"equality_basis": "FIELD_VALUE"}},
+              "scope": {"kind": "ALL_OCCURRENCES"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.intent.eq", "authority_class": "USER_INTENT", "support_type": "OPERATION", "support_ref": "op.deduplicate"}
+            }
+          ]
+        },
+        "uncertainty": "CONFIDENT"
+      },
+      "oracle_bridge": {
+        "requirement_dimensions": [{"requirement_id": "req.eq.equality", "dimension_ref": "MD-EQ-01/email"}],
+        "expected_reporting_plan": [{"dimension_ref": "MD-EQ-01/email", "transformation_id": "STABLE_TOKEN"}]
+      }
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "trusted_context": {
+        "sources": [
+          {
+            "source_id": "ctx.intent.group",
+            "authority_class": "USER_INTENT",
+            "supports": [
+              {"support_type": "OPERATION", "support_ref": "op.group_by_domain"},
+              {"support_type": "OPERATION", "support_ref": "op.aggregate_amount"}
+            ],
+            "claims": []
+          },
+          {
+            "source_id": "ctx.schema.group",
+            "authority_class": "DATA_SCHEMA",
+            "supports": [{"support_type": "SCHEMA_FIELD", "support_ref": "invoices.contact_email"}],
+            "claims": []
+          }
+        ]
+      },
+      "planner_document": {
+        "schema_version": "planner-capability-schema-v0.2",
+        "task_ir": {
+          "task_ir_version": "task-ir-v0.2",
+          "operations": [
+            {
+              "operation_id": "op.group_by_domain",
+              "family": "group_by",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "invoices.contact_email", "semantic_type": "EMAIL", "target_role": "GROUP_KEY"},
+                {"field_ref": "invoices.invoice_id", "semantic_type": "RECORD_ID", "target_role": "VALUE"}
+              ],
+              "parameters": {"granularity": "EMAIL_DOMAIN"},
+              "depends_on": [],
+              "result_shape": "groups"
+            },
+            {
+              "operation_id": "op.aggregate_amount",
+              "family": "aggregate",
+              "role": "AGENT_REASONING",
+              "inputs": [{"field_ref": "invoices.amount", "semantic_type": "NUMBER", "target_role": "VALUE"}],
+              "parameters": {"aggregation": "SUM"},
+              "depends_on": ["op.group_by_domain"],
+              "result_shape": "aggregate_table"
+            }
+          ],
+          "presentation": [
+            {"constraint_id": "presentation.group.labels", "kind": "label_convention", "authority": "USER_INTENT", "scope": "group_labels", "rule": "SOURCE_APPEARANCE_ORDER"}
+          ]
+        },
+        "capability_requirements": {
+          "capability_ir_version": "information-capability-ir-v0.2",
+          "requirements": [
+            {
+              "requirement_id": "req.group.domain",
+              "operation_ref": "op.group_by_domain",
+              "targets": [{"field_ref": "invoices.contact_email", "semantic_type": "EMAIL", "target_role": "GROUP_KEY"}],
+              "capability": {"family": "property", "name": "domain", "parameters": {"granularity": "EMAIL_DOMAIN"}},
+              "scope": {"kind": "ALL_RECORDS"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.intent.group", "authority_class": "USER_INTENT", "support_type": "OPERATION", "support_ref": "op.group_by_domain"}
+            }
+          ]
+        },
+        "uncertainty": "CONFIDENT"
+      },
+      "oracle_bridge": {
+        "requirement_dimensions": [{"requirement_id": "req.group.domain", "dimension_ref": "MD-GROUP-02/contact_email"}],
+        "expected_reporting_plan": [{"dimension_ref": "MD-GROUP-02/contact_email", "transformation_id": "DOMAIN_HANDLE"}]
+      }
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "trusted_context": {
+        "sources": [
+          {
+            "source_id": "ctx.intent.order",
+            "authority_class": "USER_INTENT",
+            "supports": [{"support_type": "OPERATION", "support_ref": "op.sort_by_dob"}],
+            "claims": []
+          },
+          {
+            "source_id": "ctx.schema.order",
+            "authority_class": "DATA_SCHEMA",
+            "supports": [{"support_type": "SCHEMA_FIELD", "support_ref": "people.date_of_birth"}],
+            "claims": [
+              {"claim_id": "DOB_YEAR_ORDER_PRESERVING", "support_ref": "people.date_of_birth", "predicate": "YEAR_PROJECTION_PRESERVES_TASK_ORDER"}
+            ]
+          }
+        ]
+      },
+      "planner_document": {
+        "schema_version": "planner-capability-schema-v0.2",
+        "task_ir": {
+          "task_ir_version": "task-ir-v0.2",
+          "operations": [
+            {
+              "operation_id": "op.sort_by_dob",
+              "family": "sort",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "people.date_of_birth", "semantic_type": "DATE_OF_BIRTH", "target_role": "SORT_KEY"},
+                {"field_ref": "people.record_id", "semantic_type": "RECORD_ID", "target_role": "VALUE"}
+              ],
+              "parameters": {"direction": "ASCENDING", "precision": "YEAR"},
+              "depends_on": [],
+              "result_shape": "ordered_records"
+            }
+          ],
+          "presentation": []
+        },
+        "capability_requirements": {
+          "capability_ir_version": "information-capability-ir-v0.2",
+          "requirements": [
+            {
+              "requirement_id": "req.order.year_order",
+              "operation_ref": "op.sort_by_dob",
+              "targets": [{"field_ref": "people.date_of_birth", "semantic_type": "DATE_OF_BIRTH", "target_role": "SORT_KEY"}],
+              "capability": {"family": "property", "name": "ordering", "parameters": {"direction": "ASCENDING", "precision": "YEAR"}},
+              "scope": {"kind": "ALL_RECORDS"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.intent.order", "authority_class": "USER_INTENT", "support_type": "OPERATION", "support_ref": "op.sort_by_dob"}
+            }
+          ]
+        },
+        "uncertainty": "CONFIDENT"
+      },
+      "oracle_bridge": {
+        "requirement_dimensions": [{"requirement_id": "req.order.year_order", "dimension_ref": "MD-ORDER-03/date_of_birth"}],
+        "expected_reporting_plan": [{"dimension_ref": "MD-ORDER-03/date_of_birth", "transformation_id": "BIRTH_YEAR"}]
+      }
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "trusted_context": {
+        "sources": [
+          {
+            "source_id": "ctx.intent.loc",
+            "authority_class": "USER_INTENT",
+            "supports": [
+              {"support_type": "OPERATION", "support_ref": "op.group_by_zone"},
+              {"support_type": "OPERATION", "support_ref": "op.aggregate_zone_amount"}
+            ],
+            "claims": []
+          },
+          {
+            "source_id": "ctx.workflow.loc",
+            "authority_class": "TRUSTED_WORKFLOW",
+            "supports": [{"support_type": "WORKFLOW_RULE", "support_ref": "workflow.zone_rule"}],
+            "claims": [
+              {"claim_id": "ZONE_RULE_AVAILABLE", "support_ref": "workflow.zone_rule", "predicate": "TOTAL_TRUSTED_ZONE_MAPPING"}
+            ]
+          }
+        ]
+      },
+      "planner_document": {
+        "schema_version": "planner-capability-schema-v0.2",
+        "task_ir": {
+          "task_ir_version": "task-ir-v0.2",
+          "operations": [
+            {
+              "operation_id": "op.group_by_zone",
+              "family": "group_by",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "requests.address", "semantic_type": "POSTAL_ADDRESS", "target_role": "GROUP_KEY"},
+                {"field_ref": "requests.amount", "semantic_type": "NUMBER", "target_role": "VALUE"}
+              ],
+              "parameters": {"granularity": "SERVICE_ZONE", "workflow_order_ref": "workflow.zone_rule_order"},
+              "depends_on": [],
+              "result_shape": "groups"
+            },
+            {
+              "operation_id": "op.aggregate_zone_amount",
+              "family": "aggregate",
+              "role": "AGENT_REASONING",
+              "inputs": [{"field_ref": "requests.amount", "semantic_type": "NUMBER", "target_role": "VALUE"}],
+              "parameters": {"aggregation": "COUNT_AND_SUM"},
+              "depends_on": ["op.group_by_zone"],
+              "result_shape": "aggregate_table"
+            }
+          ],
+          "presentation": [
+            {"constraint_id": "presentation.loc.zone_order", "kind": "semantic_order", "authority": "TRUSTED_WORKFLOW", "scope": "zone_summaries", "rule": "WORKFLOW_DECLARED_ORDER"},
+            {"constraint_id": "presentation.loc.serialization", "kind": "serialization_guard", "authority": "TRUSTED_WORKFLOW", "scope": "all_fields", "rule": "IGNORE_JSON_KEY_ORDER"}
+          ]
+        },
+        "capability_requirements": {
+          "capability_ir_version": "information-capability-ir-v0.2",
+          "requirements": [
+            {
+              "requirement_id": "req.loc.service_zone",
+              "operation_ref": "op.group_by_zone",
+              "targets": [{"field_ref": "requests.address", "semantic_type": "POSTAL_ADDRESS", "target_role": "GROUP_KEY"}],
+              "capability": {"family": "property", "name": "service_zone", "parameters": {"zone_rule_ref": "workflow.zone_rule"}},
+              "scope": {"kind": "ALL_RECORDS"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.workflow.loc", "authority_class": "TRUSTED_WORKFLOW", "support_type": "WORKFLOW_RULE", "support_ref": "workflow.zone_rule"}
+            }
+          ]
+        },
+        "uncertainty": "CONFIDENT"
+      },
+      "oracle_bridge": {
+        "requirement_dimensions": [{"requirement_id": "req.loc.service_zone", "dimension_ref": "MD-LOC-04/address"}],
+        "expected_reporting_plan": [{"dimension_ref": "MD-LOC-04/address", "transformation_id": "SERVICE_ZONE"}],
+        "utility_validation_status": "renderer-order-confounded-for-previous-utility-experiment"
+      }
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "trusted_context": {
+        "sources": [
+          {
+            "source_id": "ctx.intent.cross",
+            "authority_class": "USER_INTENT",
+            "supports": [
+              {"support_type": "OPERATION", "support_ref": "op.link_subjects"},
+              {"support_type": "OPERATION", "support_ref": "op.compare_window"}
+            ],
+            "claims": []
+          },
+          {
+            "source_id": "ctx.schema.cross",
+            "authority_class": "DATA_SCHEMA",
+            "supports": [{"support_type": "SCHEMA_FIELD", "support_ref": "events.timestamp"}],
+            "claims": [
+              {"claim_id": "TIMESTAMPS_HOUR_ALIGNED", "support_ref": "events.timestamp", "predicate": "VALUES_ALIGNED_TO_HOUR_BOUNDARY"}
+            ]
+          }
+        ]
+      },
+      "planner_document": {
+        "schema_version": "planner-capability-schema-v0.2",
+        "task_ir": {
+          "task_ir_version": "task-ir-v0.2",
+          "operations": [
+            {
+              "operation_id": "op.link_subjects",
+              "family": "record_linkage",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "events.subject_email", "semantic_type": "EMAIL", "target_role": "LINK_KEY"},
+                {"field_ref": "events.event_id", "semantic_type": "RECORD_ID", "target_role": "VALUE"}
+              ],
+              "parameters": {},
+              "depends_on": [],
+              "result_shape": "record_pairs"
+            },
+            {
+              "operation_id": "op.compare_window",
+              "family": "temporal_window",
+              "role": "AGENT_REASONING",
+              "inputs": [{"field_ref": "events.timestamp", "semantic_type": "EVENT_TIMESTAMP", "target_role": "TEMPORAL_VALUE"}],
+              "parameters": {"comparison": "ABSOLUTE_DIFFERENCE_LEQ", "threshold": {"value": 72, "unit": "HOUR"}, "interval_semantics": "CLOSED", "granularity": "HOUR"},
+              "depends_on": ["op.link_subjects"],
+              "result_shape": "record_pairs"
+            }
+          ],
+          "presentation": [
+            {"constraint_id": "presentation.cross.pair_order", "kind": "semantic_order", "authority": "USER_INTENT", "scope": "event_pairs", "rule": "INPUT_ORDER"}
+          ]
+        },
+        "capability_requirements": {
+          "capability_ir_version": "information-capability-ir-v0.2",
+          "requirements": [
+            {
+              "requirement_id": "req.cross.linkage",
+              "operation_ref": "op.link_subjects",
+              "targets": [{"field_ref": "events.subject_email", "semantic_type": "EMAIL", "target_role": "LINK_KEY"}],
+              "capability": {"family": "identity", "name": "linkage", "parameters": {"linkage_scope": "CROSS_RECORD"}},
+              "scope": {"kind": "ALL_OCCURRENCES"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.intent.cross", "authority_class": "USER_INTENT", "support_type": "OPERATION", "support_ref": "op.link_subjects"}
+            },
+            {
+              "requirement_id": "req.cross.temporal",
+              "operation_ref": "op.compare_window",
+              "targets": [{"field_ref": "events.timestamp", "semantic_type": "EVENT_TIMESTAMP", "target_role": "TEMPORAL_VALUE"}],
+              "capability": {"family": "relation", "name": "temporal_comparison", "parameters": {"comparison": "ABSOLUTE_DIFFERENCE_LEQ", "threshold": {"value": 72, "unit": "HOUR"}, "interval_semantics": "CLOSED", "granularity": "HOUR"}},
+              "scope": {"kind": "ALL_RECORDS"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.intent.cross", "authority_class": "USER_INTENT", "support_type": "OPERATION", "support_ref": "op.compare_window"}
+            }
+          ]
+        },
+        "uncertainty": "CONFIDENT"
+      },
+      "oracle_bridge": {
+        "requirement_dimensions": [
+          {"requirement_id": "req.cross.linkage", "dimension_ref": "MD-CROSS-05/subject_email"},
+          {"requirement_id": "req.cross.temporal", "dimension_ref": "MD-CROSS-05/timestamp"}
+        ],
+        "expected_reporting_plan": [
+          {"dimension_ref": "MD-CROSS-05/subject_email", "transformation_id": "STABLE_TOKEN"},
+          {"dimension_ref": "MD-CROSS-05/timestamp", "transformation_id": "HOUR_BUCKET"}
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "trusted_context": {
+        "sources": [
+          {
+            "source_id": "ctx.intent.graph",
+            "authority_class": "USER_INTENT",
+            "supports": [{"support_type": "OPERATION", "support_ref": "op.graph_source"}],
+            "claims": []
+          },
+          {
+            "source_id": "ctx.schema.graph",
+            "authority_class": "DATA_SCHEMA",
+            "supports": [{"support_type": "SOURCE_RELATION", "support_ref": "relation.source_edges"}],
+            "claims": [
+              {"claim_id": "SOURCE_RELATION_DECLARED", "support_ref": "relation.source_edges", "predicate": "DIRECTED_EDGES_EXPLICIT_IN_SOURCE"}
+            ]
+          }
+        ]
+      },
+      "planner_document": {
+        "schema_version": "planner-capability-schema-v0.2",
+        "task_ir": {
+          "task_ir_version": "task-ir-v0.2",
+          "operations": [
+            {
+              "operation_id": "op.graph_source",
+              "family": "graph_relation",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "edges.from", "semantic_type": "PERSON_NAME", "target_role": "RELATION_SOURCE"},
+                {"field_ref": "edges.to", "semantic_type": "PERSON_NAME", "target_role": "RELATION_TARGET"}
+              ],
+              "parameters": {"relation_orientation": "DIRECTED"},
+              "depends_on": [],
+              "result_shape": "source_graph"
+            },
+            {
+              "operation_id": "op.graph_degree",
+              "family": "degree",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "edges.from", "semantic_type": "PERSON_NAME", "target_role": "RELATION_SOURCE"},
+                {"field_ref": "edges.to", "semantic_type": "PERSON_NAME", "target_role": "RELATION_TARGET"}
+              ],
+              "parameters": {},
+              "depends_on": ["op.graph_source"],
+              "result_shape": "graph_summary"
+            },
+            {
+              "operation_id": "op.graph_reachability",
+              "family": "reachability",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "edges.from", "semantic_type": "PERSON_NAME", "target_role": "RELATION_SOURCE"},
+                {"field_ref": "edges.to", "semantic_type": "PERSON_NAME", "target_role": "RELATION_TARGET"}
+              ],
+              "parameters": {"relation_orientation": "DIRECTED"},
+              "depends_on": ["op.graph_source"],
+              "result_shape": "graph_summary"
+            }
+          ],
+          "presentation": [
+            {"constraint_id": "presentation.graph.node_ids", "kind": "identifier_assignment", "authority": "USER_INTENT", "scope": "node_ids", "rule": "ENDPOINT_APPEARANCE_ORDER"},
+            {"constraint_id": "presentation.graph.serialization", "kind": "serialization_guard", "authority": "DATA_SCHEMA", "scope": "source_edges", "rule": "IGNORE_JSON_KEY_ORDER"}
+          ]
+        },
+        "capability_requirements": {
+          "capability_ir_version": "information-capability-ir-v0.2",
+          "requirements": [
+            {
+              "requirement_id": "req.graph.identity",
+              "operation_ref": "op.graph_source",
+              "targets": [
+                {"field_ref": "edges.from", "semantic_type": "PERSON_NAME", "target_role": "RELATION_SOURCE"},
+                {"field_ref": "edges.to", "semantic_type": "PERSON_NAME", "target_role": "RELATION_TARGET"}
+              ],
+              "capability": {"family": "identity", "name": "identity", "parameters": {"stability_scope": "TASK"}},
+              "scope": {"kind": "ALL_OCCURRENCES"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.intent.graph", "authority_class": "USER_INTENT", "support_type": "OPERATION", "support_ref": "op.graph_source"}
+            },
+            {
+              "requirement_id": "req.graph.edges",
+              "operation_ref": "op.graph_source",
+              "targets": [
+                {"field_ref": "edges.from", "semantic_type": "PERSON_NAME", "target_role": "RELATION_SOURCE"},
+                {"field_ref": "edges.to", "semantic_type": "PERSON_NAME", "target_role": "RELATION_TARGET"}
+              ],
+              "capability": {"family": "relation", "name": "existing_relation", "parameters": {"relation_orientation": "DIRECTED", "relation_source": "SOURCE_DECLARED"}},
+              "scope": {"kind": "DECLARED_RELATION_SET", "reference": "relation.source_edges"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.schema.graph", "authority_class": "DATA_SCHEMA", "support_type": "SOURCE_RELATION", "support_ref": "relation.source_edges"}
+            }
+          ]
+        },
+        "uncertainty": "CONFIDENT"
+      },
+      "oracle_bridge": {
+        "requirement_dimensions": [
+          {"requirement_id": "req.graph.identity", "dimension_ref": "MD-GRAPH-06/person_name"},
+          {"requirement_id": "req.graph.edges", "dimension_ref": "MD-GRAPH-06/source_relations"}
+        ],
+        "expected_reporting_plan": [
+          {"dimension_ref": "MD-GRAPH-06/person_name", "transformation_id": "STABLE_TOKEN"},
+          {"dimension_ref": "MD-GRAPH-06/source_relations", "transformation_id": "RELATION_ONLY"}
+        ]
+      }
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "trusted_context": {
+        "sources": [
+          {
+            "source_id": "ctx.intent.tool",
+            "authority_class": "USER_INTENT",
+            "supports": [
+              {"support_type": "OPERATION", "support_ref": "op.select_ticket"},
+              {"support_type": "OPERATION", "support_ref": "op.dispatch_visit"}
+            ],
+            "claims": []
+          },
+          {
+            "source_id": "ctx.workflow.tool",
+            "authority_class": "TRUSTED_WORKFLOW",
+            "supports": [{"support_type": "WORKFLOW_RULE", "support_ref": "workflow.zone_rule"}],
+            "claims": [
+              {"claim_id": "ZONE_RULE_AVAILABLE", "support_ref": "workflow.zone_rule", "predicate": "TOTAL_TRUSTED_ZONE_MAPPING"},
+              {"claim_id": "TRUSTED_RESTORATION_AVAILABLE", "support_ref": "tool.dispatch_visit.recipient", "predicate": "TASK_LOCAL_TOKEN_RESTORATION"}
+            ]
+          },
+          {
+            "source_id": "ctx.tool.dispatch",
+            "authority_class": "TOOL_SCHEMA",
+            "supports": [{"support_type": "TOOL_PARAMETER", "support_ref": "tool.dispatch_visit.recipient"}],
+            "claims": [
+              {"claim_id": "DECLARED_TOOL_ARGUMENT", "support_ref": "tool.dispatch_visit.recipient", "predicate": "EXACT_PARAMETER_REQUIRED"}
+            ]
+          }
+        ]
+      },
+      "planner_document": {
+        "schema_version": "planner-capability-schema-v0.2",
+        "task_ir": {
+          "task_ir_version": "task-ir-v0.2",
+          "operations": [
+            {
+              "operation_id": "op.select_ticket",
+              "family": "select",
+              "role": "AGENT_REASONING",
+              "inputs": [
+                {"field_ref": "tickets.severity", "semantic_type": "INTEGER", "target_role": "VALUE"},
+                {"field_ref": "tickets.ticket_id", "semantic_type": "RECORD_ID", "target_role": "VALUE"}
+              ],
+              "parameters": {"aggregation": "MAXIMUM"},
+              "depends_on": [],
+              "result_shape": "selected_record"
+            },
+            {
+              "operation_id": "op.dispatch_visit",
+              "family": "tool_call",
+              "role": "TOOL_EXECUTION",
+              "inputs": [
+                {"field_ref": "tickets.ticket_id", "semantic_type": "RECORD_ID", "target_role": "TOOL_ARGUMENT"},
+                {"field_ref": "tickets.recipient_email", "semantic_type": "EMAIL", "target_role": "TOOL_ARGUMENT"},
+                {"field_ref": "tickets.address", "semantic_type": "POSTAL_ADDRESS", "target_role": "TOOL_ARGUMENT"}
+              ],
+              "parameters": {},
+              "depends_on": ["op.select_ticket"],
+              "result_shape": "tool_call",
+              "tool_ref": "tool.dispatch_visit",
+              "tool_parameters": [
+                {"parameter_ref": "tool.dispatch_visit.ticket_id", "name": "ticket_id", "semantic_type": "RECORD_ID", "source_field_ref": "tickets.ticket_id"},
+                {"parameter_ref": "tool.dispatch_visit.recipient", "name": "recipient", "semantic_type": "TOOL_PARAMETER", "source_field_ref": "tickets.recipient_email"},
+                {"parameter_ref": "tool.dispatch_visit.service_zone", "name": "service_zone", "semantic_type": "TOOL_PARAMETER", "source_field_ref": "tickets.address"}
+              ]
+            }
+          ],
+          "presentation": [
+            {"constraint_id": "presentation.tool.parameters", "kind": "label_convention", "authority": "TOOL_SCHEMA", "scope": "dispatch_visit", "rule": "DECLARED_PARAMETER_NAMES"}
+          ]
+        },
+        "capability_requirements": {
+          "capability_ir_version": "information-capability-ir-v0.2",
+          "requirements": [
+            {
+              "requirement_id": "req.tool.recipient",
+              "operation_ref": "op.dispatch_visit",
+              "targets": [{"field_ref": "tickets.recipient_email", "semantic_type": "EMAIL", "target_role": "TOOL_ARGUMENT"}],
+              "capability": {"family": "exact_value", "name": "exact_value", "parameters": {}},
+              "scope": {"kind": "DECLARED_TOOL_ARGUMENT", "reference": "tool.dispatch_visit.recipient"},
+              "boundary": "TOOL",
+              "authority_witness": {"source_id": "ctx.tool.dispatch", "authority_class": "TOOL_SCHEMA", "support_type": "TOOL_PARAMETER", "support_ref": "tool.dispatch_visit.recipient"}
+            },
+            {
+              "requirement_id": "req.tool.zone",
+              "operation_ref": "op.dispatch_visit",
+              "targets": [{"field_ref": "tickets.address", "semantic_type": "POSTAL_ADDRESS", "target_role": "TOOL_ARGUMENT"}],
+              "capability": {"family": "property", "name": "service_zone", "parameters": {"zone_rule_ref": "workflow.zone_rule"}},
+              "scope": {"kind": "ALL_RECORDS"},
+              "boundary": "AGENT",
+              "authority_witness": {"source_id": "ctx.workflow.tool", "authority_class": "TRUSTED_WORKFLOW", "support_type": "WORKFLOW_RULE", "support_ref": "workflow.zone_rule"}
+            }
+          ]
+        },
+        "uncertainty": "CONFIDENT"
+      },
+      "oracle_bridge": {
+        "requirement_dimensions": [
+          {"requirement_id": "req.tool.recipient", "dimension_ref": "MD-TOOL-07/recipient_email"},
+          {"requirement_id": "req.tool.zone", "dimension_ref": "MD-TOOL-07/address"}
+        ],
+        "expected_reporting_plan": [
+          {"dimension_ref": "MD-TOOL-07/recipient_email", "transformation_id": "STABLE_TOKEN"},
+          {"dimension_ref": "MD-TOOL-07/address", "transformation_id": "SERVICE_ZONE"}
+        ]
+      }
+    }
+  ]
+}

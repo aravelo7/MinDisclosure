@@ -1,0 +1,85 @@
+{
+  "negative_fixture_version": "planner-negative-cases-v0.2",
+  "scope": "semantic-contract-and-verifier-only",
+  "cases": [
+    {
+      "case_id": "NEG-AUTH-UNTRUSTED-EXPANSION",
+      "base_task_id": "MD-EQ-01",
+      "mutation": {
+        "type": "SET_AUTHORITY_WITNESS",
+        "requirement_id": "req.eq.equality",
+        "witness": {"source_id": "ctx.untrusted.eq", "authority_class": "UNTRUSTED_CONTENT", "support_type": "OPERATION", "support_ref": "op.deduplicate"},
+        "add_context_source": {"source_id": "ctx.untrusted.eq", "authority_class": "UNTRUSTED_CONTENT", "supports": [{"support_type": "OPERATION", "support_ref": "op.deduplicate"}], "claims": []}
+      },
+      "expected_primary_error": "AUTHORITY_VIOLATION"
+    },
+    {
+      "case_id": "NEG-AUTH-FORGED-USER-WITNESS",
+      "base_task_id": "MD-EQ-01",
+      "mutation": {
+        "type": "SET_AUTHORITY_WITNESS",
+        "requirement_id": "req.eq.equality",
+        "witness": {"source_id": "ctx.untrusted.eq", "authority_class": "USER_INTENT", "support_type": "OPERATION", "support_ref": "op.deduplicate"},
+        "add_context_source": {"source_id": "ctx.untrusted.eq", "authority_class": "UNTRUSTED_CONTENT", "supports": [{"support_type": "OPERATION", "support_ref": "op.deduplicate"}], "claims": []}
+      },
+      "expected_primary_error": "AUTHORITY_VIOLATION"
+    },
+    {
+      "case_id": "NEG-SOLVER-RANK-AS-PROPERTY",
+      "mutation": {"type": "TRANSFORMATION_INVARIANT_OVERRIDE", "base_transformation_id": "BIRTH_YEAR", "overrides": {"introduces_rank": true}},
+      "expected_primary_error": "ANSWER_LEAKAGE"
+    },
+    {
+      "case_id": "NEG-SOLVER-SELECTED-PAIR-AS-RELATION",
+      "mutation": {"type": "TRANSFORMATION_INVARIANT_OVERRIDE", "base_transformation_id": "RELATION_ONLY", "overrides": {"selects_subset": true, "introduces_derived_relation": true}},
+      "expected_primary_error": "ANSWER_LEAKAGE"
+    },
+    {
+      "case_id": "NEG-SOLVER-OCCURRENCE-SPECIFIC",
+      "mutation": {"type": "TRANSFORMATION_INVARIANT_OVERRIDE", "base_transformation_id": "SERVICE_ZONE", "overrides": {"uniform_across_records": false, "selects_subset": true}},
+      "expected_primary_error": "ANSWER_LEAKAGE"
+    },
+    {
+      "case_id": "NEG-SOLVER-ANSWER-DEPENDENT-PROPERTY",
+      "mutation": {"type": "TRANSFORMATION_INVARIANT_OVERRIDE", "base_transformation_id": "DOMAIN_HANDLE", "overrides": {"depends_on_task_answer": true}},
+      "expected_primary_error": "ANSWER_LEAKAGE"
+    },
+    {
+      "case_id": "NEG-EVAL-WRONG-TARGET",
+      "base_task_id": "MD-GROUP-02",
+      "mutation": {"type": "SET_REQUIREMENT_TARGET", "requirement_id": "req.group.domain", "target": {"field_ref": "invoices.billing_email", "semantic_type": "EMAIL", "target_role": "GROUP_KEY"}},
+      "expected_primary_error": "WRONG_TARGET"
+    },
+    {
+      "case_id": "NEG-EVAL-WRONG-BOUNDARY",
+      "base_task_id": "MD-TOOL-07",
+      "mutation": {"type": "SET_REQUIREMENT_BOUNDARY", "requirement_id": "req.tool.recipient", "boundary": "AGENT"},
+      "expected_primary_error": "WRONG_BOUNDARY"
+    },
+    {
+      "case_id": "NEG-EVAL-WRONG-SCOPE",
+      "base_task_id": "MD-EQ-01",
+      "mutation": {"type": "SET_REQUIREMENT_SCOPE", "requirement_id": "req.eq.equality", "scope": {"kind": "ALL_RECORDS"}},
+      "expected_primary_error": "WRONG_SCOPE"
+    },
+    {
+      "case_id": "NEG-EVAL-WRONG-OPERATION",
+      "base_task_id": "MD-CROSS-05",
+      "mutation": {"type": "SET_OPERATION_REF", "requirement_id": "req.cross.temporal", "operation_ref": "op.link_subjects"},
+      "expected_primary_error": "WRONG_OPERATION_BINDING"
+    },
+    {
+      "case_id": "NEG-COMPILER-PRECONDITION-UNPROVED",
+      "base_task_id": "MD-ORDER-03",
+      "mutation": {"type": "REMOVE_TRUSTED_CLAIM", "claim_id": "DOB_YEAR_ORDER_PRESERVING", "transformation_id": "BIRTH_YEAR"},
+      "expected_status": "ACTION_NOT_FEASIBLE",
+      "expected_reason": "UNPROVED_TRUSTED_PRECONDITION"
+    },
+    {
+      "case_id": "NEG-EXACT-LEGACY-CONFLICT",
+      "base_task_id": "MD-TOOL-07",
+      "mutation": {"type": "ADD_LEGACY_EXACT_FLAG", "requirement_id": "req.tool.recipient", "exact_value_required": false},
+      "expected_primary_error": "SEMANTIC_INVALID"
+    }
+  ]
+}
