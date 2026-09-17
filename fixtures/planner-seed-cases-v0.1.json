@@ -1,0 +1,499 @@
+{
+  "seed_version": "planner-seed-cases-v0.1",
+  "schema_version": "planner-capability-schema-v0.1",
+  "benchmark_version": "md-bench-v0.2",
+  "description": "Seven abstract seed cases for Planner ontology qualification. No sensitive values or solved outputs are included.",
+  "cases": [
+    {
+      "task_id": "MD-EQ-01",
+      "task_ir": {
+        "task_ir_version": "task-ir-v0.1",
+        "operations": [
+          {
+            "operation_id": "op.equality",
+            "family": "equality",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "records.email", "semantic_type": "EMAIL"},
+              {"field_ref": "records.record_id", "semantic_type": "RECORD_ID"}
+            ],
+            "uses": [
+              {"kind": "property", "name": "identity"},
+              {"kind": "ordering", "name": "input_order"}
+            ],
+            "result_shape": "groups"
+          },
+          {
+            "operation_id": "op.deduplicate",
+            "family": "deduplicate",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "records.email", "semantic_type": "EMAIL"}
+            ],
+            "uses": [
+              {"kind": "property", "name": "equality"}
+            ],
+            "result_shape": "groups"
+          }
+        ],
+        "presentation": [
+          {
+            "constraint_id": "presentation.eq.group_order",
+            "kind": "semantic_order",
+            "authority": "USER_INTENT",
+            "scope": "duplicate_groups",
+            "rule": "input_order"
+          }
+        ]
+      },
+      "gold_capability_requirements": {
+        "capability_ir_version": "information-capability-ir-v0.1",
+        "requirements": [
+          {
+            "requirement_id": "req.eq.identity",
+            "targets": [{"field_ref": "records.email", "semantic_type": "EMAIL"}],
+            "capability": {"family": "identity", "name": "equality"},
+            "boundary": "AGENT",
+            "purpose": "deduplicate.by_email",
+            "exact_value_required": false,
+            "scope": "all_occurrences",
+            "authority": "USER_INTENT"
+          }
+        ]
+      },
+      "oracle_bridge": {
+        "dimension_references": [
+          {"requirement_id": "req.eq.identity", "dimension_id": "email", "selected_transform_id": "STABLE_TOKEN"}
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "task_ir": {
+        "task_ir_version": "task-ir-v0.1",
+        "operations": [
+          {
+            "operation_id": "op.group_by_domain",
+            "family": "group_by",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "invoices.contact_email", "semantic_type": "EMAIL"},
+              {"field_ref": "invoices.invoice_id", "semantic_type": "RECORD_ID"}
+            ],
+            "uses": [
+              {"kind": "property", "name": "domain"},
+              {"kind": "ordering", "name": "first_appearance"}
+            ],
+            "result_shape": "groups"
+          },
+          {
+            "operation_id": "op.aggregate_amount",
+            "family": "aggregate",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "invoices.amount", "semantic_type": "NUMBER"}
+            ],
+            "uses": [
+              {"kind": "aggregation", "name": "sum"}
+            ],
+            "result_shape": "aggregate_table"
+          }
+        ],
+        "presentation": [
+          {
+            "constraint_id": "presentation.group.labels",
+            "kind": "label_convention",
+            "authority": "USER_INTENT",
+            "scope": "group_labels",
+            "rule": "first_appearance"
+          }
+        ]
+      },
+      "gold_capability_requirements": {
+        "capability_ir_version": "information-capability-ir-v0.1",
+        "requirements": [
+          {
+            "requirement_id": "req.group.domain",
+            "targets": [{"field_ref": "invoices.contact_email", "semantic_type": "EMAIL"}],
+            "capability": {"family": "property", "name": "domain"},
+            "boundary": "AGENT",
+            "purpose": "group_by_domain",
+            "exact_value_required": false,
+            "scope": "all_records",
+            "authority": "USER_INTENT"
+          }
+        ]
+      },
+      "oracle_bridge": {
+        "dimension_references": [
+          {"requirement_id": "req.group.domain", "dimension_id": "contact_email", "selected_transform_id": "DOMAIN_HANDLE"}
+        ]
+      }
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "task_ir": {
+        "task_ir_version": "task-ir-v0.1",
+        "operations": [
+          {
+            "operation_id": "op.sort_by_age",
+            "family": "sort",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "people.date_of_birth", "semantic_type": "DATE_OF_BIRTH"},
+              {"field_ref": "people.record_id", "semantic_type": "RECORD_ID"}
+            ],
+            "uses": [
+              {"kind": "property", "name": "ordering"}
+            ],
+            "result_shape": "ordered_records"
+          }
+        ],
+        "presentation": [
+          {
+            "constraint_id": "presentation.order.direction",
+            "kind": "semantic_order",
+            "authority": "USER_INTENT",
+            "scope": "ordered_record_ids",
+            "rule": "oldest_to_youngest"
+          }
+        ]
+      },
+      "gold_capability_requirements": {
+        "capability_ir_version": "information-capability-ir-v0.1",
+        "requirements": [
+          {
+            "requirement_id": "req.order.birth_year",
+            "targets": [{"field_ref": "people.date_of_birth", "semantic_type": "DATE_OF_BIRTH"}],
+            "capability": {"family": "property", "name": "ordering"},
+            "boundary": "AGENT",
+            "purpose": "sort_by_age",
+            "exact_value_required": false,
+            "scope": "all_records",
+            "authority": "USER_INTENT"
+          }
+        ]
+      },
+      "oracle_bridge": {
+        "dimension_references": [
+          {"requirement_id": "req.order.birth_year", "dimension_id": "date_of_birth", "selected_transform_id": "BIRTH_YEAR"}
+        ]
+      }
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "task_ir": {
+        "task_ir_version": "task-ir-v0.1",
+        "operations": [
+          {
+            "operation_id": "op.group_by_zone",
+            "family": "group_by",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "requests.address", "semantic_type": "POSTAL_ADDRESS"},
+              {"field_ref": "requests.amount", "semantic_type": "NUMBER"}
+            ],
+            "uses": [
+              {"kind": "property", "name": "service_zone"},
+              {"kind": "ordering", "name": "trusted_zone_order"}
+            ],
+            "result_shape": "groups"
+          },
+          {
+            "operation_id": "op.aggregate_zone_amount",
+            "family": "aggregate",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "requests.amount", "semantic_type": "NUMBER"}
+            ],
+            "uses": [
+              {"kind": "aggregation", "name": "count_and_sum"}
+            ],
+            "result_shape": "aggregate_table"
+          }
+        ],
+        "presentation": [
+          {
+            "constraint_id": "presentation.loc.zone_order",
+            "kind": "semantic_order",
+            "authority": "TRUSTED_WORKFLOW",
+            "scope": "zone_summaries",
+            "rule": "zone_rule_order"
+          },
+          {
+            "constraint_id": "presentation.loc.serialization",
+            "kind": "serialization_guard",
+            "authority": "TRUSTED_WORKFLOW",
+            "scope": "all_fields",
+            "rule": "not_json_key_order"
+          }
+        ]
+      },
+      "gold_capability_requirements": {
+        "capability_ir_version": "information-capability-ir-v0.1",
+        "requirements": [
+          {
+            "requirement_id": "req.loc.service_zone",
+            "targets": [{"field_ref": "requests.address", "semantic_type": "POSTAL_ADDRESS"}],
+            "capability": {"family": "property", "name": "service_zone"},
+            "boundary": "AGENT",
+            "purpose": "group_by_service_zone",
+            "exact_value_required": false,
+            "scope": "all_records",
+            "authority": "TRUSTED_WORKFLOW"
+          }
+        ]
+      },
+      "oracle_bridge": {
+        "dimension_references": [
+          {"requirement_id": "req.loc.service_zone", "dimension_id": "address", "selected_transform_id": "SERVICE_ZONE"}
+        ],
+        "utility_validation_status": "validity_compromised_renderer_order_confound"
+      }
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "task_ir": {
+        "task_ir_version": "task-ir-v0.1",
+        "operations": [
+          {
+            "operation_id": "op.link_subjects",
+            "family": "record_linkage",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "events.subject_email", "semantic_type": "EMAIL"},
+              {"field_ref": "events.event_id", "semantic_type": "RECORD_ID"}
+            ],
+            "uses": [
+              {"kind": "property", "name": "identity"}
+            ],
+            "result_shape": "record_pairs"
+          },
+          {
+            "operation_id": "op.compare_window",
+            "family": "temporal_window",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "events.timestamp", "semantic_type": "EVENT_TIMESTAMP"}
+            ],
+            "uses": [
+              {"kind": "comparison", "name": "within_72_hours"},
+              {"kind": "ordering", "name": "earlier_first"}
+            ],
+            "result_shape": "record_pairs"
+          }
+        ],
+        "presentation": [
+          {
+            "constraint_id": "presentation.cross.pair_order",
+            "kind": "semantic_order",
+            "authority": "USER_INTENT",
+            "scope": "event_pairs",
+            "rule": "input_order_pair_order"
+          }
+        ]
+      },
+      "gold_capability_requirements": {
+        "capability_ir_version": "information-capability-ir-v0.1",
+        "requirements": [
+          {
+            "requirement_id": "req.cross.identity",
+            "targets": [{"field_ref": "events.subject_email", "semantic_type": "EMAIL"}],
+            "capability": {"family": "identity", "name": "linkage"},
+            "boundary": "AGENT",
+            "purpose": "same_subject_linkage",
+            "exact_value_required": false,
+            "scope": "all_occurrences",
+            "authority": "USER_INTENT"
+          },
+          {
+            "requirement_id": "req.cross.temporal",
+            "targets": [{"field_ref": "events.timestamp", "semantic_type": "EVENT_TIMESTAMP"}],
+            "capability": {"family": "relation", "name": "temporal_comparison"},
+            "boundary": "AGENT",
+            "purpose": "within_72_hours",
+            "exact_value_required": false,
+            "scope": "all_records",
+            "authority": "USER_INTENT"
+          }
+        ]
+      },
+      "oracle_bridge": {
+        "dimension_references": [
+          {"requirement_id": "req.cross.identity", "dimension_id": "subject_email", "selected_transform_id": "STABLE_TOKEN"},
+          {"requirement_id": "req.cross.temporal", "dimension_id": "timestamp", "selected_transform_id": "HOUR_BUCKET"}
+        ]
+      }
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "task_ir": {
+        "task_ir_version": "task-ir-v0.1",
+        "operations": [
+          {
+            "operation_id": "op.graph_degree",
+            "family": "degree",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "edges.from", "semantic_type": "PERSON_NAME"},
+              {"field_ref": "edges.to", "semantic_type": "PERSON_NAME"}
+            ],
+            "uses": [
+              {"kind": "property", "name": "identity"},
+              {"kind": "relation", "name": "existing_relation"}
+            ],
+            "result_shape": "graph_summary"
+          },
+          {
+            "operation_id": "op.graph_reachability",
+            "family": "reachability",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "edges.from", "semantic_type": "PERSON_NAME"},
+              {"field_ref": "edges.to", "semantic_type": "PERSON_NAME"}
+            ],
+            "uses": [
+              {"kind": "relation", "name": "directionality"},
+              {"kind": "relation", "name": "existing_relation"}
+            ],
+            "result_shape": "graph_summary"
+          }
+        ],
+        "presentation": [
+          {
+            "constraint_id": "presentation.graph.node_ids",
+            "kind": "identifier_assignment",
+            "authority": "USER_INTENT",
+            "scope": "node_ids",
+            "rule": "first_endpoint_appearance"
+          },
+          {
+            "constraint_id": "presentation.graph.serialization",
+            "kind": "serialization_guard",
+            "authority": "DATA_SCHEMA",
+            "scope": "source_edges",
+            "rule": "preserve_explicit_edge_order"
+          }
+        ]
+      },
+      "gold_capability_requirements": {
+        "capability_ir_version": "information-capability-ir-v0.1",
+        "requirements": [
+          {
+            "requirement_id": "req.graph.identity",
+            "targets": [
+              {"field_ref": "edges.from", "semantic_type": "PERSON_NAME"},
+              {"field_ref": "edges.to", "semantic_type": "PERSON_NAME"}
+            ],
+            "capability": {"family": "identity", "name": "identity"},
+            "boundary": "AGENT",
+            "purpose": "graph_node_identity",
+            "exact_value_required": false,
+            "scope": "all_occurrences",
+            "authority": "DATA_SCHEMA"
+          },
+          {
+            "requirement_id": "req.graph.edges",
+            "targets": [
+              {"field_ref": "edges.from", "semantic_type": "PERSON_NAME"},
+              {"field_ref": "edges.to", "semantic_type": "PERSON_NAME"}
+            ],
+            "capability": {"family": "relation", "name": "existing_relation"},
+            "boundary": "AGENT",
+            "purpose": "preserve_directed_source_edges",
+            "exact_value_required": false,
+            "scope": "declared_relation_set",
+            "authority": "DATA_SCHEMA"
+          }
+        ]
+      },
+      "oracle_bridge": {
+        "dimension_references": [
+          {"requirement_id": "req.graph.identity", "dimension_id": "person_name", "selected_transform_id": "STABLE_TOKEN"},
+          {"requirement_id": "req.graph.edges", "dimension_id": "source_relations", "selected_transform_id": "RELATION_ONLY"}
+        ]
+      }
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "task_ir": {
+        "task_ir_version": "task-ir-v0.1",
+        "operations": [
+          {
+            "operation_id": "op.select_ticket",
+            "family": "select",
+            "role": "AGENT_REASONING",
+            "inputs": [
+              {"field_ref": "tickets.severity", "semantic_type": "INTEGER"},
+              {"field_ref": "tickets.ticket_id", "semantic_type": "RECORD_ID"}
+            ],
+            "uses": [
+              {"kind": "selection", "name": "maximum"}
+            ],
+            "result_shape": "selected_record"
+          },
+          {
+            "operation_id": "op.dispatch_visit",
+            "family": "tool_call",
+            "role": "TOOL_EXECUTION",
+            "inputs": [
+              {"field_ref": "tickets.ticket_id", "semantic_type": "RECORD_ID"},
+              {"field_ref": "tickets.recipient_email", "semantic_type": "EMAIL"},
+              {"field_ref": "tickets.address", "semantic_type": "POSTAL_ADDRESS"}
+            ],
+            "uses": [
+              {"kind": "selection", "name": "selected_record"}
+            ],
+            "result_shape": "tool_call",
+            "tool_ref": "tool.dispatch_visit",
+            "tool_parameters": [
+              {"name": "ticket_id", "semantic_type": "RECORD_ID"},
+              {"name": "recipient", "semantic_type": "TOOL_PARAMETER"},
+              {"name": "service_zone", "semantic_type": "TOOL_PARAMETER"}
+            ]
+          }
+        ],
+        "presentation": [
+          {
+            "constraint_id": "presentation.tool.parameters",
+            "kind": "label_convention",
+            "authority": "TOOL_SCHEMA",
+            "scope": "dispatch_visit",
+            "rule": "trusted_parameter_names"
+          }
+        ]
+      },
+      "gold_capability_requirements": {
+        "capability_ir_version": "information-capability-ir-v0.1",
+        "requirements": [
+          {
+            "requirement_id": "req.tool.recipient",
+            "targets": [{"field_ref": "tickets.recipient_email", "semantic_type": "EMAIL"}],
+            "capability": {"family": "exact_value", "name": "exact_value"},
+            "boundary": "TOOL",
+            "purpose": "dispatch_visit.recipient",
+            "exact_value_required": true,
+            "scope": "declared_tool_argument",
+            "authority": "TOOL_SCHEMA"
+          },
+          {
+            "requirement_id": "req.tool.zone",
+            "targets": [{"field_ref": "tickets.address", "semantic_type": "POSTAL_ADDRESS"}],
+            "capability": {"family": "property", "name": "service_zone"},
+            "boundary": "AGENT",
+            "purpose": "dispatch_visit.service_zone",
+            "exact_value_required": false,
+            "scope": "all_records",
+            "authority": "TRUSTED_WORKFLOW"
+          }
+        ]
+      },
+      "oracle_bridge": {
+        "dimension_references": [
+          {"requirement_id": "req.tool.recipient", "dimension_id": "recipient_email", "selected_transform_id": "STABLE_TOKEN", "reversible_at_tool": true},
+          {"requirement_id": "req.tool.zone", "dimension_id": "address", "selected_transform_id": "SERVICE_ZONE"}
+        ]
+      }
+    }
+  ]
+}
