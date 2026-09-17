@@ -1,0 +1,170 @@
+{
+  "experiment_id": "engineering-smoke-api-v0.1",
+  "smoke": "A",
+  "execution_type": "engineering_smoke",
+  "research_result": false,
+  "included_in_formal_evaluation": false,
+  "provider_snapshot_sha256": "891e9c6d171f670da2d8aee1e49760c6bd46674bc131d365286052c529cddfac",
+  "requested_model": "deepseek-flash",
+  "returned_model": "deepseek-flash",
+  "request": {
+    "model": "deepseek-flash",
+    "instructions": "Return only the requested structured result.",
+    "input": "Return {\"ok\": true}.",
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": 0,
+    "max_output_tokens": 256,
+    "stream": false,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "min_disclosure_transport_canary_v0_1",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "ok"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "request_sha256": "f3eb95c758a19cc88e46f2c4a9816dd7d75c40931b95fd0bcc06092dc36dcc36",
+  "http_status": 200,
+  "provider_status": "completed",
+  "response_id": "2f1fb4cf-578c-4442-b5a1-1128c49a376e",
+  "status": "STRUCTURED_OUTPUT_VALID",
+  "parsed_output": {
+    "ok": true
+  },
+  "schema_status": "valid",
+  "schema_error": null,
+  "usage": {
+    "input_tokens": 64,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 5,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 69
+  },
+  "latency_ms": 1530,
+  "attempt_count": 1,
+  "retry_count": 0,
+  "retry_wait_ms": 0,
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "dispatched": true,
+      "started_offset_ms": 0,
+      "request_sha256": "f3eb95c758a19cc88e46f2c4a9816dd7d75c40931b95fd0bcc06092dc36dcc36",
+      "completed_offset_ms": 1530,
+      "http_status": 200,
+      "response_headers": {
+        "content-type": "application/json"
+      },
+      "retry_after": null,
+      "response_body_sha256": "563107b8451e5cf9c93b6aa5ca83b41dc0a01377502d63146237e72250395c60",
+      "response": {
+        "id": "2f1fb4cf-578c-4442-b5a1-1128c49a376e",
+        "object": "response",
+        "created_at": 1789647921,
+        "status": "completed",
+        "background": false,
+        "completed_at": 1789647922,
+        "content_filters": null,
+        "error": null,
+        "frequency_penalty": 0,
+        "incomplete_details": null,
+        "instructions": "Return only the requested structured result.",
+        "max_output_tokens": 256,
+        "max_tool_calls": null,
+        "model": "deepseek-flash",
+        "moderation": null,
+        "output": [
+          {
+            "type": "message",
+            "id": "2fc5eef4-ffd2-4f3c-acf8-257bd506c736",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"ok\": true}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ],
+        "parallel_tool_calls": true,
+        "presence_penalty": 0,
+        "previous_response_id": null,
+        "prompt_cache_key": null,
+        "prompt_cache_retention": null,
+        "reasoning": {
+          "effort": "none",
+          "summary": null
+        },
+        "safety_identifier": null,
+        "service_tier": "default",
+        "store": false,
+        "temperature": 0,
+        "text": {
+          "format": {
+            "type": "json_schema",
+            "name": "min_disclosure_transport_canary_v0_1",
+            "schema": {
+              "additionalProperties": false,
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "ok"
+              ],
+              "type": "object"
+            },
+            "description": null,
+            "strict": null
+          },
+          "verbosity": null
+        },
+        "tool_choice": "auto",
+        "tools": [],
+        "top_logprobs": 0,
+        "top_p": 1,
+        "truncation": "disabled",
+        "usage": {
+          "input_tokens": 64,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 5,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 69
+        },
+        "user": null,
+        "metadata": {}
+      },
+      "provider_error": null,
+      "transport_failure": false,
+      "error": null,
+      "latency_ms": 1529
+    }
+  ],
+  "artifact_sha256": "5d55b3e3a8d45be225303a474b701651be5075ce63cfe3eb8dbb3b44a72937af"
+}

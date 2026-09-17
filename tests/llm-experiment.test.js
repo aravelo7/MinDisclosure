@@ -231,9 +231,9 @@ test('provider failures remain in the utility denominator', async () => {
   assert.equal(report.summary.utility_denominator, report.summary.total_runs);
 });
 
-test('real provider adapter is disabled and SDK retries cannot be enabled', async () => {
+test('real provider adapter fails closed without credentials and SDK retries cannot be enabled', async () => {
   const adapter = new DeepSeekResponsesAdapter();
   assert.equal(adapter.sdk_auto_retries, 0);
   assert.throws(() => new DeepSeekResponsesAdapter({sdkAutoRetries: 1}), /SDK_AUTO_RETRIES_MUST_BE_ZERO/);
-  await assert.rejects(() => adapter.send({}), /REAL_PROVIDER_DISABLED/);
+  await assert.rejects(() => adapter.send({}), /AUDITABLE_ATTEMPT_RECORD_REQUIRED/);
 });

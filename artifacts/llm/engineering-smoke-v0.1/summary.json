@@ -1,0 +1,16 @@
+{
+  "experiment_id": "engineering-smoke-v0.1",
+  "execution_type": "engineering_smoke",
+  "research_result": false,
+  "included_in_formal_evaluation": false,
+  "preflight": {
+    "passed": true,
+    "request_sha256": "fcc1f463ae819bcf82c577d4ec1c8b41b76d4650a5f9d9f55b6373c24504def9"
+  },
+  "smoke_a": "STRUCTURED_OUTPUT_VALID",
+  "smoke_b": "COMPLETED_CORRECT",
+  "actual_http_dispatches": 2,
+  "recorded_attempts": 2,
+  "secret_scan_matches": [],
+  "summary_sha256": "d1a5bab0dd84118feff8f1c17442665f5d0d236f3e20b135656df2fd9ef427a0"
+}

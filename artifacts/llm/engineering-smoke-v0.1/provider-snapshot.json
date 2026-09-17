@@ -1,0 +1,15 @@
+{
+  "provider": "DeepSeek",
+  "provider_docs_checked_at": "2026-09-17T12:25:21.756Z",
+  "requested_model": "deepseek-flash",
+  "documented_serving_model": "DeepSeek-V4.1-Flash",
+  "responses_endpoint": "https://api.deepseek.com/responses",
+  "alias_routing_change_detected": false,
+  "sources": [
+    "https://api-docs.deepseek.com/guides/responses_api/",
+    "https://api-docs.deepseek.com/quick_start/pricing/",
+    "https://api-docs.deepseek.com/updates/"
+  ],
+  "snapshot_note": "Official docs still map deepseek-flash to DeepSeek-V4.1-Flash; recheck before formal execution.",
+  "snapshot_sha256": "891e9c6d171f670da2d8aee1e49760c6bd46674bc131d365286052c529cddfac"
+}

@@ -3,6 +3,7 @@
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
+const https = require('node:https');
 
 const {STRATEGIES, TASK_IDS} = require('./constants');
 const {evaluateOutput, projectOracleCase} = require('./oracle');
@@ -17,6 +18,7 @@ const SCHEMA_PATH = path.join(ROOT, 'fixtures', 'llm-output-schemas-v0.1.json');
 const FIXTURE_PATH = path.join(ROOT, 'fixtures', 'md-bench-v0.2.json');
 const FROZEN_BENCHMARK_COMMIT = '932f16e2ccf4dab64995f11a70a054ae19b52b04';
 const DEFAULT_EXPERIMENT_ID = 'md-bench-v0.2-deepseek-flash-contract-v0.1-offline-validation';
+const DEEPSEEK_RESPONSES_URL = 'https://api.deepseek.com/responses';
 const RANDOMIZATION_SEED = 'md-bench-v0.2-llm-contract-v0.1-seed-20260916';
 const MAX_OUTPUT_TOKENS = 256;
 const RUN_ORDER_ALGORITHM_VERSION = 'balanced-williams-blocks-v0.1';
@@ -367,6 +369,7 @@ class FakeProvider {
 
 class FakeClock {
   constructor(startMs = 0) {
+    this.is_virtual = true;
     this.current_ms = startMs;
     this.sleeps = [];
   }
@@ -384,15 +387,124 @@ class FakeClock {
   }
 }
 
+class RealClock {
+  constructor() { this.sleeps = []; }
+  now() { return Date.now(); }
+  async sleep(milliseconds) {
+    this.sleeps.push(milliseconds);
+    await new Promise((resolve) => setTimeout(resolve, milliseconds));
+  }
+}
+
+function responseHeaderSubset(headers) {
+  return Object.fromEntries(['content-type', 'retry-after', 'x-request-id', 'request-id']
+    .filter((name) => headers[name] !== undefined)
+    .map((name) => [name, headers[name]]));
+}
+
+function transportError(code, message) {
+  const error = new Error(message);
+  error.code = code;
+  return error;
+}
+
+function dispatchHttpsJson({url, body, authorization, connectTimeoutMs, attemptTimeoutMs, requestImpl = https.request}) {
+  return new Promise((resolve) => {
+    const started = Date.now();
+    let settled = false;
+    let connectTimer;
+    let attemptTimer;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(connectTimer);
+      clearTimeout(attemptTimer);
+      resolve({...value, latency_ms: Date.now() - started});
+    };
+    const payload = Buffer.from(body, 'utf8');
+    const request = requestImpl(url, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'content-length': String(payload.length),
+        authorization
+      }
+    }, (response) => {
+      clearTimeout(connectTimer);
+      const chunks = [];
+      response.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+      response.on('end', () => {
+        const rawBody = Buffer.concat(chunks).toString('utf8');
+        let parsed = null;
+        let parseError = null;
+        try {
+          parsed = rawBody ? JSON.parse(rawBody) : null;
+        } catch {
+          parseError = {code: 'INVALID_JSON_RESPONSE', message: 'Provider response body was not valid JSON'};
+        }
+        const status = response.statusCode ?? null;
+        const providerError = status === 200 ? null : (parsed?.error ?? null);
+        finish({
+          http_status: status,
+          response_headers: responseHeaderSubset(response.headers),
+          retry_after: response.headers['retry-after'] ?? null,
+          response_body_sha256: sha256(rawBody),
+          response: status === 200 ? parsed : null,
+          provider_error: providerError,
+          transport_failure: false,
+          error: parseError ?? (status === 200 ? null : {
+            code: providerError?.code ?? `HTTP_${status}`,
+            message: providerError?.message ?? `Provider returned HTTP ${status}`
+          })
+        });
+      });
+    });
+    request.once('socket', (socket) => {
+      if (!socket.connecting) clearTimeout(connectTimer);
+      else socket.once('secureConnect', () => clearTimeout(connectTimer));
+    });
+    request.once('error', (error) => {
+      const kind = error.code === 'ATTEMPT_TIMEOUT' ? 'attempt_timeout' : 'connection_failure';
+      finish({http_status: null, response_headers: {}, retry_after: null, response_body_sha256: null,
+        response: null, provider_error: null, transport_failure: kind,
+        error: {code: error.code ?? 'CONNECTION_FAILURE', message: kind === 'attempt_timeout'
+          ? 'HTTP attempt exceeded the frozen total timeout'
+          : 'HTTP request failed before a classifiable response'}});
+    });
+    connectTimer = setTimeout(() => request.destroy(transportError('CONNECT_TIMEOUT', 'connect timeout')),
+      connectTimeoutMs);
+    attemptTimer = setTimeout(() => request.destroy(transportError('ATTEMPT_TIMEOUT', 'attempt timeout')),
+      attemptTimeoutMs);
+    request.end(payload);
+  });
+}
+
 class DeepSeekResponsesAdapter {
   constructor(options = {}) {
     const sdkAutoRetries = options.sdkAutoRetries ?? 0;
     if (sdkAutoRetries !== 0) throw new Error('SDK_AUTO_RETRIES_MUST_BE_ZERO');
     this.sdk_auto_retries = 0;
+    this.endpoint = options.endpoint ?? DEEPSEEK_RESPONSES_URL;
+    this.request_impl = options.requestImpl ?? https.request;
+    this.credential_env = 'DEEPSEEK_API_KEY';
+    this.dispatch_count = 0;
   }
 
-  async send() {
-    throw new Error('REAL_PROVIDER_DISABLED: offline contract harness only');
+  async send(request, context = {}) {
+    if (!context.attempt_record || !Object.isFrozen(context.attempt_record)) {
+      throw new Error('AUDITABLE_ATTEMPT_RECORD_REQUIRED');
+    }
+    const apiKey = process.env[this.credential_env];
+    if (!apiKey) throw new Error('MISSING_DEEPSEEK_API_KEY');
+    this.dispatch_count += 1;
+    return dispatchHttpsJson({
+      url: this.endpoint,
+      body: canonicalJson(request),
+      authorization: `Bearer ${apiKey}`,
+      connectTimeoutMs: TRANSPORT_CONTRACT.connect_timeout_ms,
+      attemptTimeoutMs: TRANSPORT_CONTRACT.attempt_timeout_ms,
+      requestImpl: this.request_impl
+    });
   }
 }
 
@@ -556,25 +668,25 @@ function buildMockScripts(prepared) {
   return scripts;
 }
 
-async function executePreparedRun(item, provider, fixture, manifest, options = {}) {
-  const clock = options.clock ?? new FakeClock();
+async function executeWithRetry({request, provider, runId, classify, contract, clock}) {
   const runStartedMs = clock.now();
-  const requestHash = sha256(item.request);
+  const requestSnapshot = canonicalJson(request);
+  const requestHash = sha256(requestSnapshot);
   const attempts = [];
   let classification;
   let terminalReason = null;
-  for (let attemptIndex = 1; attemptIndex <= manifest.execution_contract.max_attempts_per_run; attemptIndex += 1) {
+  for (let attemptIndex = 1; attemptIndex <= contract.max_retries + 1; attemptIndex += 1) {
     const attemptStartedMs = clock.now();
-    const attempt = await provider.send(item.request, {run_id: item.run.run_id, attempt_index: attemptIndex});
-    clock.advance(attempt.latency_ms ?? 0);
-    const requestSnapshot = canonicalJson(item.request);
-    const recordedAttempt = {attempt_index: attemptIndex, dispatched: true,
-      started_offset_ms: attemptStartedMs - runStartedMs, completed_offset_ms: clock.now() - runStartedMs,
-      request_sha256: sha256(requestSnapshot), ...attempt};
+    const attemptRecord = Object.freeze({attempt_index: attemptIndex, dispatched: true,
+      started_offset_ms: attemptStartedMs - runStartedMs, request_sha256: requestHash});
+    const attempt = await provider.send(request, {run_id: runId, attempt_index: attemptIndex,
+      attempt_record: attemptRecord});
+    if (clock.is_virtual) clock.advance(attempt.latency_ms ?? 0);
+    const recordedAttempt = {...attemptRecord, completed_offset_ms: clock.now() - runStartedMs, ...attempt};
     attempts.push(recordedAttempt);
-    classification = classifyAttempt(attempt, item.run.task_id, item.schema);
-    if (classification.terminal || !classification.retryable || attemptIndex === manifest.execution_contract.max_attempts_per_run) break;
-    const decision = retryDecision(attempt, clock.now() - runStartedMs, manifest.execution_contract.transport, clock.now());
+    classification = classify(attempt);
+    if (classification.terminal || !classification.retryable || attemptIndex === contract.max_retries + 1) break;
+    const decision = retryDecision(attempt, clock.now() - runStartedMs, contract, clock.now());
     recordedAttempt.retry_decision = decision;
     if (!decision.retry) {
       terminalReason = decision.reason;
@@ -586,6 +698,23 @@ async function executePreparedRun(item, provider, fixture, manifest, options = {
     classification = {...classification, terminal: true, status: 'PROVIDER_FAILED',
       failure_reason: terminalReason ?? 'RETRY_EXHAUSTED'};
   }
+  return {attempts, classification, request_hash: requestHash,
+    retry_wait_ms: clock.sleeps.reduce((sum, wait) => sum + wait, 0),
+    wall_time_ms: clock.now() - runStartedMs};
+}
+
+async function executePreparedRun(item, provider, fixture, manifest, options = {}) {
+  const clock = options.clock ?? new FakeClock();
+  const execution = await executeWithRetry({
+    request: item.request,
+    provider,
+    runId: item.run.run_id,
+    classify: (attempt) => classifyAttempt(attempt, item.run.task_id, item.schema),
+    contract: manifest.execution_contract.transport,
+    clock
+  });
+  const attempts = execution.attempts;
+  let classification = execution.classification;
 
   let evaluated = null;
   if (classification.status === 'STRUCTURED_OUTPUT_VALID') {
@@ -618,7 +747,7 @@ async function executePreparedRun(item, provider, fixture, manifest, options = {
     schema_sha256: manifest.schemas.per_task_sha256[item.run.task_id],
     fixture_sha256: manifest.benchmark.fixture_sha256,
     manifest_sha256: manifest.manifest_sha256,
-    request_sha256: requestHash,
+    request_sha256: execution.request_hash,
     request: item.request,
     response_id: lastAttempt.response?.id ?? null,
     provider_status: lastAttempt.response?.status ?? null,
@@ -628,8 +757,8 @@ async function executePreparedRun(item, provider, fixture, manifest, options = {
     retry_reason: attempts.length > 1 ? (attempts[0].error?.code ?? `HTTP_${attempts[0].http_status}`) : null,
     failure_reason: classification.failure_reason ?? null,
     provider_latency_ms: attempts.reduce((sum, attempt) => sum + (attempt.latency_ms ?? 0), 0),
-    retry_wait_ms: clock.sleeps.reduce((sum, wait) => sum + wait, 0),
-    wall_time_ms: clock.now() - runStartedMs,
+    retry_wait_ms: execution.retry_wait_ms,
+    wall_time_ms: execution.wall_time_ms,
     usage: lastAttempt.response?.usage ?? null,
     attempts,
     raw_output: classification.raw_output ?? null,
@@ -725,6 +854,7 @@ function writeArtifacts(report, outputRoot) {
 
 module.exports = {
   DEFAULT_EXPERIMENT_ID,
+  DEEPSEEK_RESPONSES_URL,
   DeepSeekResponsesAdapter,
   FakeClock,
   FakeProvider,
@@ -732,6 +862,7 @@ module.exports = {
   LATIN_ROWS,
   MAX_OUTPUT_TOKENS,
   RANDOMIZATION_SEED,
+  RealClock,
   RENDERER_CONTRACT,
   RETRYABLE_HTTP,
   RUN_ORDER_ALGORITHM_VERSION,
@@ -746,7 +877,9 @@ module.exports = {
   canonicalJson,
   classifyAttempt,
   deterministicOrder,
+  dispatchHttpsJson,
   executePreparedRun,
+  executeWithRetry,
   loadSchemas,
   parseRetryAfter,
   projectLlmCase,
