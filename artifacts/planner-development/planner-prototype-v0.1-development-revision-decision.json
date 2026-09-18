@@ -1,0 +1,87 @@
+{
+  "contract_version": "planner-prototype-contract-v0.1.2",
+  "decision": "ONE_GENERAL_REVISION",
+  "initial_prompt_sha256": "6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d",
+  "initial_batch": {
+    "completed": true,
+    "run_ids": [
+      "planner-dev-v0.1/initial/001/MD-EQ-01",
+      "planner-dev-v0.1/initial/002/MD-GROUP-02",
+      "planner-dev-v0.1/initial/003/MD-ORDER-03",
+      "planner-dev-v0.1/initial/004/MD-LOC-04",
+      "planner-dev-v0.1/initial/005/MD-CROSS-05",
+      "planner-dev-v0.1/initial/006/MD-GRAPH-06",
+      "planner-dev-v0.1/initial/007/MD-TOOL-07"
+    ],
+    "failure_classification_sha256": "7857308501fda5ae2bcf8dfdb7513009c99847f535a1012fb41e6a73e1bf99a8"
+  },
+  "general_revision_rationale": "Require the Planner to emit the smallest canonical, verifier-valid interpretation supported by trusted context: minimize operations and consumed sensitive capabilities, fully specify every frozen capability parameter, and bind each requirement to authority support exactly compatible with its operation, target, scope, and boundary.",
+  "revised_prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b",
+  "prompt_diff_sha256": "d85ac3032e40aa8454c5eff914b3c87e23eb0f66af743b89a5fa2160a7e1ab37",
+  "prompt_diff_format": "planner-prompt-exact-diff-v0.1",
+  "revision_decided_after_initial_batch": true,
+  "revised_prompt_frozen_before_first_dispatch": true,
+  "revised_prompt_artifact": {
+    "path": "prompts/planner-prototype-v0.1-revised.txt",
+    "diff_path": "artifacts/planner-development/planner-prototype-v0.1-prompt-exact-diff.json"
+  },
+  "revision_admissibility": {
+    "status": "PASS",
+    "denylist_sha256": "f5496fd857b56ff3ba7d1c469b9270c2079f07b56f41d8b7241611149965240f",
+    "zero_shot": true
+  },
+  "revised_batch": {
+    "dispatch_policy": "FULL_SEVEN_SERIAL_NO_SELECTIVE_RERUN",
+    "planned_runs": [
+      {
+        "run_id": "planner-dev-v0.1/revised/001/MD-EQ-01",
+        "run_order": 1,
+        "task_id": "MD-EQ-01",
+        "prompt_version": "revised",
+        "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b"
+      },
+      {
+        "run_id": "planner-dev-v0.1/revised/002/MD-GROUP-02",
+        "run_order": 2,
+        "task_id": "MD-GROUP-02",
+        "prompt_version": "revised",
+        "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b"
+      },
+      {
+        "run_id": "planner-dev-v0.1/revised/003/MD-ORDER-03",
+        "run_order": 3,
+        "task_id": "MD-ORDER-03",
+        "prompt_version": "revised",
+        "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b"
+      },
+      {
+        "run_id": "planner-dev-v0.1/revised/004/MD-LOC-04",
+        "run_order": 4,
+        "task_id": "MD-LOC-04",
+        "prompt_version": "revised",
+        "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b"
+      },
+      {
+        "run_id": "planner-dev-v0.1/revised/005/MD-CROSS-05",
+        "run_order": 5,
+        "task_id": "MD-CROSS-05",
+        "prompt_version": "revised",
+        "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b"
+      },
+      {
+        "run_id": "planner-dev-v0.1/revised/006/MD-GRAPH-06",
+        "run_order": 6,
+        "task_id": "MD-GRAPH-06",
+        "prompt_version": "revised",
+        "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b"
+      },
+      {
+        "run_id": "planner-dev-v0.1/revised/007/MD-TOOL-07",
+        "run_order": 7,
+        "task_id": "MD-TOOL-07",
+        "prompt_version": "revised",
+        "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b"
+      }
+    ]
+  }
+}

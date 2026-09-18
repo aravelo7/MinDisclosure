@@ -446,9 +446,11 @@ test('v0.1.1 P0 and Planner Spec provenance remain intact', () => {
   }
 });
 
-test('contract scope is closed and no real revised prompt exists', () => {
+test('contract scope stays closed when the later revision artifact exists', () => {
   assert.equal(fs.existsSync(path.join(
-    ROOT, 'prompts', 'planner-prototype-v0.1-revised.txt')), false);
+    ROOT, 'prompts', 'planner-prototype-v0.1-revised.txt')), true);
+  assert.equal(contract.includes(
+    'Use the smallest canonical operation set that directly expresses'), false);
   for (const phrase of [
     'NO_REVISION',
     'ONE_GENERAL_REVISION',

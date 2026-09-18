@@ -1,0 +1,3 @@
+prompts/planner-prototype-v0.1.txt text eol=lf
+prompts/planner-prototype-v0.1-revised.txt text eol=lf
+artifacts/planner-development/*.json text eol=lf
