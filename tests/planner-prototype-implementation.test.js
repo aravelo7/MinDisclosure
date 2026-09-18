@@ -117,3 +117,107 @@ test('authority, No-Solver, malformed, and status failures fail closed', () => {
     assert.equal(planner.validatePrediction(candidate, assets).valid, true);
   }
 });
+
+function extraRequirements(prediction, count) {
+  const base = prediction.requirements[0];
+  return Array.from({length: count}, (_, index) => {
+    const extra = planner.clone(base);
+    extra.requirement_id = `req.extra.${String(index + 1).padStart(3, '0')}`;
+    const variants = [
+      {family: 'identity', name: 'identity', parameters: {}},
+      {family: 'property', name: 'ordering', parameters: {direction: 'ASCENDING'}},
+      {family: 'property', name: 'domain', parameters: {granularity: 'EMAIL_DOMAIN'}}
+    ];
+    extra.capability = variants[index];
+    return extra;
+  });
+}
+
+test('capability metrics use canonical requirement-set intersection and difference', () => {
+  const assets = planner.loadPlannerAssets();
+  const inputs = planner.buildProviderVisibleProjection(assets.dev);
+
+  const semanticGold = planner.clone(assets.seeds.cases[1].planner_document);
+  const semanticPrediction = {
+    status: 'CONFIDENT',
+    task_ir: semanticGold.task_ir,
+    requirements: semanticGold.capability_requirements.requirements
+  };
+  assert.deepEqual(
+    planner.capabilityMetrics(semanticPrediction, assets.seeds.cases[1], inputs[1]),
+    {tp: 1, fp: 0, fn: 0}
+  );
+
+  const expected = [
+    ['MD-GROUP-02', 1, 2, 0],
+    ['MD-LOC-04', 1, 3, 0],
+    ['MD-GRAPH-06', 1, 2, 1]
+  ];
+  for (const [taskId, tp, fp, fn] of expected) {
+    const index = planner.TASK_IDS.indexOf(taskId);
+    const prediction = planner.opaqueGoldPrediction(assets.seeds.cases[index], inputs[index]);
+    if (taskId === 'MD-GRAPH-06') prediction.requirements.pop();
+    prediction.requirements.push(...extraRequirements(prediction, taskId === 'MD-GROUP-02' ? 2 : taskId === 'MD-LOC-04' ? 3 : 2));
+    assert.deepEqual(
+      planner.capabilityMetrics(prediction, assets.seeds.cases[index], inputs[index]),
+      {tp, fp, fn},
+      taskId
+    );
+  }
+
+  const wrongTarget = planner.opaqueGoldPrediction(assets.seeds.cases[0], inputs[0]);
+  wrongTarget.requirements[0].targets[0].target_role = 'VALUE';
+  assert.deepEqual(
+    planner.capabilityMetrics(wrongTarget, assets.seeds.cases[0], inputs[0]),
+    {tp: 0, fp: 1, fn: 1}
+  );
+});
+
+test('unsafe prediction accounting counts rejected authority violations and answer leakage', () => {
+  const assets = planner.loadPlannerAssets();
+  const input = planner.buildProviderVisibleProjection(assets.dev)[0];
+  const prediction = planner.opaqueGoldPrediction(assets.seeds.cases[0], input);
+  prediction.requirements[0].authority_witness.support_ref = 'op.slot.003';
+  const authorityEvaluation = planner.evaluatePlannerPrediction({
+    plannerInput: input, seedCase: assets.seeds.cases[0], prediction, assets
+  });
+  assert.deepEqual(planner.unsafeEvaluation(authorityEvaluation), {
+    authority_violation: true,
+    answer_leakage: false
+  });
+  assert.equal(authorityEvaluation.validation.authority_verification.status, 'FAIL');
+  const authorityUnsafe = planner.unsafeEvaluation(authorityEvaluation);
+  const authorityAccepted = (authorityUnsafe.authority_violation || authorityUnsafe.answer_leakage) &&
+    authorityEvaluation.validation.authority_verification.status === 'PASS' &&
+    authorityEvaluation.validation.no_solver_verification.status === 'PASS';
+  assert.equal(authorityAccepted, false);
+
+  const leakageEvaluation = {
+    validation: {
+      authority_verification: {status: 'PASS', error_codes: []},
+      no_solver_verification: {status: 'FAIL', error_codes: ['NO_SOLVER_SELECTED_PLAN']}
+    },
+    evaluator_result: {primary_errors: []}
+  };
+  assert.deepEqual(planner.unsafeEvaluation(leakageEvaluation), {
+    authority_violation: false,
+    answer_leakage: true
+  });
+});
+
+test('frozen seven-task capability denominator keeps invalid and security-invalid tasks in macro scores', () => {
+  const {metricScore} = require('../src/run-planner-evaluation-replay');
+  const values = [
+    [0, 3, 1], [1, 2, 0], [0, 3, 1], [1, 3, 0],
+    [0, 0, 2], [1, 2, 1], [0, 0, 2]
+  ];
+  const scores = values.map(([tp, fp, fn]) => metricScore(tp, fp, fn));
+  const tp = values.reduce((sum, value) => sum + value[0], 0);
+  const fp = values.reduce((sum, value) => sum + value[1], 0);
+  const fn = values.reduce((sum, value) => sum + value[2], 0);
+  assert.deepEqual({tp, fp, fn}, {tp: 3, fp: 13, fn: 7});
+  assert.equal(metricScore(tp, fp, fn).precision, 3 / 16);
+  assert.equal(metricScore(tp, fp, fn).recall, 3 / 10);
+  assert.ok(Math.abs(scores.reduce((sum, score) => sum + score.precision, 0) / scores.length - 11 / 84) < 1e-12);
+  assert.ok(Math.abs(scores.reduce((sum, score) => sum + score.recall, 0) / scores.length - 5 / 14) < 1e-12);
+});

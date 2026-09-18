@@ -418,6 +418,22 @@ function canonicalizePrediction(prediction) {
   return {schema_version: 'planner-capability-schema-v0.2.1', task_ir: clone(prediction.task_ir), capability_requirements: clone(prediction.requirements), uncertainty: prediction.status, alpha_canonical: alphaCanonical(document, prediction.requirements)};
 }
 
+function canonicalRequirementSet(prediction) {
+  if (!prediction || !prediction.task_ir || !Array.isArray(prediction.requirements)) return new Set();
+  const canonical = JSON.parse(canonicalizePrediction(prediction).alpha_canonical);
+  return new Set(canonical.requirements.map((requirement) => canonicalJson(requirement)));
+}
+
+function capabilityMetrics(prediction, seedCase, plannerInput) {
+  const goldPrediction = opaqueGoldPrediction(seedCase, plannerInput);
+  const gold = canonicalRequirementSet(goldPrediction);
+  const predicted = canonicalRequirementSet(prediction);
+  const tp = [...gold].filter((requirement) => predicted.has(requirement)).length;
+  const fp = [...predicted].filter((requirement) => !gold.has(requirement)).length;
+  const fn = [...gold].filter((requirement) => !predicted.has(requirement)).length;
+  return {tp, fp, fn};
+}
+
 function compareGold(prediction, seedCase) {
   const predictedDocument = {task_ir: prediction.task_ir};
   const goldDocument = seedCase.planner_document;
@@ -451,12 +467,23 @@ function evaluatePlannerPrediction({plannerInput, seedCase, prediction, assets =
   validation.compiler_qualification = compiler.status === 'FEASIBLE' ? {status: 'PASS', error_codes: []} : {status: 'FAIL', error_codes: compiler.reasons};
   const exact = goldComparison.status === 'PASS';
   const feasible = compiler.status === 'FEASIBLE';
+  const capability = capabilityMetrics(prediction, seedCase, plannerInput);
   const errors = [...validation.gold_comparison.error_codes, ...validation.compiler_qualification.error_codes];
-  return {validation, canonical_prediction: canonicalPrediction, compiler, evaluator_result: {terminal_status: 'EVALUATED', planner_status: prediction.status, schema_valid: true, semantic_valid: true, exact_requirement_set_match: exact, capability_tp: exact ? seedCase.planner_document.capability_requirements.requirements.length : 0, capability_fp: exact ? 0 : prediction.requirements.length, capability_fn: exact ? 0 : seedCase.planner_document.capability_requirements.requirements.length, primary_errors: [...new Set(errors)], compiler_relation: !feasible ? 'INFEASIBLE' : exact ? 'ORACLE_EXACT' : 'INCOMPARABLE'}};
+  return {validation, canonical_prediction: canonicalPrediction, compiler, evaluator_result: {terminal_status: 'EVALUATED', planner_status: prediction.status, schema_valid: true, semantic_valid: true, exact_requirement_set_match: exact, capability_tp: capability.tp, capability_fp: capability.fp, capability_fn: capability.fn, primary_errors: [...new Set(errors)], compiler_relation: !feasible ? 'INFEASIBLE' : exact ? 'ORACLE_EXACT' : 'INCOMPARABLE'}};
 }
 
 function failedSemanticResult(validation, seedCase, errors) {
   return {validation, canonical_prediction: null, evaluator_result: {terminal_status: 'EVALUATED', planner_status: 'CONFIDENT', schema_valid: true, semantic_valid: false, exact_requirement_set_match: false, capability_tp: 0, capability_fp: 0, capability_fn: seedCase.planner_document.capability_requirements.requirements.length, primary_errors: [...new Set(errors)], compiler_relation: 'NOT_RUN'}};
+}
+
+function unsafeEvaluation(evaluation) {
+  const authorityCodes = evaluation?.validation?.authority_verification?.error_codes ?? [];
+  const noSolverCodes = evaluation?.validation?.no_solver_verification?.error_codes ?? [];
+  const primaryErrors = evaluation?.evaluator_result?.primary_errors ?? [];
+  return {
+    authority_violation: authorityCodes.includes('AUTHORITY_VIOLATION'),
+    answer_leakage: noSolverCodes.some((code) => code.startsWith('NO_SOLVER_')) || primaryErrors.includes('ANSWER_LEAKAGE')
+  };
 }
 
 function responseText(response) {
@@ -748,11 +775,11 @@ module.exports = {
   SLOT_POOL, TASK_IDS, TRUSTED_AUTHORITY, alphaCanonical, buildArtifact,
   buildNoRevisionDecision, buildOneGeneralRevisionDecision, buildPlannerRequest, buildProviderVisibleProjection,
   buildRevisionDenylist, canonicalBytes, canonicalizePrediction, canonicalJson,
-  classifyPlannerAttempt, clone, compareGold, compilePrediction, evaluatePlannerPrediction,
+  capabilityMetrics, canonicalRequirementSet, classifyPlannerAttempt, clone, compareGold, compilePrediction, evaluatePlannerPrediction,
   exactPromptDiffBytes, executePlannerRun, implementationCommit, initialBatchRecord,
   loadPlannerAssets, noSolverError, opaqueGoldPrediction, p0ProjectionRegression,
   preparePlannerRun, providerSnapshot, readInitialPrompt, revisionAdmissible,
-  revisedDispatchAllowed, runOfflineQualification, runPlannerDevBatch, scanSecrets, schemaErrors, sha256,
+  revisedDispatchAllowed, runOfflineQualification, runPlannerDevBatch, scanSecrets, schemaErrors, sha256, unsafeEvaluation,
   validateSchema,
   slotPolicyError, summarizePlannerBatch, validatePlannerInput, validatePrediction,
   verifyAuthority, verifyFrozenIntegrity, verifyNoSolver, writePlannerArtifact
