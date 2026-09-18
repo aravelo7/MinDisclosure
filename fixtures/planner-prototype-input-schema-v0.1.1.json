@@ -1,0 +1,446 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindisclosure.local/schemas/planner-prototype-input-schema-v0.1.1.json",
+  "title": "MinDisclosure Planner Prototype Input v0.1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "operation_slot_policy",
+    "task",
+    "abstract_data_schema",
+    "trusted_workflow",
+    "trusted_tool_schema",
+    "authority_context",
+    "vocabulary"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "planner-prototype-contract-v0.1.1"
+    },
+    "operation_slot_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assignment_rule",
+        "slots"
+      ],
+      "properties": {
+        "assignment_rule": {
+          "const": "TASK_IR_ARRAY_ORDER_SMALLEST_AVAILABLE"
+        },
+        "slots": {
+          "const": [
+            "op.slot.001",
+            "op.slot.002",
+            "op.slot.003"
+          ]
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "instruction"
+      ],
+      "properties": {
+        "instruction": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "abstract_data_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_id",
+        "fields",
+        "relations"
+      ],
+      "properties": {
+        "schema_id": {
+          "type": "string",
+          "pattern": "^schema\\.[0-9]{3}$"
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field_ref",
+              "semantic_type",
+              "sensitive"
+            ],
+            "properties": {
+              "field_ref": {
+                "$ref": "#/$defs/field_ref"
+              },
+              "semantic_type": {
+                "$ref": "#/$defs/semantic_type"
+              },
+              "sensitive": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "relations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "relation_ref",
+              "source_field_ref",
+              "target_field_ref",
+              "orientation",
+              "source_declared"
+            ],
+            "properties": {
+              "relation_ref": {
+                "type": "string",
+                "pattern": "^relation\\.[a-z][a-z0-9_.-]*$"
+              },
+              "source_field_ref": {
+                "$ref": "#/$defs/field_ref"
+              },
+              "target_field_ref": {
+                "$ref": "#/$defs/field_ref"
+              },
+              "orientation": {
+                "enum": [
+                  "DIRECTED",
+                  "UNDIRECTED"
+                ]
+              },
+              "source_declared": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "trusted_workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "constraints"
+      ],
+      "properties": {
+        "constraints": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "rule_ref",
+              "rule_kind",
+              "applies_to_fields"
+            ],
+            "properties": {
+              "rule_ref": {
+                "type": "string",
+                "pattern": "^workflow\\.[a-z][a-z0-9_.-]*$"
+              },
+              "rule_kind": {
+                "enum": [
+                  "TOTAL_MAPPING",
+                  "SEMANTIC_ORDER"
+                ]
+              },
+              "applies_to_fields": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "#/$defs/field_ref"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "trusted_tool_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tools"
+      ],
+      "properties": {
+        "tools": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool_ref",
+              "parameters"
+            ],
+            "properties": {
+              "tool_ref": {
+                "type": "string",
+                "pattern": "^tool\\.[a-z][a-z0-9_.-]*$"
+              },
+              "parameters": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "parameter_ref",
+                    "name",
+                    "source_field_ref",
+                    "value_contract"
+                  ],
+                  "properties": {
+                    "parameter_ref": {
+                      "type": "string",
+                      "pattern": "^tool\\.[a-z][a-z0-9_.-]*$"
+                    },
+                    "name": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]*$"
+                    },
+                    "source_field_ref": {
+                      "$ref": "#/$defs/field_ref"
+                    },
+                    "value_contract": {
+                      "enum": [
+                        "SOURCE_VALUE",
+                        "EXACT_SOURCE_VALUE",
+                        "WORKFLOW_DERIVED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "authority_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sources"
+      ],
+      "properties": {
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "authority_class",
+              "supports"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "pattern": "^ctx\\.slot\\.[0-9]{3}$"
+              },
+              "authority_class": {
+                "enum": [
+                  "USER_INTENT",
+                  "TRUSTED_WORKFLOW",
+                  "DATA_SCHEMA",
+                  "TOOL_SCHEMA",
+                  "UNTRUSTED_CONTENT",
+                  "TOOL_OUTPUT"
+                ]
+              },
+              "supports": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "support_type",
+                    "support_ref"
+                  ],
+                  "properties": {
+                    "support_type": {
+                      "enum": [
+                        "OPERATION",
+                        "WORKFLOW_RULE",
+                        "SCHEMA_FIELD",
+                        "SOURCE_RELATION",
+                        "TOOL_PARAMETER"
+                      ]
+                    },
+                    "support_ref": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_.-]*$"
+                    }
+                  },
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "support_type": {
+                            "const": "OPERATION"
+                          }
+                        },
+                        "required": [
+                          "support_type"
+                        ]
+                      },
+                      "then": {
+                        "properties": {
+                          "support_ref": {
+                            "enum": [
+                              "op.slot.001",
+                              "op.slot.002",
+                              "op.slot.003"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "authority_class": {
+                      "const": "USER_INTENT"
+                    }
+                  },
+                  "required": [
+                    "authority_class"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "supports": {
+                      "const": [
+                        {
+                          "support_type": "OPERATION",
+                          "support_ref": "op.slot.001"
+                        },
+                        {
+                          "support_type": "OPERATION",
+                          "support_ref": "op.slot.002"
+                        },
+                        {
+                          "support_type": "OPERATION",
+                          "support_ref": "op.slot.003"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vocabulary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planner_spec_version",
+        "task_ir_version",
+        "capability_ir_version",
+        "operation_families",
+        "capability_names",
+        "boundaries"
+      ],
+      "properties": {
+        "planner_spec_version": {
+          "const": "planner-spec-v0.2.1"
+        },
+        "task_ir_version": {
+          "const": "task-ir-v0.2"
+        },
+        "capability_ir_version": {
+          "const": "information-capability-ir-v0.2"
+        },
+        "operation_families": {
+          "const": [
+            "equality",
+            "deduplicate",
+            "group_by",
+            "aggregate",
+            "sort",
+            "filter",
+            "compare",
+            "temporal_window",
+            "record_linkage",
+            "graph_relation",
+            "degree",
+            "reachability",
+            "select",
+            "tool_call"
+          ]
+        },
+        "capability_names": {
+          "const": [
+            "identity",
+            "equality",
+            "linkage",
+            "domain",
+            "category",
+            "ordering",
+            "coarse_temporal",
+            "geographic_region",
+            "service_zone",
+            "existing_relation",
+            "membership",
+            "directionality",
+            "temporal_comparison",
+            "exact_value"
+          ]
+        },
+        "boundaries": {
+          "const": [
+            "AGENT",
+            "TOOL"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "field_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.\\[\\]-]*$"
+    },
+    "semantic_type": {
+      "enum": [
+        "EMAIL",
+        "POSTAL_ADDRESS",
+        "DATE_OF_BIRTH",
+        "EVENT_TIMESTAMP",
+        "PERSON_NAME",
+        "RECORD_ID",
+        "NUMBER",
+        "INTEGER",
+        "STRING",
+        "TOOL_NAME",
+        "TOOL_PARAMETER"
+      ]
+    }
+  }
+}
