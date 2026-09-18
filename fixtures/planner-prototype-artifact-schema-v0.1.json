@@ -1,0 +1,454 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindisclosure.local/schemas/planner-prototype-artifact-schema-v0.1.json",
+  "title": "MinDisclosure Planner Prototype Run Artifact v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_version",
+    "run_identity",
+    "provenance",
+    "provider_snapshot",
+    "request",
+    "raw_prediction_text",
+    "raw_structured_prediction",
+    "validation",
+    "canonical_prediction",
+    "evaluator_result"
+  ],
+  "properties": {
+    "artifact_version": {
+      "const": "planner-prototype-run-artifact-v0.1"
+    },
+    "run_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "experiment_id",
+        "run_id",
+        "run_order",
+        "task_id",
+        "prompt_version",
+        "repetition_index"
+      ],
+      "properties": {
+        "experiment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^planner-dev-v0\\.1\\/(initial|revised)\\/[0-9]{3}\\/[A-Z0-9-]+$"
+        },
+        "run_order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^MD-[A-Z]+-[0-9]{2}$"
+        },
+        "prompt_version": {
+          "enum": [
+            "initial",
+            "revised"
+          ]
+        },
+        "repetition_index": {
+          "const": 1
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planner_spec_commit",
+        "planner_spec_tag_object",
+        "planner_spec_tree",
+        "prototype_contract_commit",
+        "prototype_contract_tag_object",
+        "prototype_contract_tree",
+        "prompt_sha256",
+        "input_set_sha256",
+        "output_schema_sha256",
+        "implementation_commit"
+      ],
+      "properties": {
+        "planner_spec_commit": {
+          "$ref": "#/$defs/sha"
+        },
+        "planner_spec_tag_object": {
+          "$ref": "#/$defs/sha"
+        },
+        "planner_spec_tree": {
+          "$ref": "#/$defs/sha"
+        },
+        "prototype_contract_commit": {
+          "$ref": "#/$defs/sha"
+        },
+        "prototype_contract_tag_object": {
+          "$ref": "#/$defs/sha"
+        },
+        "prototype_contract_tree": {
+          "$ref": "#/$defs/sha"
+        },
+        "prompt_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "input_set_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "output_schema_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "implementation_commit": {
+          "$ref": "#/$defs/sha"
+        }
+      }
+    },
+    "provider_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_sha256",
+        "checked_at",
+        "provider",
+        "api_surface",
+        "requested_model",
+        "documented_serving_model"
+      ],
+      "properties": {
+        "snapshot_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "provider": {
+          "const": "DeepSeek"
+        },
+        "api_surface": {
+          "const": "POST /responses"
+        },
+        "requested_model": {
+          "const": "deepseek-flash"
+        },
+        "documented_serving_model": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_sha256",
+        "reasoning_effort",
+        "temperature",
+        "max_output_tokens",
+        "stream",
+        "attempt_count"
+      ],
+      "properties": {
+        "request_sha256": {
+          "$ref": "#/$defs/sha"
+        },
+        "reasoning_effort": {
+          "const": "none"
+        },
+        "temperature": {
+          "const": 0
+        },
+        "max_output_tokens": {
+          "const": 4096
+        },
+        "stream": {
+          "const": false
+        },
+        "attempt_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        }
+      }
+    },
+    "raw_prediction_text": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "raw_structured_prediction": {
+      "oneOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_validation",
+        "authority_verification",
+        "no_solver_verification",
+        "canonicalization",
+        "gold_comparison",
+        "compiler_qualification"
+      ],
+      "properties": {
+        "schema_validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "error_codes"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "NOT_RUN"
+              ]
+            },
+            "error_codes": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            }
+          }
+        },
+        "authority_verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "error_codes"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "NOT_RUN"
+              ]
+            },
+            "error_codes": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            }
+          }
+        },
+        "no_solver_verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "error_codes"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "NOT_RUN"
+              ]
+            },
+            "error_codes": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            }
+          }
+        },
+        "canonicalization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "error_codes"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "NOT_RUN"
+              ]
+            },
+            "error_codes": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            }
+          }
+        },
+        "gold_comparison": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "error_codes"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "NOT_RUN"
+              ]
+            },
+            "error_codes": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            }
+          }
+        },
+        "compiler_qualification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "error_codes"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "NOT_RUN"
+              ]
+            },
+            "error_codes": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "canonical_prediction": {
+      "oneOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "evaluator_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "terminal_status",
+        "planner_status",
+        "schema_valid",
+        "semantic_valid",
+        "exact_requirement_set_match",
+        "capability_tp",
+        "capability_fp",
+        "capability_fn",
+        "primary_errors",
+        "compiler_relation"
+      ],
+      "properties": {
+        "terminal_status": {
+          "enum": [
+            "EVALUATED",
+            "INVALID_OUTPUT",
+            "PROVIDER_FAILED",
+            "REQUEST_INVALID",
+            "AUTH_FAILED",
+            "INCOMPLETE_OUTPUT"
+          ]
+        },
+        "planner_status": {
+          "enum": [
+            "CONFIDENT",
+            "UNCERTAIN",
+            "INVALID",
+            "NOT_PARSED"
+          ]
+        },
+        "schema_valid": {
+          "type": "boolean"
+        },
+        "semantic_valid": {
+          "type": "boolean"
+        },
+        "exact_requirement_set_match": {
+          "type": "boolean"
+        },
+        "capability_tp": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capability_fp": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capability_fn": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "primary_errors": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          }
+        },
+        "compiler_relation": {
+          "enum": [
+            "ORACLE_EXACT",
+            "MORE_DISCLOSING",
+            "LESS_CAPABLE",
+            "INCOMPARABLE",
+            "INFEASIBLE",
+            "NOT_RUN"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$|^[0-9a-f]{64}$"
+    }
+  }
+}
