@@ -1,0 +1,367 @@
+{
+  "artifact_version": "planner-prototype-run-artifact-v0.1",
+  "run_identity": {
+    "experiment_id": "planner-prototype-v0.1-revised-deepseek-flash-20260918-01",
+    "run_id": "planner-dev-v0.1/revised/005/MD-CROSS-05",
+    "run_order": 5,
+    "task_id": "MD-CROSS-05",
+    "prompt_version": "revised",
+    "repetition_index": 1
+  },
+  "provenance": {
+    "planner_spec_commit": "6b152f738e8b4f1d4a0186a36bb7466e40de88db",
+    "planner_spec_tag_object": "3b45322d29454134aff345b2413121f1b37008fa",
+    "planner_spec_tree": "54f4dc2d52af0ef3e1402528b510e6c91463b6fa",
+    "prototype_contract_commit": "547b82c8f1d145b5b0ef786549f6c9a41184e079",
+    "prototype_contract_tag_object": "82024f843e6ad369eae4240692aa40284ed00e5f",
+    "prototype_contract_tree": "3e5512840b337f8fc8096eb42dcc20b0ce8f90d7",
+    "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b",
+    "input_set_sha256": "a60d5363f02a90ffa848d0d050995d96628c6b165385faea8af5958ee1804ca6",
+    "output_schema_sha256": "f63ac27b1d068dc9e84acae436dfd7ef57b6aa776734c51c96829d6c5d181685",
+    "implementation_commit": "94ab9591ae0ab9738d61ff5113ad7bc41e288723"
+  },
+  "provider_snapshot": {
+    "checked_at": "2026-09-18T11:59:34.424Z",
+    "provider": "DeepSeek",
+    "api_surface": "POST /responses",
+    "requested_model": "deepseek-flash",
+    "documented_serving_model": "DeepSeek-V4.1-Flash",
+    "snapshot_sha256": "82567aac1f5d0242a27d405d6eb8b37185e0d251b0ec012f19831c0cff754ab4"
+  },
+  "request": {
+    "request_sha256": "9c6ae72848b3ce629789b4ef0d284fca7600191843b3b5f7942c3a97c5aa951b",
+    "reasoning_effort": "none",
+    "temperature": 0,
+    "max_output_tokens": 4096,
+    "stream": false,
+    "attempt_count": 1
+  },
+  "raw_prediction_text": "{\"status\":\"CONFIDENT\",\"task_ir\":{\"task_ir_version\":\"task-ir-v0.2\",\"operations\":[{\"operation_id\":\"op.slot.001\",\"family\":\"record_linkage\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"events.subject_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"LINK_KEY\"}],\"parameters\":{\"linkage_scope\":\"CROSS_RECORD\",\"equality_basis\":\"ENTITY_IDENTITY\"},\"depends_on\":[],\"result_shape\":\"record_pairs\"},{\"operation_id\":\"op.slot.002\",\"family\":\"temporal_window\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"TEMPORAL_VALUE\"}],\"parameters\":{\"interval_semantics\":\"CLOSED\",\"threshold\":{\"value\":72,\"unit\":\"HOUR\"}},\"depends_on\":[\"op.slot.001\"],\"result_shape\":\"record_pairs\"},{\"operation_id\":\"op.slot.003\",\"family\":\"sort\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"SORT_KEY\"}],\"parameters\":{\"direction\":\"ASCENDING\"},\"depends_on\":[\"op.slot.002\"],\"result_shape\":\"ordered_records\"}],\"presentation\":[{\"constraint_id\":\"presentation.pair_order\",\"kind\":\"semantic_order\",\"authority\":\"USER_INTENT\",\"scope\":\"record_pairs\",\"rule\":\"INPUT_ORDER\"}]},\"requirements\":[{\"requirement_id\":\"req.linkage\",\"operation_ref\":\"op.slot.001\",\"targets\":[{\"field_ref\":\"events.subject_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"LINK_KEY\"}],\"capability\":{\"family\":\"identity\",\"name\":\"linkage\",\"parameters\":{\"linkage_scope\":\"CROSS_RECORD\",\"equality_basis\":\"ENTITY_IDENTITY\"}},\"scope\":{\"kind\":\"ALL_RECORDS\"},\"boundary\":\"AGENT\",\"authority_witness\":{\"source_id\":\"ctx.slot.001\",\"authority_class\":\"USER_INTENT\",\"support_type\":\"OPERATION\",\"support_ref\":\"op.slot.001\"}},{\"requirement_id\":\"req.temporal_window\",\"operation_ref\":\"op.slot.002\",\"targets\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"TEMPORAL_VALUE\"}],\"capability\":{\"family\":\"relation\",\"name\":\"temporal_comparison\",\"parameters\":{\"interval_semantics\":\"CLOSED\",\"threshold\":{\"value\":72,\"unit\":\"HOUR\"}}},\"scope\":{\"kind\":\"ALL_RECORDS\"},\"boundary\":\"AGENT\",\"authority_witness\":{\"source_id\":\"ctx.slot.002\",\"authority_class\":\"DATA_SCHEMA\",\"support_type\":\"SCHEMA_FIELD\",\"support_ref\":\"events.timestamp\"}}]}",
+  "raw_structured_prediction": {
+    "status": "CONFIDENT",
+    "task_ir": {
+      "task_ir_version": "task-ir-v0.2",
+      "operations": [
+        {
+          "operation_id": "op.slot.001",
+          "family": "record_linkage",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "events.subject_email",
+              "semantic_type": "EMAIL",
+              "target_role": "LINK_KEY"
+            }
+          ],
+          "parameters": {
+            "linkage_scope": "CROSS_RECORD",
+            "equality_basis": "ENTITY_IDENTITY"
+          },
+          "depends_on": [],
+          "result_shape": "record_pairs"
+        },
+        {
+          "operation_id": "op.slot.002",
+          "family": "temporal_window",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "events.timestamp",
+              "semantic_type": "EVENT_TIMESTAMP",
+              "target_role": "TEMPORAL_VALUE"
+            }
+          ],
+          "parameters": {
+            "interval_semantics": "CLOSED",
+            "threshold": {
+              "value": 72,
+              "unit": "HOUR"
+            }
+          },
+          "depends_on": [
+            "op.slot.001"
+          ],
+          "result_shape": "record_pairs"
+        },
+        {
+          "operation_id": "op.slot.003",
+          "family": "sort",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "events.timestamp",
+              "semantic_type": "EVENT_TIMESTAMP",
+              "target_role": "SORT_KEY"
+            }
+          ],
+          "parameters": {
+            "direction": "ASCENDING"
+          },
+          "depends_on": [
+            "op.slot.002"
+          ],
+          "result_shape": "ordered_records"
+        }
+      ],
+      "presentation": [
+        {
+          "constraint_id": "presentation.pair_order",
+          "kind": "semantic_order",
+          "authority": "USER_INTENT",
+          "scope": "record_pairs",
+          "rule": "INPUT_ORDER"
+        }
+      ]
+    },
+    "requirements": [
+      {
+        "requirement_id": "req.linkage",
+        "operation_ref": "op.slot.001",
+        "targets": [
+          {
+            "field_ref": "events.subject_email",
+            "semantic_type": "EMAIL",
+            "target_role": "LINK_KEY"
+          }
+        ],
+        "capability": {
+          "family": "identity",
+          "name": "linkage",
+          "parameters": {
+            "linkage_scope": "CROSS_RECORD",
+            "equality_basis": "ENTITY_IDENTITY"
+          }
+        },
+        "scope": {
+          "kind": "ALL_RECORDS"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.001",
+          "authority_class": "USER_INTENT",
+          "support_type": "OPERATION",
+          "support_ref": "op.slot.001"
+        }
+      },
+      {
+        "requirement_id": "req.temporal_window",
+        "operation_ref": "op.slot.002",
+        "targets": [
+          {
+            "field_ref": "events.timestamp",
+            "semantic_type": "EVENT_TIMESTAMP",
+            "target_role": "TEMPORAL_VALUE"
+          }
+        ],
+        "capability": {
+          "family": "relation",
+          "name": "temporal_comparison",
+          "parameters": {
+            "interval_semantics": "CLOSED",
+            "threshold": {
+              "value": 72,
+              "unit": "HOUR"
+            }
+          }
+        },
+        "scope": {
+          "kind": "ALL_RECORDS"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.002",
+          "authority_class": "DATA_SCHEMA",
+          "support_type": "SCHEMA_FIELD",
+          "support_ref": "events.timestamp"
+        }
+      }
+    ]
+  },
+  "validation": {
+    "schema_validation": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "authority_verification": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "no_solver_verification": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "canonicalization": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "gold_comparison": {
+      "status": "FAIL",
+      "error_codes": [
+        "GOLD_MISMATCH"
+      ]
+    },
+    "compiler_qualification": {
+      "status": "FAIL",
+      "error_codes": [
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ]
+    }
+  },
+  "canonical_prediction": {
+    "schema_version": "planner-capability-schema-v0.2.1",
+    "task_ir": {
+      "task_ir_version": "task-ir-v0.2",
+      "operations": [
+        {
+          "operation_id": "op.slot.001",
+          "family": "record_linkage",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "events.subject_email",
+              "semantic_type": "EMAIL",
+              "target_role": "LINK_KEY"
+            }
+          ],
+          "parameters": {
+            "linkage_scope": "CROSS_RECORD",
+            "equality_basis": "ENTITY_IDENTITY"
+          },
+          "depends_on": [],
+          "result_shape": "record_pairs"
+        },
+        {
+          "operation_id": "op.slot.002",
+          "family": "temporal_window",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "events.timestamp",
+              "semantic_type": "EVENT_TIMESTAMP",
+              "target_role": "TEMPORAL_VALUE"
+            }
+          ],
+          "parameters": {
+            "interval_semantics": "CLOSED",
+            "threshold": {
+              "value": 72,
+              "unit": "HOUR"
+            }
+          },
+          "depends_on": [
+            "op.slot.001"
+          ],
+          "result_shape": "record_pairs"
+        },
+        {
+          "operation_id": "op.slot.003",
+          "family": "sort",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "events.timestamp",
+              "semantic_type": "EVENT_TIMESTAMP",
+              "target_role": "SORT_KEY"
+            }
+          ],
+          "parameters": {
+            "direction": "ASCENDING"
+          },
+          "depends_on": [
+            "op.slot.002"
+          ],
+          "result_shape": "ordered_records"
+        }
+      ],
+      "presentation": [
+        {
+          "constraint_id": "presentation.pair_order",
+          "kind": "semantic_order",
+          "authority": "USER_INTENT",
+          "scope": "record_pairs",
+          "rule": "INPUT_ORDER"
+        }
+      ]
+    },
+    "capability_requirements": [
+      {
+        "requirement_id": "req.linkage",
+        "operation_ref": "op.slot.001",
+        "targets": [
+          {
+            "field_ref": "events.subject_email",
+            "semantic_type": "EMAIL",
+            "target_role": "LINK_KEY"
+          }
+        ],
+        "capability": {
+          "family": "identity",
+          "name": "linkage",
+          "parameters": {
+            "linkage_scope": "CROSS_RECORD",
+            "equality_basis": "ENTITY_IDENTITY"
+          }
+        },
+        "scope": {
+          "kind": "ALL_RECORDS"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.001",
+          "authority_class": "USER_INTENT",
+          "support_type": "OPERATION",
+          "support_ref": "op.slot.001"
+        }
+      },
+      {
+        "requirement_id": "req.temporal_window",
+        "operation_ref": "op.slot.002",
+        "targets": [
+          {
+            "field_ref": "events.timestamp",
+            "semantic_type": "EVENT_TIMESTAMP",
+            "target_role": "TEMPORAL_VALUE"
+          }
+        ],
+        "capability": {
+          "family": "relation",
+          "name": "temporal_comparison",
+          "parameters": {
+            "interval_semantics": "CLOSED",
+            "threshold": {
+              "value": 72,
+              "unit": "HOUR"
+            }
+          }
+        },
+        "scope": {
+          "kind": "ALL_RECORDS"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.002",
+          "authority_class": "DATA_SCHEMA",
+          "support_type": "SCHEMA_FIELD",
+          "support_ref": "events.timestamp"
+        }
+      }
+    ],
+    "uncertainty": "CONFIDENT",
+    "alpha_canonical": "{\"operations\":[{\"alpha_id\":\"op.alpha.001\",\"operation\":{\"depends_on\":[\"op.alpha.002\"],\"family\":\"sort\",\"inputs\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"SORT_KEY\"}],\"parameters\":{\"direction\":\"ASCENDING\"},\"result_shape\":\"ordered_records\",\"role\":\"AGENT_REASONING\"}},{\"alpha_id\":\"op.alpha.002\",\"operation\":{\"depends_on\":[\"op.alpha.003\"],\"family\":\"temporal_window\",\"inputs\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"TEMPORAL_VALUE\"}],\"parameters\":{\"interval_semantics\":\"CLOSED\",\"threshold\":{\"unit\":\"HOUR\",\"value\":72}},\"result_shape\":\"record_pairs\",\"role\":\"AGENT_REASONING\"}},{\"alpha_id\":\"op.alpha.003\",\"operation\":{\"depends_on\":[],\"family\":\"record_linkage\",\"inputs\":[{\"field_ref\":\"events.subject_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"LINK_KEY\"}],\"parameters\":{\"equality_basis\":\"ENTITY_IDENTITY\",\"linkage_scope\":\"CROSS_RECORD\"},\"result_shape\":\"record_pairs\",\"role\":\"AGENT_REASONING\"}}],\"presentation\":[{\"authority\":\"USER_INTENT\",\"kind\":\"semantic_order\",\"rule\":\"INPUT_ORDER\",\"scope\":\"record_pairs\"}],\"requirements\":[{\"authority_witness\":{\"authority_class\":\"DATA_SCHEMA\",\"support_ref\":\"events.timestamp\",\"support_type\":\"SCHEMA_FIELD\"},\"boundary\":\"AGENT\",\"capability\":{\"family\":\"relation\",\"name\":\"temporal_comparison\",\"parameters\":{\"interval_semantics\":\"CLOSED\",\"threshold\":{\"unit\":\"HOUR\",\"value\":72}}},\"operation_ref\":\"op.alpha.002\",\"scope\":{\"kind\":\"ALL_RECORDS\"},\"targets\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"TEMPORAL_VALUE\"}]},{\"authority_witness\":{\"authority_class\":\"USER_INTENT\",\"support_ref\":\"op.alpha.003\",\"support_type\":\"OPERATION\"},\"boundary\":\"AGENT\",\"capability\":{\"family\":\"identity\",\"name\":\"linkage\",\"parameters\":{\"equality_basis\":\"ENTITY_IDENTITY\",\"linkage_scope\":\"CROSS_RECORD\"}},\"operation_ref\":\"op.alpha.003\",\"scope\":{\"kind\":\"ALL_RECORDS\"},\"targets\":[{\"field_ref\":\"events.subject_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"LINK_KEY\"}]}],\"task_ir_version\":\"task-ir-v0.2\"}"
+  },
+  "evaluator_result": {
+    "terminal_status": "EVALUATED",
+    "planner_status": "CONFIDENT",
+    "schema_valid": true,
+    "semantic_valid": true,
+    "exact_requirement_set_match": false,
+    "capability_tp": 0,
+    "capability_fp": 2,
+    "capability_fn": 2,
+    "primary_errors": [
+      "GOLD_MISMATCH",
+      "SEMANTIC_REQUIREMENT_INVALID"
+    ],
+    "compiler_relation": "INFEASIBLE"
+  }
+}

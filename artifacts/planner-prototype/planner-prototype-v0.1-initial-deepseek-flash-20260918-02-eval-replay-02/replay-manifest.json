@@ -1,0 +1,20 @@
+{
+  "replay_manifest_version": "planner-prototype-evaluation-replay-manifest-v0.1",
+  "source_experiment_id": "planner-prototype-v0.1-initial-deepseek-flash-20260918-02",
+  "source_artifact_set_sha256": "6eb49786f7b0762a317741e7891c0bfdd0c6f5840f9561c2b3d6b65e8c97bd7f",
+  "source_implementation_commit": "84f22b85aacf3838335170e0eb6549ec361515a6",
+  "repaired_implementation_commit": "8ad65ddc4dbac55e8a1b0263af6bedb551781319",
+  "frozen_provenance": {
+    "planner_spec_commit": "6b152f738e8b4f1d4a0186a36bb7466e40de88db",
+    "prototype_contract_commit": "547b82c8f1d145b5b0ef786549f6c9a41184e079",
+    "prompt_sha256": "6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d",
+    "input_set_sha256": "a60d5363f02a90ffa848d0d050995d96628c6b165385faea8af5958ee1804ca6",
+    "output_schema_sha256": "f63ac27b1d068dc9e84acae436dfd7ef57b6aa776734c51c96829d6c5d181685"
+  },
+  "execution_reused": true,
+  "model_invoked": false,
+  "evaluation_replay": true,
+  "source_execution_immutable": true,
+  "provider_dispatch_count": 0,
+  "replay_artifact_set_sha256": "87613081d699d75886411cc668d702715db3cd5690fb3110de26290c171ad19f"
+}

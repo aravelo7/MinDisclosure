@@ -1,0 +1,82 @@
+{
+  "artifact_version": "planner-prototype-run-artifact-v0.1",
+  "run_identity": {
+    "experiment_id": "planner-prototype-v0.1-initial-deepseek-flash-20260918-02",
+    "run_id": "planner-dev-v0.1/initial/005/MD-CROSS-05",
+    "run_order": 5,
+    "task_id": "MD-CROSS-05",
+    "prompt_version": "initial",
+    "repetition_index": 1
+  },
+  "provenance": {
+    "planner_spec_commit": "6b152f738e8b4f1d4a0186a36bb7466e40de88db",
+    "planner_spec_tag_object": "3b45322d29454134aff345b2413121f1b37008fa",
+    "planner_spec_tree": "54f4dc2d52af0ef3e1402528b510e6c91463b6fa",
+    "prototype_contract_commit": "547b82c8f1d145b5b0ef786549f6c9a41184e079",
+    "prototype_contract_tag_object": "82024f843e6ad369eae4240692aa40284ed00e5f",
+    "prototype_contract_tree": "3e5512840b337f8fc8096eb42dcc20b0ce8f90d7",
+    "prompt_sha256": "6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d",
+    "input_set_sha256": "a60d5363f02a90ffa848d0d050995d96628c6b165385faea8af5958ee1804ca6",
+    "output_schema_sha256": "f63ac27b1d068dc9e84acae436dfd7ef57b6aa776734c51c96829d6c5d181685",
+    "implementation_commit": "84f22b85aacf3838335170e0eb6549ec361515a6"
+  },
+  "provider_snapshot": {
+    "checked_at": "2026-09-18T07:51:40.1258068Z",
+    "provider": "DeepSeek",
+    "api_surface": "POST /responses",
+    "requested_model": "deepseek-flash",
+    "documented_serving_model": "DeepSeek-V4.1-Flash",
+    "snapshot_sha256": "ddcd55145d37fb10f53740dc0bb87d3c8f94b3bfc3a8f9534106770205f07a4a"
+  },
+  "request": {
+    "request_sha256": "c5b9eebc572d6a211e0944fa238d1b326fdca8a1be1f8b9181fd242e7c3d92ef",
+    "reasoning_effort": "none",
+    "temperature": 0,
+    "max_output_tokens": 4096,
+    "stream": false,
+    "attempt_count": 1
+  },
+  "raw_prediction_text": "{\"status\":\"CONFIDENT\",\"task_ir\":{\"task_ir_version\":\"task-ir-v0.2\",\"operations\":[{\"operation_id\":\"op.slot.001\",\"family\":\"record_linkage\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"events.subject_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"LINK_KEY\"}],\"parameters\":{\"linkage_scope\":\"CROSS_RECORD\",\"equality_basis\":\"ENTITY_IDENTITY\"},\"depends_on\":[],\"result_shape\":\"record_pairs\"},{\"operation_id\":\"op.slot.002\",\"family\":\"temporal_window\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"TEMPORAL_VALUE\"}],\"parameters\":{\"threshold\":{\"value\":72,\"unit\":\"HOUR\"},\"interval_semantics\":\"CLOSED\"},\"depends_on\":[\"op.slot.001\"],\"result_shape\":\"record_pairs\"},{\"operation_id\":\"op.slot.003\",\"family\":\"sort\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"SORT_KEY\"}],\"parameters\":{\"direction\":\"ASCENDING\"},\"depends_on\":[\"op.slot.002\"],\"result_shape\":\"ordered_records\"}],\"presentation\":[{\"constraint_id\":\"presentation.pair_order\",\"kind\":\"semantic_order\",\"authority\":\"USER_INTENT\",\"scope\":\"op.slot.003\",\"rule\":\"INPUT_ORDER\"}]},\"requirements\":[{\"requirement_id\":\"req.linkage\",\"operation_ref\":\"op.slot.001\",\"targets\":[{\"field_ref\":\"events.subject_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"LINK_KEY\"}],\"capability\":{\"family\":\"identity\",\"name\":\"linkage\",\"parameters\":{\"linkage_scope\":\"CROSS_RECORD\",\"equality_basis\":\"ENTITY_IDENTITY\"}},\"scope\":{\"kind\":\"ALL_RECORDS\"},\"boundary\":\"AGENT\",\"authority_witness\":{\"source_id\":\"ctx.slot.001\",\"authority_class\":\"USER_INTENT\",\"support_type\":\"OPERATION\",\"support_ref\":\"op.slot.001\"}},{\"requirement_id\":\"req.temporal_window\",\"operation_ref\":\"op.slot.002\",\"targets\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"TEMPORAL_VALUE\"}],\"capability\":{\"family\":\"relation\",\"name\":\"temporal_comparison\",\"parameters\":{\"threshold\":{\"value\":72,\"unit\":\"HOUR\"},\"interval_semantics\":\"CLOSED\"}},\"scope\":{\"kind\":\"ALL_RECORDS\"},\"boundary\":\"AGENT\",\"authority_witness\":{\"source_id\":\"ctx.slot.001\",\"authority_class\":\"USER_INTENT\",\"support_type\":\"OPERATION\",\"support_ref\":\"op.slot.002\"}},{\"requirement_id\":\"req.ordering\",\"operation_ref\":\"op.slot.003\",\"targets\":[{\"field_ref\":\"events.timestamp\",\"semantic_type\":\"EVENT_TIMESTAMP\",\"target_role\":\"SORT_KEY\"}],\"capability\":{\"family\":\"property\",\"name\":\"ordering\",\"parameters\":{\"direction\":\"ASCENDING\"}},\"scope\":{\"kind\":\"ALL_RECORDS\"},\"boundary\":\"AGENT\",\"authority_witness\":{\"source_id\":\"ctx.slot.001\",\"authority_class\":\"USER_INTENT\",\"support_type\":\"OPERATION\",\"support_ref\":\"op.slot.003\"}}]}}",
+  "raw_structured_prediction": null,
+  "validation": {
+    "schema_validation": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "authority_verification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "no_solver_verification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "canonicalization": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "gold_comparison": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "compiler_qualification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    }
+  },
+  "canonical_prediction": null,
+  "evaluator_result": {
+    "terminal_status": "INVALID_OUTPUT",
+    "planner_status": "NOT_PARSED",
+    "schema_valid": false,
+    "semantic_valid": false,
+    "exact_requirement_set_match": false,
+    "capability_tp": 0,
+    "capability_fp": 0,
+    "capability_fn": 2,
+    "primary_errors": [
+      "INVALID_OUTPUT"
+    ],
+    "compiler_relation": "NOT_RUN"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "replay_artifact_version": "planner-prototype-evaluation-replay-v0.1",
+  "source_artifact_path": "runs/005-MD-CROSS-05.json",
+  "source_artifact_sha256": "fa284e797ab615d23035d2625bd64822bb575257f9d5bb483e0ca072600a1a9c",
+  "source_run_id": "planner-dev-v0.1/initial/005/MD-CROSS-05",
+  "run_identity": {
+    "experiment_id": "planner-prototype-v0.1-initial-deepseek-flash-20260918-02",
+    "run_id": "planner-dev-v0.1/initial/005/MD-CROSS-05",
+    "run_order": 5,
+    "task_id": "MD-CROSS-05",
+    "prompt_version": "initial",
+    "repetition_index": 1
+  },
+  "validation": {
+    "schema_validation": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "authority_verification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "no_solver_verification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "canonicalization": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "gold_comparison": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "compiler_qualification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    }
+  },
+  "canonical_prediction": null,
+  "evaluator_result": {
+    "terminal_status": "INVALID_OUTPUT",
+    "planner_status": "NOT_PARSED",
+    "schema_valid": false,
+    "semantic_valid": false,
+    "exact_requirement_set_match": false,
+    "capability_tp": 0,
+    "capability_fp": 0,
+    "capability_fn": 2,
+    "primary_errors": [
+      "INVALID_OUTPUT"
+    ],
+    "compiler_relation": "NOT_RUN"
+  },
+  "unsafe_prediction": false,
+  "unsafe_prediction_accepted": false,
+  "source_execution_immutable": true
+}

@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-09-18T11:59:34.424Z",
+  "provider": "DeepSeek",
+  "api_surface": "POST /responses",
+  "requested_model": "deepseek-flash",
+  "documented_serving_model": "DeepSeek-V4.1-Flash",
+  "models_endpoint": "GET /models",
+  "models_endpoint_status": 200,
+  "models_endpoint_ids": [
+    "deepseek-flash",
+    "deepseek-v4-pro"
+  ],
+  "responses_endpoint_auth_status": 401,
+  "responses_api_status": "documented_and_reachable",
+  "structured_output_status": "json_schema_documented",
+  "alias_routing": "deepseek-flash listed; legacy deepseek-v4-flash names retired and routed to DeepSeek-V4.1-Flash",
+  "snapshot_sha256": "524b52497d46ac4cc3d78f87ca037c82274ce5564d0c5796e40d0ec1e252c3ad"
+}

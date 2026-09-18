@@ -1,0 +1,60 @@
+{
+  "replay_artifact_version": "planner-prototype-evaluation-replay-v0.1",
+  "source_artifact_path": "runs/007-MD-TOOL-07.json",
+  "source_artifact_sha256": "12ac7f0b1e2e29da327713f286ff93344d784436973ce2d4e18c4992dd1f8f76",
+  "source_run_id": "planner-dev-v0.1/initial/007/MD-TOOL-07",
+  "run_identity": {
+    "experiment_id": "planner-prototype-v0.1-initial-deepseek-flash-20260918-02",
+    "run_id": "planner-dev-v0.1/initial/007/MD-TOOL-07",
+    "run_order": 7,
+    "task_id": "MD-TOOL-07",
+    "prompt_version": "initial",
+    "repetition_index": 1
+  },
+  "validation": {
+    "schema_validation": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "authority_verification": {
+      "status": "FAIL",
+      "error_codes": [
+        "AUTHORITY_VIOLATION"
+      ]
+    },
+    "no_solver_verification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "canonicalization": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "gold_comparison": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "compiler_qualification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    }
+  },
+  "canonical_prediction": null,
+  "evaluator_result": {
+    "terminal_status": "EVALUATED",
+    "planner_status": "CONFIDENT",
+    "schema_valid": true,
+    "semantic_valid": false,
+    "exact_requirement_set_match": false,
+    "capability_tp": 0,
+    "capability_fp": 0,
+    "capability_fn": 2,
+    "primary_errors": [
+      "AUTHORITY_VIOLATION"
+    ],
+    "compiler_relation": "NOT_RUN"
+  },
+  "unsafe_prediction": true,
+  "unsafe_prediction_accepted": false,
+  "source_execution_immutable": true
+}

@@ -1,0 +1,82 @@
+{
+  "artifact_version": "planner-prototype-run-artifact-v0.1",
+  "run_identity": {
+    "experiment_id": "planner-prototype-v0.1-revised-deepseek-flash-20260918-01",
+    "run_id": "planner-dev-v0.1/revised/007/MD-TOOL-07",
+    "run_order": 7,
+    "task_id": "MD-TOOL-07",
+    "prompt_version": "revised",
+    "repetition_index": 1
+  },
+  "provenance": {
+    "planner_spec_commit": "6b152f738e8b4f1d4a0186a36bb7466e40de88db",
+    "planner_spec_tag_object": "3b45322d29454134aff345b2413121f1b37008fa",
+    "planner_spec_tree": "54f4dc2d52af0ef3e1402528b510e6c91463b6fa",
+    "prototype_contract_commit": "547b82c8f1d145b5b0ef786549f6c9a41184e079",
+    "prototype_contract_tag_object": "82024f843e6ad369eae4240692aa40284ed00e5f",
+    "prototype_contract_tree": "3e5512840b337f8fc8096eb42dcc20b0ce8f90d7",
+    "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b",
+    "input_set_sha256": "a60d5363f02a90ffa848d0d050995d96628c6b165385faea8af5958ee1804ca6",
+    "output_schema_sha256": "f63ac27b1d068dc9e84acae436dfd7ef57b6aa776734c51c96829d6c5d181685",
+    "implementation_commit": "94ab9591ae0ab9738d61ff5113ad7bc41e288723"
+  },
+  "provider_snapshot": {
+    "checked_at": "2026-09-18T11:59:34.424Z",
+    "provider": "DeepSeek",
+    "api_surface": "POST /responses",
+    "requested_model": "deepseek-flash",
+    "documented_serving_model": "DeepSeek-V4.1-Flash",
+    "snapshot_sha256": "82567aac1f5d0242a27d405d6eb8b37185e0d251b0ec012f19831c0cff754ab4"
+  },
+  "request": {
+    "request_sha256": "56e8e6df6580ef27efc9b35f6862a27bffbf578f5d8fbe78cef1a06c1bd7713f",
+    "reasoning_effort": "none",
+    "temperature": 0,
+    "max_output_tokens": 4096,
+    "stream": false,
+    "attempt_count": 1
+  },
+  "raw_prediction_text": "{\"status\":\"CONFIDENT\",\"task_ir\":{\"task_ir_version\":\"task-ir-v0.2\",\"operations\":[{\"operation_id\":\"op.slot.001\",\"family\":\"sort\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"tickets.severity\",\"semantic_type\":\"INTEGER\",\"target_role\":\"SORT_KEY\"}],\"parameters\":{\"direction\":\"DESCENDING\"},\"depends_on\":[],\"result_shape\":\"ordered_records\"},{\"operation_id\":\"op.slot.002\",\"family\":\"select\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"tickets.ticket_id\",\"semantic_type\":\"RECORD_ID\",\"target_role\":\"VALUE\"},{\"field_ref\":\"tickets.recipient_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"VALUE\"},{\"field_ref\":\"tickets.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"VALUE\"}],\"parameters\":{},\"depends_on\":[\"op.slot.001\"],\"result_shape\":\"selected_record\"},{\"operation_id\":\"op.slot.003\",\"family\":\"tool_call\",\"role\":\"TOOL_EXECUTION\",\"inputs\":[{\"field_ref\":\"tickets.ticket_id\",\"semantic_type\":\"RECORD_ID\",\"target_role\":\"TOOL_ARGUMENT\"},{\"field_ref\":\"tickets.recipient_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"TOOL_ARGUMENT\"},{\"field_ref\":\"tickets.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"TOOL_ARGUMENT\"}],\"parameters\":{},\"depends_on\":[\"op.slot.002\"],\"result_shape\":\"tool_call\",\"tool_ref\":\"tool.dispatch_visit\",\"tool_parameters\":[{\"parameter_ref\":\"tool.dispatch_visit.ticket_id\",\"name\":\"ticket_id\",\"semantic_type\":\"RECORD_ID\",\"source_field_ref\":\"tickets.ticket_id\"},{\"parameter_ref\":\"tool.dispatch_visit.recipient\",\"name\":\"recipient\",\"semantic_type\":\"EMAIL\",\"source_field_ref\":\"tickets.recipient_email\"},{\"parameter_ref\":\"tool.dispatch_visit.service_zone\",\"name\":\"service_zone\",\"semantic_type\":\"POSTAL_ADDRESS\",\"source_field_ref\":\"tickets.address\"}]}],\"presentation\":[]},\"requirements\":[{\"requirement_id\":\"req.001\",\"operation_ref\":\"op.slot.001\",\"targets\":[{\"field_ref\":\"tickets.severity\",\"semantic_type\":\"INTEGER\",\"target_role\":\"SORT_KEY\"}],\"capability\":{\"family\":\"property\",\"name\":\"ordering\",\"parameters\":{}},\"scope\":{\"kind\":\"ALL_RECORDS\"},\"boundary\":\"AGENT\",\"authority_witness\":{\"source_id\":\"ctx.slot.001\",\"authority_class\":\"USER_INTENT\",\"support_type\":\"OPERATION\",\"support_ref\":\"op.slot.001\"}},{\"requirement_id\":\"req.002\",\"operation_ref\":\"op.slot.003\",\"targets\":[{\"field_ref\":\"tickets.recipient_email\",\"semantic_type\":\"EMAIL\",\"target_role\":\"TOOL_ARGUMENT\"}],\"capability\":{\"family\":\"exact_value\",\"name\":\"exact_value\",\"parameters\":{}},\"scope\":{\"kind\":\"DECLARED_TOOL_ARGUMENT\",\"reference\":\"tool.dispatch_visit.recipient\"},\"boundary\":\"TOOL\",\"authority_witness\":{\"source_id\":\"ctx.slot.003\",\"authority_class\":\"TOOL_SCHEMA\",\"support_type\":\"TOOL_PARAMETER\",\"support_ref\":\"tool.dispatch_visit.recipient\"}},{\"requirement_id\":\"req.003\",\"operation_ref\":\"op.slot.003\",\"targets\":[{\"field_ref\":\"tickets.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"TOOL_ARGUMENT\"}],\"capability\":{\"family\":\"property\",\"name\":\"service_zone\",\"parameters\":{\"zone_rule_ref\":\"workflow.zone_rule\"}},\"scope\":{\"kind\":\"DECLARED_TOOL_ARGUMENT\",\"reference\":\"tool.dispatch_visit.service_zone\"},\"boundary\":\"TOOL\",\"authority_witness\":{\"source_id\":\"ctx.slot.002\",\"authority_class\":\"TRUSTED_WORKFLOW\",\"support_type\":\"WORKFLOW_RULE\",\"support_ref\":\"workflow.zone_rule\"}}]}}",
+  "raw_structured_prediction": null,
+  "validation": {
+    "schema_validation": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "authority_verification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "no_solver_verification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "canonicalization": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "gold_comparison": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    },
+    "compiler_qualification": {
+      "status": "NOT_RUN",
+      "error_codes": []
+    }
+  },
+  "canonical_prediction": null,
+  "evaluator_result": {
+    "terminal_status": "INVALID_OUTPUT",
+    "planner_status": "NOT_PARSED",
+    "schema_valid": false,
+    "semantic_valid": false,
+    "exact_requirement_set_match": false,
+    "capability_tp": 0,
+    "capability_fp": 0,
+    "capability_fn": 2,
+    "primary_errors": [
+      "INVALID_OUTPUT"
+    ],
+    "compiler_relation": "NOT_RUN"
+  }
+}

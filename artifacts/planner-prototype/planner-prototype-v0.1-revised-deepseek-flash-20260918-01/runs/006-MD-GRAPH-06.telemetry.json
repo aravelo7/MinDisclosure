@@ -1,0 +1,28 @@
+{
+  "telemetry_version": "planner-prototype-live-telemetry-v0.1",
+  "run_id": "planner-dev-v0.1/revised/006/MD-GRAPH-06",
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "dispatched": true,
+      "request_sha256": "5af082d185bc88a37940d8971a8fa73155dc9c2ef1b9cc77ca9aec01b0686ea2",
+      "http_status": 200,
+      "latency_ms": 3334,
+      "transport_failure": false,
+      "retry_after": null,
+      "retry_decision": null,
+      "error_code": null
+    }
+  ],
+  "retry_count": 0,
+  "latency_ms": 3335,
+  "returned_model": "deepseek-flash",
+  "usage": {
+    "input_tokens": 4436,
+    "output_tokens": 826,
+    "reasoning_tokens": 0,
+    "total_tokens": 5262
+  },
+  "request_sha256": "5af082d185bc88a37940d8971a8fa73155dc9c2ef1b9cc77ca9aec01b0686ea2",
+  "provider_dispatches": 1
+}

@@ -1,0 +1,106 @@
+{
+  "experiment_id": "planner-prototype-v0.1-initial-deepseek-flash-20260918-02",
+  "experiment_kind": "initial_7_seed_live_dev_inference",
+  "implementation_commit": "84f22b85aacf3838335170e0eb6549ec361515a6",
+  "planner_spec_commit": "6b152f738e8b4f1d4a0186a36bb7466e40de88db",
+  "prototype_contract_commit": "547b82c8f1d145b5b0ef786549f6c9a41184e079",
+  "prompt_sha256": "6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d",
+  "input_set_sha256": "a60d5363f02a90ffa848d0d050995d96628c6b165385faea8af5958ee1804ca6",
+  "output_schema_sha256": "f63ac27b1d068dc9e84acae436dfd7ef57b6aa776734c51c96829d6c5d181685",
+  "provider_snapshot": {
+    "checked_at": "2026-09-18T07:51:40.1258068Z",
+    "provider": "DeepSeek",
+    "provider_docs_checked_at": "2026-09-18T07:51:40.1258068Z",
+    "requested_model": "deepseek-flash",
+    "documented_serving_model": "DeepSeek-V4.1-Flash",
+    "responses_endpoint": "https://api.deepseek.com/responses",
+    "structured_output_support": "text.format.type=json_schema",
+    "alias_routing_change_detected": false,
+    "sources": [
+      "https://api-docs.deepseek.com/api/create-response/",
+      "https://api-docs.deepseek.com/guides/responses_api/",
+      "https://api-docs.deepseek.com/updates/"
+    ],
+    "snapshot_note": "Official docs list deepseek-flash as the current model name, serve V4.1 Flash, support POST /responses and JSON Schema structured output.",
+    "snapshot_sha256": "517aef5d37ed16e85e85115291174f751f8f1db47d83182b353d754517561d3e"
+  },
+  "request_contract": {
+    "api_surface": "POST /responses",
+    "model": "deepseek-flash",
+    "reasoning_effort": "none",
+    "temperature": 0,
+    "max_output_tokens": 4096,
+    "stream": false,
+    "concurrency": 1,
+    "retry_owner": "harness-only",
+    "max_transient_transport_retries": 1
+  },
+  "execution_policy": {
+    "prompt_version": "initial",
+    "order": [
+      "MD-EQ-01",
+      "MD-GROUP-02",
+      "MD-ORDER-03",
+      "MD-LOC-04",
+      "MD-CROSS-05",
+      "MD-GRAPH-06",
+      "MD-TOOL-07"
+    ],
+    "exactly_once_per_seed": true,
+    "selective_rerun": false,
+    "semantic_repair": false,
+    "fallback_model": false
+  },
+  "planned_runs": [
+    {
+      "run_id": "planner-dev-v0.1/initial/001/MD-EQ-01",
+      "run_order": 1,
+      "task_id": "MD-EQ-01",
+      "prompt_version": "initial",
+      "repetition_index": 1
+    },
+    {
+      "run_id": "planner-dev-v0.1/initial/002/MD-GROUP-02",
+      "run_order": 2,
+      "task_id": "MD-GROUP-02",
+      "prompt_version": "initial",
+      "repetition_index": 1
+    },
+    {
+      "run_id": "planner-dev-v0.1/initial/003/MD-ORDER-03",
+      "run_order": 3,
+      "task_id": "MD-ORDER-03",
+      "prompt_version": "initial",
+      "repetition_index": 1
+    },
+    {
+      "run_id": "planner-dev-v0.1/initial/004/MD-LOC-04",
+      "run_order": 4,
+      "task_id": "MD-LOC-04",
+      "prompt_version": "initial",
+      "repetition_index": 1
+    },
+    {
+      "run_id": "planner-dev-v0.1/initial/005/MD-CROSS-05",
+      "run_order": 5,
+      "task_id": "MD-CROSS-05",
+      "prompt_version": "initial",
+      "repetition_index": 1
+    },
+    {
+      "run_id": "planner-dev-v0.1/initial/006/MD-GRAPH-06",
+      "run_order": 6,
+      "task_id": "MD-GRAPH-06",
+      "prompt_version": "initial",
+      "repetition_index": 1
+    },
+    {
+      "run_id": "planner-dev-v0.1/initial/007/MD-TOOL-07",
+      "run_order": 7,
+      "task_id": "MD-TOOL-07",
+      "prompt_version": "initial",
+      "repetition_index": 1
+    }
+  ],
+  "manifest_sha256": "1dc86277b184e0920ed2c6facb706be1033bc6194a74b49e2f7ca21c2fd1cc4f"
+}

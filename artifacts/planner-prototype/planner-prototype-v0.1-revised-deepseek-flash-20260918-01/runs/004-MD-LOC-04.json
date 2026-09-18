@@ -1,0 +1,292 @@
+{
+  "artifact_version": "planner-prototype-run-artifact-v0.1",
+  "run_identity": {
+    "experiment_id": "planner-prototype-v0.1-revised-deepseek-flash-20260918-01",
+    "run_id": "planner-dev-v0.1/revised/004/MD-LOC-04",
+    "run_order": 4,
+    "task_id": "MD-LOC-04",
+    "prompt_version": "revised",
+    "repetition_index": 1
+  },
+  "provenance": {
+    "planner_spec_commit": "6b152f738e8b4f1d4a0186a36bb7466e40de88db",
+    "planner_spec_tag_object": "3b45322d29454134aff345b2413121f1b37008fa",
+    "planner_spec_tree": "54f4dc2d52af0ef3e1402528b510e6c91463b6fa",
+    "prototype_contract_commit": "547b82c8f1d145b5b0ef786549f6c9a41184e079",
+    "prototype_contract_tag_object": "82024f843e6ad369eae4240692aa40284ed00e5f",
+    "prototype_contract_tree": "3e5512840b337f8fc8096eb42dcc20b0ce8f90d7",
+    "prompt_sha256": "dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b",
+    "input_set_sha256": "a60d5363f02a90ffa848d0d050995d96628c6b165385faea8af5958ee1804ca6",
+    "output_schema_sha256": "f63ac27b1d068dc9e84acae436dfd7ef57b6aa776734c51c96829d6c5d181685",
+    "implementation_commit": "94ab9591ae0ab9738d61ff5113ad7bc41e288723"
+  },
+  "provider_snapshot": {
+    "checked_at": "2026-09-18T11:59:34.424Z",
+    "provider": "DeepSeek",
+    "api_surface": "POST /responses",
+    "requested_model": "deepseek-flash",
+    "documented_serving_model": "DeepSeek-V4.1-Flash",
+    "snapshot_sha256": "82567aac1f5d0242a27d405d6eb8b37185e0d251b0ec012f19831c0cff754ab4"
+  },
+  "request": {
+    "request_sha256": "5ae9e2a6eb45ab709c1cc8fd5ad1a82e373f0890133c10b506b9890a0776ca51",
+    "reasoning_effort": "none",
+    "temperature": 0,
+    "max_output_tokens": 4096,
+    "stream": false,
+    "attempt_count": 1
+  },
+  "raw_prediction_text": "{\"status\":\"CONFIDENT\",\"task_ir\":{\"task_ir_version\":\"task-ir-v0.2\",\"operations\":[{\"operation_id\":\"op.slot.001\",\"family\":\"group_by\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"requests.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"GROUP_KEY\"}],\"parameters\":{\"granularity\":\"SERVICE_ZONE\",\"zone_rule_ref\":\"workflow.zone_rule\"},\"depends_on\":[],\"result_shape\":\"groups\"},{\"operation_id\":\"op.slot.002\",\"family\":\"aggregate\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"requests.amount\",\"semantic_type\":\"NUMBER\",\"target_role\":\"VALUE\"}],\"parameters\":{\"aggregation\":\"COUNT_AND_SUM\"},\"depends_on\":[\"op.slot.001\"],\"result_shape\":\"aggregate_table\"},{\"operation_id\":\"op.slot.003\",\"family\":\"sort\",\"role\":\"AGENT_REASONING\",\"inputs\":[{\"field_ref\":\"requests.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"SORT_KEY\"}],\"parameters\":{\"direction\":\"ASCENDING\",\"workflow_order_ref\":\"workflow.zone_rule_order\"},\"depends_on\":[\"op.slot.002\"],\"result_shape\":\"ordered_records\"}],\"presentation\":[{\"constraint_id\":\"presentation.zone_order\",\"kind\":\"semantic_order\",\"authority\":\"TRUSTED_WORKFLOW\",\"scope\":\"workflow.zone_rule_order\",\"rule\":\"WORKFLOW_DECLARED_ORDER\"}]},\"requirements\":[{\"requirement_id\":\"req.zone_grouping\",\"operation_ref\":\"op.slot.001\",\"targets\":[{\"field_ref\":\"requests.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"GROUP_KEY\"}],\"capability\":{\"family\":\"property\",\"name\":\"service_zone\",\"parameters\":{\"zone_rule_ref\":\"workflow.zone_rule\"}},\"scope\":{\"kind\":\"ALL_RECORDS\"},\"boundary\":\"AGENT\",\"authority_witness\":{\"source_id\":\"ctx.slot.002\",\"authority_class\":\"TRUSTED_WORKFLOW\",\"support_type\":\"WORKFLOW_RULE\",\"support_ref\":\"workflow.zone_rule\"}}]}",
+  "raw_structured_prediction": {
+    "status": "CONFIDENT",
+    "task_ir": {
+      "task_ir_version": "task-ir-v0.2",
+      "operations": [
+        {
+          "operation_id": "op.slot.001",
+          "family": "group_by",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "requests.address",
+              "semantic_type": "POSTAL_ADDRESS",
+              "target_role": "GROUP_KEY"
+            }
+          ],
+          "parameters": {
+            "granularity": "SERVICE_ZONE",
+            "zone_rule_ref": "workflow.zone_rule"
+          },
+          "depends_on": [],
+          "result_shape": "groups"
+        },
+        {
+          "operation_id": "op.slot.002",
+          "family": "aggregate",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "requests.amount",
+              "semantic_type": "NUMBER",
+              "target_role": "VALUE"
+            }
+          ],
+          "parameters": {
+            "aggregation": "COUNT_AND_SUM"
+          },
+          "depends_on": [
+            "op.slot.001"
+          ],
+          "result_shape": "aggregate_table"
+        },
+        {
+          "operation_id": "op.slot.003",
+          "family": "sort",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "requests.address",
+              "semantic_type": "POSTAL_ADDRESS",
+              "target_role": "SORT_KEY"
+            }
+          ],
+          "parameters": {
+            "direction": "ASCENDING",
+            "workflow_order_ref": "workflow.zone_rule_order"
+          },
+          "depends_on": [
+            "op.slot.002"
+          ],
+          "result_shape": "ordered_records"
+        }
+      ],
+      "presentation": [
+        {
+          "constraint_id": "presentation.zone_order",
+          "kind": "semantic_order",
+          "authority": "TRUSTED_WORKFLOW",
+          "scope": "workflow.zone_rule_order",
+          "rule": "WORKFLOW_DECLARED_ORDER"
+        }
+      ]
+    },
+    "requirements": [
+      {
+        "requirement_id": "req.zone_grouping",
+        "operation_ref": "op.slot.001",
+        "targets": [
+          {
+            "field_ref": "requests.address",
+            "semantic_type": "POSTAL_ADDRESS",
+            "target_role": "GROUP_KEY"
+          }
+        ],
+        "capability": {
+          "family": "property",
+          "name": "service_zone",
+          "parameters": {
+            "zone_rule_ref": "workflow.zone_rule"
+          }
+        },
+        "scope": {
+          "kind": "ALL_RECORDS"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.002",
+          "authority_class": "TRUSTED_WORKFLOW",
+          "support_type": "WORKFLOW_RULE",
+          "support_ref": "workflow.zone_rule"
+        }
+      }
+    ]
+  },
+  "validation": {
+    "schema_validation": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "authority_verification": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "no_solver_verification": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "canonicalization": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "gold_comparison": {
+      "status": "FAIL",
+      "error_codes": [
+        "GOLD_MISMATCH"
+      ]
+    },
+    "compiler_qualification": {
+      "status": "PASS",
+      "error_codes": []
+    }
+  },
+  "canonical_prediction": {
+    "schema_version": "planner-capability-schema-v0.2.1",
+    "task_ir": {
+      "task_ir_version": "task-ir-v0.2",
+      "operations": [
+        {
+          "operation_id": "op.slot.001",
+          "family": "group_by",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "requests.address",
+              "semantic_type": "POSTAL_ADDRESS",
+              "target_role": "GROUP_KEY"
+            }
+          ],
+          "parameters": {
+            "granularity": "SERVICE_ZONE",
+            "zone_rule_ref": "workflow.zone_rule"
+          },
+          "depends_on": [],
+          "result_shape": "groups"
+        },
+        {
+          "operation_id": "op.slot.002",
+          "family": "aggregate",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "requests.amount",
+              "semantic_type": "NUMBER",
+              "target_role": "VALUE"
+            }
+          ],
+          "parameters": {
+            "aggregation": "COUNT_AND_SUM"
+          },
+          "depends_on": [
+            "op.slot.001"
+          ],
+          "result_shape": "aggregate_table"
+        },
+        {
+          "operation_id": "op.slot.003",
+          "family": "sort",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "requests.address",
+              "semantic_type": "POSTAL_ADDRESS",
+              "target_role": "SORT_KEY"
+            }
+          ],
+          "parameters": {
+            "direction": "ASCENDING",
+            "workflow_order_ref": "workflow.zone_rule_order"
+          },
+          "depends_on": [
+            "op.slot.002"
+          ],
+          "result_shape": "ordered_records"
+        }
+      ],
+      "presentation": [
+        {
+          "constraint_id": "presentation.zone_order",
+          "kind": "semantic_order",
+          "authority": "TRUSTED_WORKFLOW",
+          "scope": "workflow.zone_rule_order",
+          "rule": "WORKFLOW_DECLARED_ORDER"
+        }
+      ]
+    },
+    "capability_requirements": [
+      {
+        "requirement_id": "req.zone_grouping",
+        "operation_ref": "op.slot.001",
+        "targets": [
+          {
+            "field_ref": "requests.address",
+            "semantic_type": "POSTAL_ADDRESS",
+            "target_role": "GROUP_KEY"
+          }
+        ],
+        "capability": {
+          "family": "property",
+          "name": "service_zone",
+          "parameters": {
+            "zone_rule_ref": "workflow.zone_rule"
+          }
+        },
+        "scope": {
+          "kind": "ALL_RECORDS"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.002",
+          "authority_class": "TRUSTED_WORKFLOW",
+          "support_type": "WORKFLOW_RULE",
+          "support_ref": "workflow.zone_rule"
+        }
+      }
+    ],
+    "uncertainty": "CONFIDENT",
+    "alpha_canonical": "{\"operations\":[{\"alpha_id\":\"op.alpha.001\",\"operation\":{\"depends_on\":[\"op.alpha.002\"],\"family\":\"aggregate\",\"inputs\":[{\"field_ref\":\"requests.amount\",\"semantic_type\":\"NUMBER\",\"target_role\":\"VALUE\"}],\"parameters\":{\"aggregation\":\"COUNT_AND_SUM\"},\"result_shape\":\"aggregate_table\",\"role\":\"AGENT_REASONING\"}},{\"alpha_id\":\"op.alpha.002\",\"operation\":{\"depends_on\":[],\"family\":\"group_by\",\"inputs\":[{\"field_ref\":\"requests.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"GROUP_KEY\"}],\"parameters\":{\"granularity\":\"SERVICE_ZONE\",\"zone_rule_ref\":\"workflow.zone_rule\"},\"result_shape\":\"groups\",\"role\":\"AGENT_REASONING\"}},{\"alpha_id\":\"op.alpha.003\",\"operation\":{\"depends_on\":[\"op.alpha.001\"],\"family\":\"sort\",\"inputs\":[{\"field_ref\":\"requests.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"SORT_KEY\"}],\"parameters\":{\"direction\":\"ASCENDING\",\"workflow_order_ref\":\"workflow.zone_rule_order\"},\"result_shape\":\"ordered_records\",\"role\":\"AGENT_REASONING\"}}],\"presentation\":[{\"authority\":\"TRUSTED_WORKFLOW\",\"kind\":\"semantic_order\",\"rule\":\"WORKFLOW_DECLARED_ORDER\",\"scope\":\"workflow.zone_rule_order\"}],\"requirements\":[{\"authority_witness\":{\"authority_class\":\"TRUSTED_WORKFLOW\",\"support_ref\":\"workflow.zone_rule\",\"support_type\":\"WORKFLOW_RULE\"},\"boundary\":\"AGENT\",\"capability\":{\"family\":\"property\",\"name\":\"service_zone\",\"parameters\":{\"zone_rule_ref\":\"workflow.zone_rule\"}},\"operation_ref\":\"op.alpha.002\",\"scope\":{\"kind\":\"ALL_RECORDS\"},\"targets\":[{\"field_ref\":\"requests.address\",\"semantic_type\":\"POSTAL_ADDRESS\",\"target_role\":\"GROUP_KEY\"}]}],\"task_ir_version\":\"task-ir-v0.2\"}"
+  },
+  "evaluator_result": {
+    "terminal_status": "EVALUATED",
+    "planner_status": "CONFIDENT",
+    "schema_valid": true,
+    "semantic_valid": true,
+    "exact_requirement_set_match": false,
+    "capability_tp": 1,
+    "capability_fp": 0,
+    "capability_fn": 0,
+    "primary_errors": [
+      "GOLD_MISMATCH"
+    ],
+    "compiler_relation": "INCOMPARABLE"
+  }
+}

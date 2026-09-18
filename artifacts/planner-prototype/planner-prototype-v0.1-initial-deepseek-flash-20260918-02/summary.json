@@ -1,0 +1,682 @@
+{
+  "experiment_id": "planner-prototype-v0.1-initial-deepseek-flash-20260918-02",
+  "experiment_kind": "initial_7_seed_live_dev_inference",
+  "implementation_commit": "84f22b85aacf3838335170e0eb6549ec361515a6",
+  "provider_snapshot": {
+    "checked_at": "2026-09-18T07:51:40.1258068Z",
+    "provider": "DeepSeek",
+    "provider_docs_checked_at": "2026-09-18T07:51:40.1258068Z",
+    "requested_model": "deepseek-flash",
+    "documented_serving_model": "DeepSeek-V4.1-Flash",
+    "responses_endpoint": "https://api.deepseek.com/responses",
+    "structured_output_support": "text.format.type=json_schema",
+    "alias_routing_change_detected": false,
+    "sources": [
+      "https://api-docs.deepseek.com/api/create-response/",
+      "https://api-docs.deepseek.com/guides/responses_api/",
+      "https://api-docs.deepseek.com/updates/"
+    ],
+    "snapshot_note": "Official docs list deepseek-flash as the current model name, serve V4.1 Flash, support POST /responses and JSON Schema structured output.",
+    "snapshot_sha256": "517aef5d37ed16e85e85115291174f751f8f1db47d83182b353d754517561d3e"
+  },
+  "accounted_runs": 7,
+  "expected_runs": 7,
+  "total_attempts": 7,
+  "total_retries": 0,
+  "actual_http_dispatches": 7,
+  "status_counts": {
+    "EVALUATED": 6,
+    "INVALID_OUTPUT": 1
+  },
+  "planner_status_counts": {
+    "CONFIDENT": 6,
+    "NOT_PARSED": 1
+  },
+  "schema_valid_count": 6,
+  "semantic_valid_count": 5,
+  "exact_requirement_set_match_count": 0,
+  "capability": {
+    "tp": 0,
+    "fp": 16,
+    "fn": 10,
+    "micro_precision": 0,
+    "micro_recall": 0,
+    "macro_precision": 0.2857142857142857,
+    "macro_recall": 0
+  },
+  "error_taxonomy": {
+    "overshare_tasks": [
+      "MD-EQ-01",
+      "MD-GROUP-02",
+      "MD-ORDER-03",
+      "MD-LOC-04",
+      "MD-GRAPH-06"
+    ],
+    "undershare_tasks": [
+      "MD-EQ-01",
+      "MD-GROUP-02",
+      "MD-ORDER-03",
+      "MD-LOC-04",
+      "MD-CROSS-05",
+      "MD-GRAPH-06",
+      "MD-TOOL-07"
+    ],
+    "wrong_target": 0,
+    "wrong_scope": 0,
+    "wrong_operation_binding": 0,
+    "wrong_boundary": 0,
+    "authority_violations": 1,
+    "answer_leakage": 0
+  },
+  "compiler_relations": {
+    "INFEASIBLE": 5,
+    "NOT_RUN": 2
+  },
+  "unsafe_prediction_count": 0,
+  "unsafe_prediction_accepted_count": 0,
+  "latency_ms": {
+    "mean": 3536.1428571428573,
+    "p50": 3457,
+    "p95": 3657,
+    "max": 5110
+  },
+  "token_usage": {
+    "input_tokens": 29279,
+    "output_tokens": 5715,
+    "reasoning_tokens": 0,
+    "total_tokens": 34994
+  },
+  "returned_model_distribution": {
+    "deepseek-flash": 7
+  },
+  "per_task": [
+    {
+      "task_id": "MD-EQ-01",
+      "run_id": "planner-dev-v0.1/initial/001/MD-EQ-01",
+      "terminal_status": "EVALUATED",
+      "provider_status": "completed",
+      "returned_model": "deepseek-flash",
+      "attempt_count": 1,
+      "retry_count": 0,
+      "planner_status": "CONFIDENT",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "exact_requirement_set_match": false,
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 1,
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "validation": {
+        "schema_validation": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "authority_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "no_solver_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "canonicalization": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "gold_comparison": {
+          "status": "FAIL",
+          "error_codes": [
+            "GOLD_MISMATCH"
+          ]
+        },
+        "compiler_qualification": {
+          "status": "FAIL",
+          "error_codes": [
+            "SEMANTIC_REQUIREMENT_INVALID"
+          ]
+        }
+      },
+      "compiler_relation": "INFEASIBLE",
+      "unsafe_prediction": false,
+      "unsafe_prediction_accepted": false,
+      "latency_ms": 3657,
+      "usage": {
+        "input_tokens": 4117,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 678,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 4795
+      },
+      "artifact_path": "artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02/runs/001-MD-EQ-01.json"
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "run_id": "planner-dev-v0.1/initial/002/MD-GROUP-02",
+      "terminal_status": "EVALUATED",
+      "provider_status": "completed",
+      "returned_model": "deepseek-flash",
+      "attempt_count": 1,
+      "retry_count": 0,
+      "planner_status": "CONFIDENT",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "exact_requirement_set_match": false,
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 1,
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "validation": {
+        "schema_validation": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "authority_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "no_solver_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "canonicalization": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "gold_comparison": {
+          "status": "FAIL",
+          "error_codes": [
+            "GOLD_MISMATCH"
+          ]
+        },
+        "compiler_qualification": {
+          "status": "FAIL",
+          "error_codes": [
+            "SEMANTIC_REQUIREMENT_INVALID"
+          ]
+        }
+      },
+      "compiler_relation": "INFEASIBLE",
+      "unsafe_prediction": false,
+      "unsafe_prediction_accepted": false,
+      "latency_ms": 2888,
+      "usage": {
+        "input_tokens": 4143,
+        "input_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "output_tokens": 671,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 4814
+      },
+      "artifact_path": "artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02/runs/002-MD-GROUP-02.json"
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "run_id": "planner-dev-v0.1/initial/003/MD-ORDER-03",
+      "terminal_status": "EVALUATED",
+      "provider_status": "completed",
+      "returned_model": "deepseek-flash",
+      "attempt_count": 1,
+      "retry_count": 0,
+      "planner_status": "CONFIDENT",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "exact_requirement_set_match": false,
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 1,
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "validation": {
+        "schema_validation": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "authority_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "no_solver_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "canonicalization": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "gold_comparison": {
+          "status": "FAIL",
+          "error_codes": [
+            "GOLD_MISMATCH"
+          ]
+        },
+        "compiler_qualification": {
+          "status": "FAIL",
+          "error_codes": [
+            "SEMANTIC_REQUIREMENT_INVALID"
+          ]
+        }
+      },
+      "compiler_relation": "INFEASIBLE",
+      "unsafe_prediction": false,
+      "unsafe_prediction_accepted": false,
+      "latency_ms": 2734,
+      "usage": {
+        "input_tokens": 4115,
+        "input_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "output_tokens": 610,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 4725
+      },
+      "artifact_path": "artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02/runs/003-MD-ORDER-03.json"
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "run_id": "planner-dev-v0.1/initial/004/MD-LOC-04",
+      "terminal_status": "EVALUATED",
+      "provider_status": "completed",
+      "returned_model": "deepseek-flash",
+      "attempt_count": 1,
+      "retry_count": 0,
+      "planner_status": "CONFIDENT",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "exact_requirement_set_match": false,
+      "capability_tp": 0,
+      "capability_fp": 4,
+      "capability_fn": 1,
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "validation": {
+        "schema_validation": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "authority_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "no_solver_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "canonicalization": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "gold_comparison": {
+          "status": "FAIL",
+          "error_codes": [
+            "GOLD_MISMATCH"
+          ]
+        },
+        "compiler_qualification": {
+          "status": "FAIL",
+          "error_codes": [
+            "SEMANTIC_REQUIREMENT_INVALID"
+          ]
+        }
+      },
+      "compiler_relation": "INFEASIBLE",
+      "unsafe_prediction": false,
+      "unsafe_prediction_accepted": false,
+      "latency_ms": 3370,
+      "usage": {
+        "input_tokens": 4203,
+        "input_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "output_tokens": 811,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 5014
+      },
+      "artifact_path": "artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02/runs/004-MD-LOC-04.json"
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "run_id": "planner-dev-v0.1/initial/005/MD-CROSS-05",
+      "terminal_status": "INVALID_OUTPUT",
+      "provider_status": "completed",
+      "returned_model": "deepseek-flash",
+      "attempt_count": 1,
+      "retry_count": 0,
+      "planner_status": "NOT_PARSED",
+      "schema_valid": false,
+      "semantic_valid": false,
+      "exact_requirement_set_match": false,
+      "capability_tp": 0,
+      "capability_fp": 0,
+      "capability_fn": 2,
+      "primary_errors": [
+        "INVALID_OUTPUT"
+      ],
+      "validation": {
+        "schema_validation": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "authority_verification": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "no_solver_verification": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "canonicalization": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "gold_comparison": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "compiler_qualification": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        }
+      },
+      "compiler_relation": "NOT_RUN",
+      "unsafe_prediction": false,
+      "unsafe_prediction_accepted": false,
+      "latency_ms": 3537,
+      "usage": {
+        "input_tokens": 4140,
+        "input_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "output_tokens": 727,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 4867
+      },
+      "artifact_path": "artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02/runs/005-MD-CROSS-05.json"
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "run_id": "planner-dev-v0.1/initial/006/MD-GRAPH-06",
+      "terminal_status": "EVALUATED",
+      "provider_status": "completed",
+      "returned_model": "deepseek-flash",
+      "attempt_count": 1,
+      "retry_count": 0,
+      "planner_status": "CONFIDENT",
+      "schema_valid": true,
+      "semantic_valid": true,
+      "exact_requirement_set_match": false,
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 2,
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "validation": {
+        "schema_validation": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "authority_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "no_solver_verification": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "canonicalization": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "gold_comparison": {
+          "status": "FAIL",
+          "error_codes": [
+            "GOLD_MISMATCH"
+          ]
+        },
+        "compiler_qualification": {
+          "status": "FAIL",
+          "error_codes": [
+            "SEMANTIC_REQUIREMENT_INVALID"
+          ]
+        }
+      },
+      "compiler_relation": "INFEASIBLE",
+      "unsafe_prediction": false,
+      "unsafe_prediction_accepted": false,
+      "latency_ms": 3457,
+      "usage": {
+        "input_tokens": 4179,
+        "input_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "output_tokens": 822,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 5001
+      },
+      "artifact_path": "artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02/runs/006-MD-GRAPH-06.json"
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "run_id": "planner-dev-v0.1/initial/007/MD-TOOL-07",
+      "terminal_status": "EVALUATED",
+      "provider_status": "completed",
+      "returned_model": "deepseek-flash",
+      "attempt_count": 1,
+      "retry_count": 0,
+      "planner_status": "CONFIDENT",
+      "schema_valid": true,
+      "semantic_valid": false,
+      "exact_requirement_set_match": false,
+      "capability_tp": 0,
+      "capability_fp": 0,
+      "capability_fn": 2,
+      "primary_errors": [
+        "AUTHORITY_VIOLATION"
+      ],
+      "validation": {
+        "schema_validation": {
+          "status": "PASS",
+          "error_codes": []
+        },
+        "authority_verification": {
+          "status": "FAIL",
+          "error_codes": [
+            "AUTHORITY_VIOLATION"
+          ]
+        },
+        "no_solver_verification": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "canonicalization": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "gold_comparison": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        },
+        "compiler_qualification": {
+          "status": "NOT_RUN",
+          "error_codes": []
+        }
+      },
+      "compiler_relation": "NOT_RUN",
+      "unsafe_prediction": false,
+      "unsafe_prediction_accepted": false,
+      "latency_ms": 5110,
+      "usage": {
+        "input_tokens": 4382,
+        "input_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "output_tokens": 1396,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 5778
+      },
+      "artifact_path": "artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02/runs/007-MD-TOOL-07.json"
+    }
+  ],
+  "failure_classification": [
+    {
+      "task_id": "MD-EQ-01",
+      "planner_status": "CONFIDENT",
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 1,
+      "compiler_relation": "INFEASIBLE",
+      "task_ir_error": false,
+      "requirement_error": true,
+      "overshare": true,
+      "undershare": true
+    },
+    {
+      "task_id": "MD-GROUP-02",
+      "planner_status": "CONFIDENT",
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 1,
+      "compiler_relation": "INFEASIBLE",
+      "task_ir_error": false,
+      "requirement_error": true,
+      "overshare": true,
+      "undershare": true
+    },
+    {
+      "task_id": "MD-ORDER-03",
+      "planner_status": "CONFIDENT",
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 1,
+      "compiler_relation": "INFEASIBLE",
+      "task_ir_error": false,
+      "requirement_error": true,
+      "overshare": true,
+      "undershare": true
+    },
+    {
+      "task_id": "MD-LOC-04",
+      "planner_status": "CONFIDENT",
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "capability_tp": 0,
+      "capability_fp": 4,
+      "capability_fn": 1,
+      "compiler_relation": "INFEASIBLE",
+      "task_ir_error": false,
+      "requirement_error": true,
+      "overshare": true,
+      "undershare": true
+    },
+    {
+      "task_id": "MD-CROSS-05",
+      "planner_status": "NOT_PARSED",
+      "primary_errors": [
+        "INVALID_OUTPUT"
+      ],
+      "capability_tp": 0,
+      "capability_fp": 0,
+      "capability_fn": 2,
+      "compiler_relation": "NOT_RUN",
+      "task_ir_error": false,
+      "requirement_error": true,
+      "overshare": false,
+      "undershare": true
+    },
+    {
+      "task_id": "MD-GRAPH-06",
+      "planner_status": "CONFIDENT",
+      "primary_errors": [
+        "GOLD_MISMATCH",
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ],
+      "capability_tp": 0,
+      "capability_fp": 3,
+      "capability_fn": 2,
+      "compiler_relation": "INFEASIBLE",
+      "task_ir_error": false,
+      "requirement_error": true,
+      "overshare": true,
+      "undershare": true
+    },
+    {
+      "task_id": "MD-TOOL-07",
+      "planner_status": "CONFIDENT",
+      "primary_errors": [
+        "AUTHORITY_VIOLATION"
+      ],
+      "capability_tp": 0,
+      "capability_fp": 0,
+      "capability_fn": 2,
+      "compiler_relation": "NOT_RUN",
+      "task_ir_error": false,
+      "requirement_error": true,
+      "overshare": false,
+      "undershare": true
+    }
+  ],
+  "revision_candidate": true,
+  "revision_candidate_reason": "A non-exact development result exists; assess generality only after frozen initial-batch classification. No revised prompt was created or dispatched.",
+  "secret_scan_matches": [],
+  "frozen_integrity": {
+    "prompt_sha256": "6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d",
+    "prompt_ok": true,
+    "mismatches": [],
+    "ok": true,
+    "p0": {
+      "case_count": 7,
+      "semantic_task_ids": 0,
+      "gold_operation_ids": 0,
+      "semantic_schema_context_ids": 0,
+      "gold_oracle_evaluator_objects": 0,
+      "operation_slot_pool_identical": true,
+      "user_intent_pool_identical": true,
+      "pass": true
+    }
+  },
+  "experiment_validity_blocker": null,
+  "completed_at": "2026-09-18T07:56:36.486Z",
+  "summary_sha256": "105c930da0c0d9f6b12257c5e989c85b363dd652807ed5f82f59a1fcf0ef8441"
+}

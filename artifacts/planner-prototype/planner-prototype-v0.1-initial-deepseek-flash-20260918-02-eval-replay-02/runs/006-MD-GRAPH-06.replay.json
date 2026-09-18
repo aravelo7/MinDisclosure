@@ -1,0 +1,243 @@
+{
+  "replay_artifact_version": "planner-prototype-evaluation-replay-v0.1",
+  "source_artifact_path": "runs/006-MD-GRAPH-06.json",
+  "source_artifact_sha256": "81ec6ec9b7315fcb22e23df2d5d42209625aa90bc567b61d43f401e62355239e",
+  "source_run_id": "planner-dev-v0.1/initial/006/MD-GRAPH-06",
+  "run_identity": {
+    "experiment_id": "planner-prototype-v0.1-initial-deepseek-flash-20260918-02",
+    "run_id": "planner-dev-v0.1/initial/006/MD-GRAPH-06",
+    "run_order": 6,
+    "task_id": "MD-GRAPH-06",
+    "prompt_version": "initial",
+    "repetition_index": 1
+  },
+  "validation": {
+    "schema_validation": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "authority_verification": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "no_solver_verification": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "canonicalization": {
+      "status": "PASS",
+      "error_codes": []
+    },
+    "gold_comparison": {
+      "status": "FAIL",
+      "error_codes": [
+        "GOLD_MISMATCH"
+      ]
+    },
+    "compiler_qualification": {
+      "status": "FAIL",
+      "error_codes": [
+        "SEMANTIC_REQUIREMENT_INVALID"
+      ]
+    }
+  },
+  "canonical_prediction": {
+    "schema_version": "planner-capability-schema-v0.2.1",
+    "task_ir": {
+      "task_ir_version": "task-ir-v0.2",
+      "operations": [
+        {
+          "operation_id": "op.slot.001",
+          "family": "graph_relation",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "edges.from",
+              "semantic_type": "PERSON_NAME",
+              "target_role": "RELATION_SOURCE"
+            },
+            {
+              "field_ref": "edges.to",
+              "semantic_type": "PERSON_NAME",
+              "target_role": "RELATION_TARGET"
+            }
+          ],
+          "parameters": {
+            "relation_source": "SOURCE_DECLARED",
+            "relation_orientation": "DIRECTED"
+          },
+          "depends_on": [],
+          "result_shape": "source_graph"
+        },
+        {
+          "operation_id": "op.slot.002",
+          "family": "degree",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "edges.from",
+              "semantic_type": "PERSON_NAME",
+              "target_role": "RELATION_SOURCE"
+            }
+          ],
+          "parameters": {},
+          "depends_on": [
+            "op.slot.001"
+          ],
+          "result_shape": "aggregate_table"
+        },
+        {
+          "operation_id": "op.slot.003",
+          "family": "reachability",
+          "role": "AGENT_REASONING",
+          "inputs": [
+            {
+              "field_ref": "edges.from",
+              "semantic_type": "PERSON_NAME",
+              "target_role": "RELATION_SOURCE"
+            },
+            {
+              "field_ref": "edges.to",
+              "semantic_type": "PERSON_NAME",
+              "target_role": "RELATION_TARGET"
+            }
+          ],
+          "parameters": {},
+          "depends_on": [
+            "op.slot.001"
+          ],
+          "result_shape": "graph_summary"
+        }
+      ],
+      "presentation": [
+        {
+          "constraint_id": "presentation.slot.001",
+          "kind": "identifier_assignment",
+          "authority": "USER_INTENT",
+          "scope": "op.slot.001",
+          "rule": "SOURCE_APPEARANCE_ORDER"
+        }
+      ]
+    },
+    "capability_requirements": [
+      {
+        "requirement_id": "req.slot.001",
+        "operation_ref": "op.slot.001",
+        "targets": [
+          {
+            "field_ref": "edges.from",
+            "semantic_type": "PERSON_NAME",
+            "target_role": "RELATION_SOURCE"
+          },
+          {
+            "field_ref": "edges.to",
+            "semantic_type": "PERSON_NAME",
+            "target_role": "RELATION_TARGET"
+          }
+        ],
+        "capability": {
+          "family": "relation",
+          "name": "existing_relation",
+          "parameters": {
+            "relation_source": "SOURCE_DECLARED",
+            "relation_orientation": "DIRECTED"
+          }
+        },
+        "scope": {
+          "kind": "DECLARED_RELATION_SET",
+          "reference": "relation.source_edges"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.002",
+          "authority_class": "DATA_SCHEMA",
+          "support_type": "SOURCE_RELATION",
+          "support_ref": "relation.source_edges"
+        }
+      },
+      {
+        "requirement_id": "req.slot.002",
+        "operation_ref": "op.slot.002",
+        "targets": [
+          {
+            "field_ref": "edges.from",
+            "semantic_type": "PERSON_NAME",
+            "target_role": "RELATION_SOURCE"
+          }
+        ],
+        "capability": {
+          "family": "relation",
+          "name": "directionality",
+          "parameters": {
+            "relation_orientation": "DIRECTED"
+          }
+        },
+        "scope": {
+          "kind": "DECLARED_RELATION_SET",
+          "reference": "relation.source_edges"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.002",
+          "authority_class": "DATA_SCHEMA",
+          "support_type": "SOURCE_RELATION",
+          "support_ref": "relation.source_edges"
+        }
+      },
+      {
+        "requirement_id": "req.slot.003",
+        "operation_ref": "op.slot.003",
+        "targets": [
+          {
+            "field_ref": "edges.from",
+            "semantic_type": "PERSON_NAME",
+            "target_role": "RELATION_SOURCE"
+          },
+          {
+            "field_ref": "edges.to",
+            "semantic_type": "PERSON_NAME",
+            "target_role": "RELATION_TARGET"
+          }
+        ],
+        "capability": {
+          "family": "relation",
+          "name": "directionality",
+          "parameters": {
+            "relation_orientation": "DIRECTED"
+          }
+        },
+        "scope": {
+          "kind": "DECLARED_RELATION_SET",
+          "reference": "relation.source_edges"
+        },
+        "boundary": "AGENT",
+        "authority_witness": {
+          "source_id": "ctx.slot.002",
+          "authority_class": "DATA_SCHEMA",
+          "support_type": "SOURCE_RELATION",
+          "support_ref": "relation.source_edges"
+        }
+      }
+    ],
+    "uncertainty": "CONFIDENT",
+    "alpha_canonical": "{\"operations\":[{\"alpha_id\":\"op.alpha.001\",\"operation\":{\"depends_on\":[\"op.alpha.002\"],\"family\":\"degree\",\"inputs\":[{\"field_ref\":\"edges.from\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_SOURCE\"}],\"parameters\":{},\"result_shape\":\"aggregate_table\",\"role\":\"AGENT_REASONING\"}},{\"alpha_id\":\"op.alpha.002\",\"operation\":{\"depends_on\":[],\"family\":\"graph_relation\",\"inputs\":[{\"field_ref\":\"edges.from\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_SOURCE\"},{\"field_ref\":\"edges.to\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_TARGET\"}],\"parameters\":{\"relation_orientation\":\"DIRECTED\",\"relation_source\":\"SOURCE_DECLARED\"},\"result_shape\":\"source_graph\",\"role\":\"AGENT_REASONING\"}},{\"alpha_id\":\"op.alpha.003\",\"operation\":{\"depends_on\":[\"op.alpha.002\"],\"family\":\"reachability\",\"inputs\":[{\"field_ref\":\"edges.from\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_SOURCE\"},{\"field_ref\":\"edges.to\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_TARGET\"}],\"parameters\":{},\"result_shape\":\"graph_summary\",\"role\":\"AGENT_REASONING\"}}],\"presentation\":[{\"authority\":\"USER_INTENT\",\"kind\":\"identifier_assignment\",\"rule\":\"SOURCE_APPEARANCE_ORDER\",\"scope\":\"op.slot.001\"}],\"requirements\":[{\"authority_witness\":{\"authority_class\":\"DATA_SCHEMA\",\"support_ref\":\"relation.source_edges\",\"support_type\":\"SOURCE_RELATION\"},\"boundary\":\"AGENT\",\"capability\":{\"family\":\"relation\",\"name\":\"directionality\",\"parameters\":{\"relation_orientation\":\"DIRECTED\"}},\"operation_ref\":\"op.alpha.001\",\"scope\":{\"kind\":\"DECLARED_RELATION_SET\",\"reference\":\"relation.source_edges\"},\"targets\":[{\"field_ref\":\"edges.from\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_SOURCE\"}]},{\"authority_witness\":{\"authority_class\":\"DATA_SCHEMA\",\"support_ref\":\"relation.source_edges\",\"support_type\":\"SOURCE_RELATION\"},\"boundary\":\"AGENT\",\"capability\":{\"family\":\"relation\",\"name\":\"directionality\",\"parameters\":{\"relation_orientation\":\"DIRECTED\"}},\"operation_ref\":\"op.alpha.003\",\"scope\":{\"kind\":\"DECLARED_RELATION_SET\",\"reference\":\"relation.source_edges\"},\"targets\":[{\"field_ref\":\"edges.from\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_SOURCE\"},{\"field_ref\":\"edges.to\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_TARGET\"}]},{\"authority_witness\":{\"authority_class\":\"DATA_SCHEMA\",\"support_ref\":\"relation.source_edges\",\"support_type\":\"SOURCE_RELATION\"},\"boundary\":\"AGENT\",\"capability\":{\"family\":\"relation\",\"name\":\"existing_relation\",\"parameters\":{\"relation_orientation\":\"DIRECTED\",\"relation_source\":\"SOURCE_DECLARED\"}},\"operation_ref\":\"op.alpha.002\",\"scope\":{\"kind\":\"DECLARED_RELATION_SET\",\"reference\":\"relation.source_edges\"},\"targets\":[{\"field_ref\":\"edges.from\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_SOURCE\"},{\"field_ref\":\"edges.to\",\"semantic_type\":\"PERSON_NAME\",\"target_role\":\"RELATION_TARGET\"}]}],\"task_ir_version\":\"task-ir-v0.2\"}"
+  },
+  "evaluator_result": {
+    "terminal_status": "EVALUATED",
+    "planner_status": "CONFIDENT",
+    "schema_valid": true,
+    "semantic_valid": true,
+    "exact_requirement_set_match": false,
+    "capability_tp": 1,
+    "capability_fp": 2,
+    "capability_fn": 1,
+    "primary_errors": [
+      "GOLD_MISMATCH",
+      "SEMANTIC_REQUIREMENT_INVALID"
+    ],
+    "compiler_relation": "INFEASIBLE"
+  },
+  "unsafe_prediction": false,
+  "unsafe_prediction_accepted": false,
+  "source_execution_immutable": true
+}
