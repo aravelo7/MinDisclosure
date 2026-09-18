@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindisclosure.local/schemas/planner-prototype-development-revision-schema-v0.1.2.json",
+  "title": "MinDisclosure Planner Development Revision Decision v0.1.2",
+  "oneOf": [
+    {
+      "title": "NO_REVISION",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "decision",
+        "initial_prompt_sha256",
+        "initial_batch",
+        "general_revision_rationale",
+        "revised_prompt_sha256",
+        "prompt_diff_sha256",
+        "prompt_diff_format",
+        "revision_decided_after_initial_batch",
+        "revised_prompt_frozen_before_first_dispatch",
+        "revised_prompt_artifact",
+        "revision_admissibility",
+        "revised_batch"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "planner-prototype-contract-v0.1.2"
+        },
+        "decision": {
+          "const": "NO_REVISION"
+        },
+        "initial_prompt_sha256": {
+          "const": "6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d"
+        },
+        "initial_batch": {
+          "$ref": "#/$defs/initial_batch"
+        },
+        "general_revision_rationale": {
+          "type": "null"
+        },
+        "revised_prompt_sha256": {
+          "type": "null"
+        },
+        "prompt_diff_sha256": {
+          "type": "null"
+        },
+        "prompt_diff_format": {
+          "type": "null"
+        },
+        "revision_decided_after_initial_batch": {
+          "const": true
+        },
+        "revised_prompt_frozen_before_first_dispatch": {
+          "type": "null"
+        },
+        "revised_prompt_artifact": {
+          "type": "null"
+        },
+        "revision_admissibility": {
+          "type": "null"
+        },
+        "revised_batch": {
+          "type": "null"
+        }
+      }
+    },
+    {
+      "title": "ONE_GENERAL_REVISION",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "decision",
+        "initial_prompt_sha256",
+        "initial_batch",
+        "general_revision_rationale",
+        "revised_prompt_sha256",
+        "prompt_diff_sha256",
+        "prompt_diff_format",
+        "revision_decided_after_initial_batch",
+        "revised_prompt_frozen_before_first_dispatch",
+        "revised_prompt_artifact",
+        "revision_admissibility",
+        "revised_batch"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "planner-prototype-contract-v0.1.2"
+        },
+        "decision": {
+          "const": "ONE_GENERAL_REVISION"
+        },
+        "initial_prompt_sha256": {
+          "const": "6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d"
+        },
+        "initial_batch": {
+          "$ref": "#/$defs/initial_batch"
+        },
+        "general_revision_rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "revised_prompt_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "prompt_diff_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "prompt_diff_format": {
+          "const": "planner-prompt-exact-diff-v0.1"
+        },
+        "revision_decided_after_initial_batch": {
+          "const": true
+        },
+        "revised_prompt_frozen_before_first_dispatch": {
+          "const": true
+        },
+        "revised_prompt_artifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "diff_path"
+          ],
+          "properties": {
+            "path": {
+              "const": "prompts/planner-prototype-v0.1-revised.txt"
+            },
+            "diff_path": {
+              "const": "artifacts/planner-development/planner-prototype-v0.1-prompt-exact-diff.json"
+            }
+          }
+        },
+        "revision_admissibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "denylist_sha256",
+            "zero_shot"
+          ],
+          "properties": {
+            "status": {
+              "const": "PASS"
+            },
+            "denylist_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "zero_shot": {
+              "const": true
+            }
+          }
+        },
+        "revised_batch": {
+          "$ref": "#/$defs/revised_batch"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "initial_batch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "completed",
+        "run_ids",
+        "failure_classification_sha256"
+      ],
+      "properties": {
+        "completed": {
+          "const": true
+        },
+        "run_ids": {
+          "const": [
+            "planner-dev-v0.1/initial/001/MD-EQ-01",
+            "planner-dev-v0.1/initial/002/MD-GROUP-02",
+            "planner-dev-v0.1/initial/003/MD-ORDER-03",
+            "planner-dev-v0.1/initial/004/MD-LOC-04",
+            "planner-dev-v0.1/initial/005/MD-CROSS-05",
+            "planner-dev-v0.1/initial/006/MD-GRAPH-06",
+            "planner-dev-v0.1/initial/007/MD-TOOL-07"
+          ]
+        },
+        "failure_classification_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "revised_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "run_order",
+        "task_id",
+        "prompt_version",
+        "prompt_sha256"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "pattern": "^planner-dev-v0\\.1/revised/[0-9]{3}/MD-[A-Z]+-[0-9]{2}$"
+        },
+        "run_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^MD-[A-Z]+-[0-9]{2}$"
+        },
+        "prompt_version": {
+          "const": "revised"
+        },
+        "prompt_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "revised_batch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dispatch_policy",
+        "planned_runs"
+      ],
+      "properties": {
+        "dispatch_policy": {
+          "const": "FULL_SEVEN_SERIAL_NO_SELECTIVE_RERUN"
+        },
+        "planned_runs": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/revised_run"
+          }
+        }
+      }
+    }
+  }
+}
