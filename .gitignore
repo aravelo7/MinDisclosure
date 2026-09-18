@@ -1,0 +1,19 @@
+# Local secrets / environment
+.env
+.env.*
+!.env.example
+
+# Node dependencies
+node_modules/
+
+# Local editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local experiment artifacts intentionally excluded from version control
+artifacts/llm/provider-snapshots/
+artifacts/llm/md-bench-v0.2-deepseek-flash-formal-20260917-01/
+artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-01/
+artifacts/planner-prototype/planner-prototype-v0.1-initial-deepseek-flash-20260918-02-eval-replay-01/
