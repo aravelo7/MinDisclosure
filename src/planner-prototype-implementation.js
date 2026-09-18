@@ -34,8 +34,16 @@ const REVISION_SCHEMA_PATH = path.join(ROOT, 'fixtures', 'planner-prototype-deve
 const SEEDS_PATH = path.join(ROOT, 'fixtures', 'planner-seed-cases-v0.2.1.json');
 const CATALOG_PATH = path.join(ROOT, 'fixtures', 'planner-representation-catalog-v0.2.1.json');
 const CONTRACT_PATH = path.join(ROOT, 'docs', 'planner-prototype-contract-v0.1.2.md');
+const REVISED_PROMPT_PATH = path.join(ROOT, 'prompts', 'planner-prototype-v0.1-revised.txt');
+const REVISION_DECISION_PATH = path.join(ROOT, 'artifacts', 'planner-development', 'planner-prototype-v0.1-development-revision-decision.json');
+const INITIAL_FAILURE_CLASSIFICATION_PATH = path.join(ROOT, 'artifacts', 'planner-development', 'planner-prototype-v0.1-initial-failure-classification.json');
+const PROMPT_DIFF_PATH = path.join(ROOT, 'artifacts', 'planner-development', 'planner-prototype-v0.1-prompt-exact-diff.json');
 
 const INITIAL_PROMPT_SHA256 = '6832acad77c8182be79bd2aec8f278eb533261bbf939108b5cf52f4a4ac66a5d';
+const INITIAL_FAILURE_CLASSIFICATION_SHA256 = '7857308501fda5ae2bcf8dfdb7513009c99847f535a1012fb41e6a73e1bf99a8';
+const REVISED_PROMPT_SHA256 = 'dc4fb968785b14e34dd37d651ef6a7dacc11b4c3b4ebd3bc125579fa0ec3fa7b';
+const PROMPT_DIFF_SHA256 = 'd85ac3032e40aa8454c5eff914b3c87e23eb0f66af743b89a5fa2160a7e1ab37';
+const REVISION_FREEZE_COMMIT = '449708886c30518caa7aa8d620b00b4855d2491c';
 const PLANNER_SPEC = {
   commit: '6b152f738e8b4f1d4a0186a36bb7466e40de88db',
   tag_object: '3b45322d29454134aff345b2413121f1b37008fa',
@@ -103,6 +111,68 @@ function readInitialPrompt() {
   const bytes = fs.readFileSync(PROMPT_PATH);
   if (sha256(bytes) !== INITIAL_PROMPT_SHA256) throw new Error('INITIAL_PROMPT_HASH_MISMATCH');
   return bytes;
+}
+
+function frozenRevisionPathsUnchanged() {
+  const paths = [
+    'artifacts/planner-development/planner-prototype-v0.1-development-revision-decision.json',
+    'artifacts/planner-development/planner-prototype-v0.1-initial-failure-classification.json',
+    'artifacts/planner-development/planner-prototype-v0.1-prompt-exact-diff.json',
+    'prompts/planner-prototype-v0.1-revised.txt'
+  ];
+  return paths.every((relativePath) => {
+    try {
+      childProcess.execFileSync('git', ['diff', '--quiet', REVISION_FREEZE_COMMIT, '--', relativePath], {cwd: ROOT, stdio: 'ignore'});
+      return true;
+    } catch {
+      return false;
+    }
+  });
+}
+
+function revisionProvenanceGate({record, classificationBytes, revisedPrompt, diffBytes, assets = loadPlannerAssets(), checkFrozenCommit = false} = {}) {
+  const fail = (reason) => ({ok: false, error_code: 'REVISED_PROMPT_NOT_FROZEN', reason});
+  if (!record || record.decision !== 'ONE_GENERAL_REVISION') return fail('DECISION_NOT_ONE_GENERAL_REVISION');
+  if (schemaErrors(assets.revisionSchema, record).length) return fail('REVISION_RECORD_SCHEMA_INVALID');
+  if (record.revision_decided_after_initial_batch !== true || record.revised_prompt_frozen_before_first_dispatch !== true) return fail('REVISION_NOT_FROZEN_BEFORE_DISPATCH');
+  if (record.initial_prompt_sha256 !== INITIAL_PROMPT_SHA256 || record.initial_batch.failure_classification_sha256 !== INITIAL_FAILURE_CLASSIFICATION_SHA256) return fail('INITIAL_PROVENANCE_HASH_MISMATCH');
+  if (!record.initial_batch.completed || canonicalJson(record.initial_batch.run_ids) !== canonicalJson(TASK_IDS.map((taskId, index) => `planner-dev-v0.1/initial/${String(index + 1).padStart(3, '0')}/${taskId}`))) return fail('INITIAL_BATCH_INCOMPLETE');
+  let classification;
+  try { classification = JSON.parse(Buffer.from(classificationBytes).toString('utf8')); } catch { return fail('CLASSIFICATION_INVALID'); }
+  if (sha256(Buffer.from(classificationBytes)) !== record.initial_batch.failure_classification_sha256 || classification.status !== 'FROZEN' || classification.initial_failure_classification_frozen !== true || classification.cases?.length !== 7) return fail('CLASSIFICATION_NOT_FROZEN');
+  if (record.revised_prompt_sha256 !== REVISED_PROMPT_SHA256 || sha256(Buffer.from(revisedPrompt)) !== record.revised_prompt_sha256) return fail('REVISED_PROMPT_HASH_MISMATCH');
+  if (record.prompt_diff_sha256 !== PROMPT_DIFF_SHA256 || sha256(Buffer.from(diffBytes)) !== record.prompt_diff_sha256 || !Buffer.from(diffBytes).equals(exactPromptDiffBytes(Buffer.from(revisedPrompt)))) return fail('PROMPT_DIFF_HASH_MISMATCH');
+  if (record.prompt_diff_format !== 'planner-prompt-exact-diff-v0.1' || record.revision_admissibility?.status !== 'PASS' || record.revision_admissibility?.zero_shot !== true || !revisionAdmissible(Buffer.from(revisedPrompt), record.general_revision_rationale, assets)) return fail('REVISION_INADMISSIBLE');
+  if (record.revised_prompt_artifact?.path !== 'prompts/planner-prototype-v0.1-revised.txt' || record.revised_prompt_artifact?.diff_path !== 'artifacts/planner-development/planner-prototype-v0.1-prompt-exact-diff.json') return fail('REVISION_ARTIFACT_PATH_MISMATCH');
+  const planned = record.revised_batch?.planned_runs ?? [];
+  if (record.revised_batch?.dispatch_policy !== 'FULL_SEVEN_SERIAL_NO_SELECTIVE_RERUN' || canonicalJson(planned) !== canonicalJson(revisedRunManifest(record.revised_prompt_sha256))) return fail('REVISED_MANIFEST_INVALID');
+  if (checkFrozenCommit) {
+    try {
+      if (childProcess.execFileSync('git', ['rev-parse', `${REVISION_FREEZE_COMMIT}^{commit}`], {cwd: ROOT, encoding: 'utf8'}).trim() !== REVISION_FREEZE_COMMIT || !frozenRevisionPathsUnchanged()) return fail('REVISION_FREEZE_COMMIT_MISMATCH');
+    } catch { return fail('REVISION_FREEZE_COMMIT_MISMATCH'); }
+  }
+  return {ok: true, prompt_sha256: record.revised_prompt_sha256, classification_sha256: record.initial_batch.failure_classification_sha256, prompt_diff_sha256: record.prompt_diff_sha256, revision_freeze_commit: REVISION_FREEZE_COMMIT};
+}
+
+function resolveFrozenPlannerPrompt(promptVersion = 'initial', assets = loadPlannerAssets()) {
+  if (promptVersion === 'initial') {
+    const bytes = readInitialPrompt();
+    return {prompt_version: 'initial', bytes, sha256: INITIAL_PROMPT_SHA256, revision_provenance: null};
+  }
+  if (promptVersion !== 'revised') throw new Error('PLANNER_PROMPT_VERSION_INVALID');
+  let record;
+  try {
+    record = readJson(REVISION_DECISION_PATH);
+    const classificationBytes = fs.readFileSync(INITIAL_FAILURE_CLASSIFICATION_PATH);
+    const revisedPrompt = fs.readFileSync(REVISED_PROMPT_PATH);
+    const diffBytes = fs.readFileSync(PROMPT_DIFF_PATH);
+    const gate = revisionProvenanceGate({record, classificationBytes, revisedPrompt, diffBytes, assets, checkFrozenCommit: true});
+    if (!gate.ok) throw new Error(gate.error_code);
+    return {prompt_version: 'revised', bytes: revisedPrompt, sha256: gate.prompt_sha256, revision_provenance: gate};
+  } catch (error) {
+    if (error.message === 'REVISED_PROMPT_NOT_FROZEN') throw error;
+    throw new Error('REVISED_PROMPT_NOT_FROZEN');
+  }
 }
 
 function resolveSchema(schema, root) {
@@ -512,9 +582,10 @@ function classifyPlannerAttempt(attempt, assets = loadPlannerAssets()) {
 }
 
 function buildPlannerRequest(plannerInput, options = {}) {
-  const prompt = options.promptBytes ?? readInitialPrompt();
-  if (sha256(prompt) !== INITIAL_PROMPT_SHA256) throw new Error('INITIAL_PROMPT_HASH_MISMATCH');
   const assets = options.assets ?? loadPlannerAssets();
+  const resolvedPrompt = resolveFrozenPlannerPrompt(options.promptVersion ?? 'initial', assets);
+  const prompt = resolvedPrompt.bytes;
+  if (sha256(prompt) !== resolvedPrompt.sha256) throw new Error(`${resolvedPrompt.prompt_version === 'initial' ? 'INITIAL_PROMPT' : 'REVISED_PROMPT'}_HASH_MISMATCH`);
   return {
     model: 'deepseek-flash',
     instructions: prompt.toString('utf8'),
@@ -544,12 +615,12 @@ function providerSnapshot(snapshot = {}) {
 
 function preparePlannerRun({caseIndex, promptVersion = 'initial', experimentId = 'planner-dev-v0.1', assets = loadPlannerAssets(), snapshot}) {
   if (!Number.isInteger(caseIndex) || caseIndex < 0 || caseIndex >= 7) throw new Error('PLANNER_CASE_INDEX_INVALID');
-  if (promptVersion !== 'initial') throw new Error('REVISED_PROMPT_NOT_FROZEN');
+  const resolvedPrompt = resolveFrozenPlannerPrompt(promptVersion, assets);
   const projection = buildProviderVisibleProjection(assets.dev);
   const taskId = TASK_IDS[caseIndex];
   const plannerInput = projection[caseIndex];
-  const request = buildPlannerRequest(plannerInput, {assets});
-  return {caseIndex, taskId, seedCase: assets.seeds.cases[caseIndex], plannerInput, request, schema: assets.outputSchema, run: {experiment_id: experimentId, run_id: `planner-dev-v0.1/initial/${String(caseIndex + 1).padStart(3, '0')}/${taskId}`, run_order: caseIndex + 1, task_id: taskId, prompt_version: 'initial', repetition_index: 1}, promptBytes: readInitialPrompt(), providerSnapshot: providerSnapshot(snapshot), inputSetSha256: sha256(canonicalBytes(projection)), outputSchemaSha256: sha256(fs.readFileSync(OUTPUT_SCHEMA_PATH))};
+  const request = buildPlannerRequest(plannerInput, {assets, promptVersion});
+  return {caseIndex, taskId, seedCase: assets.seeds.cases[caseIndex], plannerInput, request, schema: assets.outputSchema, run: {experiment_id: experimentId, run_id: `planner-dev-v0.1/${promptVersion}/${String(caseIndex + 1).padStart(3, '0')}/${taskId}`, run_order: caseIndex + 1, task_id: taskId, prompt_version: promptVersion, repetition_index: 1}, promptBytes: resolvedPrompt.bytes, promptSha256: resolvedPrompt.sha256, revisionProvenance: resolvedPrompt.revision_provenance, providerSnapshot: providerSnapshot(snapshot), inputSetSha256: sha256(canonicalBytes(projection)), outputSchemaSha256: sha256(fs.readFileSync(OUTPUT_SCHEMA_PATH))};
 }
 
 function buildArtifact(prepared, execution, evaluated, options = {}) {
@@ -559,7 +630,7 @@ function buildArtifact(prepared, execution, evaluated, options = {}) {
   const artifact = {
     artifact_version: 'planner-prototype-run-artifact-v0.1',
     run_identity: prepared.run,
-    provenance: {planner_spec_commit: PLANNER_SPEC.commit, planner_spec_tag_object: PLANNER_SPEC.tag_object, planner_spec_tree: PLANNER_SPEC.tree, prototype_contract_commit: PROTOTYPE_CONTRACT.commit, prototype_contract_tag_object: PROTOTYPE_CONTRACT.tag_object, prototype_contract_tree: PROTOTYPE_CONTRACT.tree, prompt_sha256: INITIAL_PROMPT_SHA256, input_set_sha256: prepared.inputSetSha256, output_schema_sha256: prepared.outputSchemaSha256, implementation_commit: options.implementationCommit ?? implementationCommit()},
+    provenance: {planner_spec_commit: PLANNER_SPEC.commit, planner_spec_tag_object: PLANNER_SPEC.tag_object, planner_spec_tree: PLANNER_SPEC.tree, prototype_contract_commit: PROTOTYPE_CONTRACT.commit, prototype_contract_tag_object: PROTOTYPE_CONTRACT.tag_object, prototype_contract_tree: PROTOTYPE_CONTRACT.tree, prompt_sha256: prepared.promptSha256, input_set_sha256: prepared.inputSetSha256, output_schema_sha256: prepared.outputSchemaSha256, implementation_commit: options.implementationCommit ?? implementationCommit()},
     provider_snapshot: prepared.providerSnapshot,
     request: {request_sha256: execution.request_hash, reasoning_effort: 'none', temperature: 0, max_output_tokens: 4096, stream: false, attempt_count: execution.attempts.length},
     raw_prediction_text: classification.raw_output ?? null,
@@ -573,19 +644,24 @@ function buildArtifact(prepared, execution, evaluated, options = {}) {
 
 async function executePlannerRun(prepared, provider, options = {}) {
   if (!provider || typeof provider.send !== 'function') throw new Error('PLANNER_PROVIDER_REQUIRED');
+  const assets = options.assets ?? loadPlannerAssets();
+  const resolvedPrompt = resolveFrozenPlannerPrompt(prepared.run.prompt_version, assets);
+  const expectedRequest = buildPlannerRequest(prepared.plannerInput, {assets, promptVersion: prepared.run.prompt_version});
+  if (resolvedPrompt.sha256 !== prepared.promptSha256 || canonicalJson(expectedRequest) !== canonicalJson(prepared.request)) throw new Error(`${prepared.run.prompt_version === 'initial' ? 'INITIAL_PROMPT' : 'REVISED_PROMPT'}_CHANGED_BEFORE_DISPATCH`);
   const clock = options.clock ?? new FakeClock();
-  const execution = await executeWithRetry({request: prepared.request, provider, runId: prepared.run.run_id, classify: (attempt) => classifyPlannerAttempt(attempt, options.assets ?? loadPlannerAssets()), contract: options.transport ?? PLANNER_TRANSPORT, clock});
+  const execution = await executeWithRetry({request: prepared.request, provider, runId: prepared.run.run_id, classify: (attempt) => classifyPlannerAttempt(attempt, assets), contract: options.transport ?? PLANNER_TRANSPORT, clock});
   const classification = execution.classification;
   let evaluated = null;
-  if (classification.status === 'STRUCTURED_OUTPUT_VALID') evaluated = evaluatePlannerPrediction({plannerInput: prepared.plannerInput, seedCase: prepared.seedCase, prediction: classification.parsed_output, assets: options.assets ?? loadPlannerAssets()});
+  if (classification.status === 'STRUCTURED_OUTPUT_VALID') evaluated = evaluatePlannerPrediction({plannerInput: prepared.plannerInput, seedCase: prepared.seedCase, prediction: classification.parsed_output, assets});
   return {artifact: buildArtifact(prepared, execution, evaluated, options), execution, evaluated};
 }
 
-async function runPlannerDevBatch({provider, experimentId = 'planner-dev-v0.1', assets = loadPlannerAssets(), clockFactory = () => new FakeClock(), snapshot} = {}) {
+async function runPlannerDevBatch({provider, experimentId = 'planner-dev-v0.1', promptVersion = 'initial', assets = loadPlannerAssets(), clockFactory = () => new FakeClock(), snapshot} = {}) {
   if (!provider) throw new Error('PLANNER_PROVIDER_REQUIRED');
+  resolveFrozenPlannerPrompt(promptVersion, assets);
   const results = [];
   for (let caseIndex = 0; caseIndex < TASK_IDS.length; caseIndex += 1) {
-    const prepared = preparePlannerRun({caseIndex, experimentId, assets, snapshot});
+    const prepared = preparePlannerRun({caseIndex, promptVersion, experimentId, assets, snapshot});
     results.push(await executePlannerRun(prepared, provider, {assets, clock: clockFactory()}));
   }
   return {results, summary: summarizePlannerBatch(results), input_set_sha256: results[0]?.artifact.provenance.input_set_sha256 ?? null};
@@ -699,9 +775,9 @@ function buildOneGeneralRevisionDecision({failureClassificationSha256, revisedPr
 }
 
 function revisedDispatchAllowed(record, revisedPrompt, diffBytes, nextRunIndex, priorPromptHashes, assets = loadPlannerAssets()) {
-  if (!record || record.decision !== 'ONE_GENERAL_REVISION' || !record.initial_batch?.completed || record.initial_batch.run_ids.length !== 7 || !record.revision_decided_after_initial_batch || !record.revised_prompt_frozen_before_first_dispatch) return false;
-  if (sha256(Buffer.from(revisedPrompt)) !== record.revised_prompt_sha256 || sha256(Buffer.from(diffBytes)) !== record.prompt_diff_sha256) return false;
-  if (!revisionAdmissible(Buffer.from(revisedPrompt), record.general_revision_rationale, assets) || schemaErrors(assets.revisionSchema, record).length) return false;
+  const classificationBytes = fs.readFileSync(INITIAL_FAILURE_CLASSIFICATION_PATH);
+  const gate = revisionProvenanceGate({record, classificationBytes, revisedPrompt: Buffer.from(revisedPrompt), diffBytes: Buffer.from(diffBytes), assets});
+  if (!gate.ok || !record.revision_decided_after_initial_batch || !record.revised_prompt_frozen_before_first_dispatch) return false;
   const planned = record.revised_batch?.planned_runs ?? [];
   if (planned.length !== 7 || planned.some((run, index) => run.run_id !== `planner-dev-v0.1/revised/${String(index + 1).padStart(3, '0')}/${TASK_IDS[index]}` || run.run_order !== index + 1 || run.task_id !== TASK_IDS[index] || run.prompt_version !== 'revised' || run.prompt_sha256 !== record.revised_prompt_sha256)) return false;
   return nextRunIndex === priorPromptHashes.length && nextRunIndex >= 0 && nextRunIndex < 7 && priorPromptHashes.every((hash) => hash === record.revised_prompt_sha256) && planned[nextRunIndex].prompt_sha256 === record.revised_prompt_sha256;
@@ -769,8 +845,9 @@ if (require.main === module) {
 
 module.exports = {
   ARTIFACT_SCHEMA_PATH, CATALOG_PATH, CONTRACT_PATH, DEV_PATH, INITIAL_PROMPT_SHA256,
-  INPUT_SCHEMA_PATH, OUTPUT_SCHEMA_PATH, PLANNER_SPEC, PLANNER_TRANSPORT,
+  INITIAL_FAILURE_CLASSIFICATION_SHA256, INPUT_SCHEMA_PATH, OUTPUT_SCHEMA_PATH, PLANNER_SPEC, PLANNER_TRANSPORT,
   PROTOTYPE_CONTRACT, PROMPT_PATH, P0_CONTRACT, REVISION_SCHEMA_PATH, SEEDS_PATH,
+  INITIAL_FAILURE_CLASSIFICATION_PATH, PROMPT_DIFF_PATH, PROMPT_DIFF_SHA256, REVISED_PROMPT_PATH, REVISED_PROMPT_SHA256, REVISION_DECISION_PATH, REVISION_FREEZE_COMMIT,
   FakeClock, FakeProvider,
   SLOT_POOL, TASK_IDS, TRUSTED_AUTHORITY, alphaCanonical, buildArtifact,
   buildNoRevisionDecision, buildOneGeneralRevisionDecision, buildPlannerRequest, buildProviderVisibleProjection,
@@ -778,7 +855,7 @@ module.exports = {
   capabilityMetrics, canonicalRequirementSet, classifyPlannerAttempt, clone, compareGold, compilePrediction, evaluatePlannerPrediction,
   exactPromptDiffBytes, executePlannerRun, implementationCommit, initialBatchRecord,
   loadPlannerAssets, noSolverError, opaqueGoldPrediction, p0ProjectionRegression,
-  preparePlannerRun, providerSnapshot, readInitialPrompt, revisionAdmissible,
+  preparePlannerRun, providerSnapshot, readInitialPrompt, resolveFrozenPlannerPrompt, revisionAdmissible, revisionProvenanceGate,
   revisedDispatchAllowed, runOfflineQualification, runPlannerDevBatch, scanSecrets, schemaErrors, sha256, unsafeEvaluation,
   validateSchema,
   slotPolicyError, summarizePlannerBatch, validatePlannerInput, validatePrediction,

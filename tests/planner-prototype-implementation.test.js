@@ -2,6 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
 
 const planner = require('../src/planner-prototype-implementation');
 
@@ -31,6 +32,91 @@ test('Planner implementation keeps frozen prompt, P0 projection, and request det
     assert.equal(planner.canonicalJson(left), planner.canonicalJson(right));
     assert.equal(/MD-[A-Z]+-[0-9]{2}/.test(planner.canonicalJson(left)), false);
   }
+});
+
+test('frozen prompt resolver preserves initial bytes and admits only the frozen revised provenance', () => {
+  const assets = planner.loadPlannerAssets();
+  const initial = planner.resolveFrozenPlannerPrompt('initial', assets);
+  const revised = planner.resolveFrozenPlannerPrompt('revised', assets);
+  assert.equal(initial.sha256, planner.INITIAL_PROMPT_SHA256);
+  assert.equal(revised.sha256, planner.REVISED_PROMPT_SHA256);
+  assert.equal(revised.revision_provenance.classification_sha256, planner.INITIAL_FAILURE_CLASSIFICATION_SHA256);
+  assert.equal(revised.revision_provenance.prompt_diff_sha256, planner.PROMPT_DIFF_SHA256);
+  assert.equal(revised.revision_provenance.revision_freeze_commit, planner.REVISION_FREEZE_COMMIT);
+  assert.equal(planner.canonicalJson(
+    planner.buildPlannerRequest(planner.buildProviderVisibleProjection(assets.dev)[0], {assets})
+  ), planner.canonicalJson(
+    planner.buildPlannerRequest(planner.buildProviderVisibleProjection(assets.dev)[0], {assets, promptVersion: 'initial'})
+  ));
+});
+
+test('revised provenance gate rejects every frozen-contract mutation before dispatch', () => {
+  const assets = planner.loadPlannerAssets();
+  const record = JSON.parse(fs.readFileSync(planner.REVISION_DECISION_PATH, 'utf8'));
+  const classificationBytes = fs.readFileSync(planner.INITIAL_FAILURE_CLASSIFICATION_PATH);
+  const revisedPrompt = fs.readFileSync(planner.REVISED_PROMPT_PATH);
+  const diffBytes = fs.readFileSync(planner.PROMPT_DIFF_PATH);
+  const gate = (overrides = {}) => planner.revisionProvenanceGate({
+    record: overrides.record ?? record,
+    classificationBytes: overrides.classificationBytes ?? classificationBytes,
+    revisedPrompt: overrides.revisedPrompt ?? revisedPrompt,
+    diffBytes: overrides.diffBytes ?? diffBytes,
+    assets
+  }).ok;
+  assert.equal(gate(), true);
+  assert.equal(gate({revisedPrompt: Buffer.concat([revisedPrompt, Buffer.from('x')])}), false);
+  assert.equal(gate({diffBytes: Buffer.concat([diffBytes, Buffer.from('x')])}), false);
+  assert.equal(gate({classificationBytes: Buffer.concat([classificationBytes, Buffer.from('x')])}), false);
+  const inadmissible = planner.clone(record);
+  inadmissible.revision_admissibility.status = 'FAIL';
+  assert.equal(gate({record: inadmissible}), false);
+  const incomplete = planner.clone(record);
+  incomplete.revised_batch.planned_runs.pop();
+  assert.equal(gate({record: incomplete}), false);
+  const selective = planner.clone(record);
+  selective.revised_batch.planned_runs[2].task_id = 'MD-EQ-01';
+  assert.equal(gate({record: selective}), false);
+  const unfrozen = planner.clone(record);
+  unfrozen.revised_prompt_frozen_before_first_dispatch = false;
+  assert.equal(gate({record: unfrozen}), false);
+});
+
+test('initial and revised batches share the canonical single-run execution path', async () => {
+  const assets = planner.loadPlannerAssets();
+  const inputs = planner.buildProviderVisibleProjection(assets.dev);
+  const scripts = new Map();
+  for (let index = 0; index < planner.TASK_IDS.length; index += 1) {
+    const runId = `planner-dev-v0.1/revised/${String(index + 1).padStart(3, '0')}/${planner.TASK_IDS[index]}`;
+    const prediction = planner.opaqueGoldPrediction(assets.seeds.cases[index], inputs[index]);
+    scripts.set(runId, completedPredictionResponse(prediction));
+  }
+  const provider = new planner.FakeProvider(scripts);
+  const batch = await planner.runPlannerDevBatch({
+    provider, promptVersion: 'revised', assets, clockFactory: () => new planner.FakeClock()
+  });
+  assert.equal(batch.results.length, 7);
+  assert.equal(provider.calls.length, 7);
+  assert.deepEqual(batch.results.map((result) => result.artifact.run_identity.run_id),
+    planner.TASK_IDS.map((taskId, index) => `planner-dev-v0.1/revised/${String(index + 1).padStart(3, '0')}/${taskId}`));
+  assert.ok(batch.results.every((result) =>
+    result.artifact.run_identity.prompt_version === 'revised' &&
+    result.artifact.provenance.prompt_sha256 === planner.REVISED_PROMPT_SHA256 &&
+    planner.schemaErrors(assets.artifactSchema, result.artifact).length === 0));
+  assert.ok(provider.calls.every((call) => !planner.TASK_IDS.some((taskId) =>
+    planner.canonicalJson(call.request).includes(taskId))));
+  assert.equal(planner.p0ProjectionRegression(assets).pass, true);
+});
+
+test('revised dispatch guard fails closed before the provider is called', async () => {
+  const assets = planner.loadPlannerAssets();
+  const prepared = planner.preparePlannerRun({caseIndex: 0, promptVersion: 'revised', assets});
+  prepared.promptSha256 = '0'.repeat(64);
+  const provider = new planner.FakeProvider(new Map());
+  await assert.rejects(
+    planner.executePlannerRun(prepared, provider, {assets, clock: new planner.FakeClock()}),
+    /REVISED_PROMPT_CHANGED_BEFORE_DISPATCH/
+  );
+  assert.equal(provider.calls.length, 0);
 });
 
 test('all seven opaque Gold-shaped predictions pass authority, No-Solver, Gold, and compiler layers', () => {
