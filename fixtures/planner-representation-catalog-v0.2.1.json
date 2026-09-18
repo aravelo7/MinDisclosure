@@ -1,0 +1,1959 @@
+{
+  "catalog_version": "planner-representation-catalog-v0.2.1",
+  "source_benchmark_version": "md-bench-v0.2",
+  "source_search_space": "fixtures/md-bench-v0.2-search-space.json",
+  "finite_space": true,
+  "capability_match_policy": "SEMANTIC_SIGNATURE_WITH_EXPLICIT_ENTAILMENT_AND_PROVED_PRECONDITIONS",
+  "canonical_dimension_order": [
+    "MD-EQ-01/email",
+    "MD-GROUP-02/contact_email",
+    "MD-ORDER-03/date_of_birth",
+    "MD-LOC-04/address",
+    "MD-CROSS-05/subject_email",
+    "MD-CROSS-05/timestamp",
+    "MD-GRAPH-06/person_name",
+    "MD-GRAPH-06/source_relations",
+    "MD-TOOL-07/recipient_email",
+    "MD-TOOL-07/address"
+  ],
+  "deterministic_serialization": {
+    "object_keys": "LEXICOGRAPHIC",
+    "dimension_actions": "CANONICAL_DIMENSION_ORDER",
+    "encoding": "UTF-8",
+    "whitespace": "NONE"
+  },
+  "boundary_policy": {
+    "boundaries": [
+      "AGENT",
+      "TOOL"
+    ],
+    "uniform_per_dimension": true,
+    "raw_fallback": false,
+    "tool_restoration": "DECLARED_TOOL_ARGUMENT_ONLY",
+    "unproved_precondition": "ACTION_DOES_NOT_COVER_REQUIREMENT"
+  },
+  "infeasibility_reasons": [
+    "NO_DIMENSION_FOR_TARGET",
+    "NO_ACTION_PROVIDES_CAPABILITY",
+    "CAPABILITY_PARAMETER_MISMATCH",
+    "BOUNDARY_MISMATCH",
+    "UNPROVED_TRUSTED_PRECONDITION",
+    "AUTHORITY_WITNESS_INVALID",
+    "NO_SOLVER_INVARIANT_VIOLATION",
+    "SEMANTIC_REQUIREMENT_INVALID",
+    "NO_TRUSTED_CATALOG_SLICE",
+    "MISSING_REQUIRED_DIMENSION",
+    "AMBIGUOUS_DIMENSION_MAPPING",
+    "OPERATION_BINDING_MISMATCH",
+    "CATALOG_STRUCTURE_INVALID"
+  ],
+  "capability_semantics": [
+    {
+      "family": "identity",
+      "name": "identity",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 2
+      },
+      "target_roles": [
+        "VALUE",
+        "LINK_KEY",
+        "RELATION_SOURCE",
+        "RELATION_TARGET"
+      ],
+      "applicable_field_types": [
+        "EMAIL",
+        "PERSON_NAME",
+        "RECORD_ID",
+        "STRING"
+      ],
+      "required_parameters": [
+        "stability_scope"
+      ],
+      "allowed_scopes": [
+        "ALL_OCCURRENCES",
+        "ALL_RECORDS"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_TRACK_STABLE_IDENTITY",
+        "TOOL": "TOOL_CAN_TRACK_STABLE_IDENTITY"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "equality",
+        "linkage",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "identity",
+      "name": "equality",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "VALUE",
+        "GROUP_KEY",
+        "LINK_KEY"
+      ],
+      "applicable_field_types": [
+        "EMAIL",
+        "PERSON_NAME",
+        "RECORD_ID",
+        "STRING"
+      ],
+      "required_parameters": [
+        "equality_basis"
+      ],
+      "allowed_scopes": [
+        "ALL_OCCURRENCES",
+        "ALL_RECORDS"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_TEST_EQUALITY",
+        "TOOL": "TOOL_CAN_TEST_EQUALITY"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "identity",
+        "linkage",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "identity",
+      "name": "linkage",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "LINK_KEY"
+      ],
+      "applicable_field_types": [
+        "EMAIL",
+        "PERSON_NAME",
+        "RECORD_ID",
+        "STRING"
+      ],
+      "required_parameters": [
+        "linkage_scope"
+      ],
+      "allowed_scopes": [
+        "ALL_OCCURRENCES",
+        "ALL_RECORDS"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_LINK_SOURCE_OCCURRENCES",
+        "TOOL": "TOOL_CAN_LINK_SOURCE_OCCURRENCES"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "identity",
+        "equality",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "property",
+      "name": "domain",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "GROUP_KEY",
+        "VALUE"
+      ],
+      "applicable_field_types": [
+        "EMAIL"
+      ],
+      "required_parameters": [
+        "granularity"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_OBSERVE_DOMAIN_PROPERTY",
+        "TOOL": "TOOL_CAN_RECEIVE_DOMAIN_PROPERTY"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "category",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "property",
+      "name": "category",
+      "qualification": "unqualified-in-v0.2",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "GROUP_KEY",
+        "VALUE"
+      ],
+      "applicable_field_types": [
+        "STRING",
+        "INTEGER"
+      ],
+      "required_parameters": [
+        "category_system_ref"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_OBSERVE_DECLARED_CATEGORY",
+        "TOOL": "TOOL_CAN_RECEIVE_DECLARED_CATEGORY"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "domain",
+        "membership",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "property",
+      "name": "ordering",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "SORT_KEY"
+      ],
+      "applicable_field_types": [
+        "DATE_OF_BIRTH",
+        "EVENT_TIMESTAMP",
+        "NUMBER",
+        "INTEGER",
+        "STRING"
+      ],
+      "required_parameters": [
+        "direction",
+        "precision"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_ORDER_AT_DECLARED_PRECISION",
+        "TOOL": "TOOL_CAN_ORDER_AT_DECLARED_PRECISION"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "coarse_temporal",
+        "temporal_comparison",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "property",
+      "name": "coarse_temporal",
+      "qualification": "unqualified-in-v0.2",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "TEMPORAL_VALUE",
+        "VALUE"
+      ],
+      "applicable_field_types": [
+        "DATE_OF_BIRTH",
+        "EVENT_TIMESTAMP"
+      ],
+      "required_parameters": [
+        "granularity"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_OBSERVE_TEMPORAL_BUCKET",
+        "TOOL": "TOOL_CAN_RECEIVE_TEMPORAL_BUCKET"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "ordering",
+        "temporal_comparison",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "property",
+      "name": "geographic_region",
+      "qualification": "unqualified-in-v0.2",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "GROUP_KEY",
+        "VALUE",
+        "TOOL_ARGUMENT"
+      ],
+      "applicable_field_types": [
+        "POSTAL_ADDRESS"
+      ],
+      "required_parameters": [
+        "region_scheme_ref"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES",
+        "DECLARED_TOOL_ARGUMENT"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_OBSERVE_DECLARED_REGION",
+        "TOOL": "TOOL_CAN_RECEIVE_DECLARED_REGION"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "service_zone",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "property",
+      "name": "service_zone",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "GROUP_KEY",
+        "VALUE",
+        "TOOL_ARGUMENT"
+      ],
+      "applicable_field_types": [
+        "POSTAL_ADDRESS"
+      ],
+      "required_parameters": [
+        "zone_rule_ref"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES",
+        "DECLARED_TOOL_ARGUMENT"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_OBSERVE_WORKFLOW_ZONE",
+        "TOOL": "TOOL_CAN_RECEIVE_WORKFLOW_ZONE"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "geographic_region",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "relation",
+      "name": "existing_relation",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 2,
+        "maximum": 2
+      },
+      "target_roles": [
+        "RELATION_SOURCE",
+        "RELATION_TARGET"
+      ],
+      "applicable_field_types": [
+        "PERSON_NAME",
+        "RECORD_ID"
+      ],
+      "required_parameters": [
+        "relation_orientation",
+        "relation_source"
+      ],
+      "allowed_scopes": [
+        "DECLARED_RELATION_SET"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_OBSERVE_SOURCE_DECLARED_RELATION",
+        "TOOL": "TOOL_CAN_RECEIVE_SOURCE_DECLARED_RELATION"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "directionality",
+        "membership",
+        "temporal_comparison"
+      ]
+    },
+    {
+      "family": "relation",
+      "name": "membership",
+      "qualification": "unqualified-in-v0.2",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "VALUE",
+        "GROUP_KEY"
+      ],
+      "applicable_field_types": [
+        "EMAIL",
+        "PERSON_NAME",
+        "RECORD_ID",
+        "STRING",
+        "INTEGER"
+      ],
+      "required_parameters": [
+        "set_ref"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_TEST_DECLARED_SET_MEMBERSHIP",
+        "TOOL": "TOOL_CAN_TEST_DECLARED_SET_MEMBERSHIP"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "category",
+        "existing_relation",
+        "exact_value"
+      ]
+    },
+    {
+      "family": "relation",
+      "name": "directionality",
+      "qualification": "unqualified-in-v0.2",
+      "arity": {
+        "minimum": 2,
+        "maximum": 2
+      },
+      "target_roles": [
+        "RELATION_SOURCE",
+        "RELATION_TARGET"
+      ],
+      "applicable_field_types": [
+        "PERSON_NAME",
+        "RECORD_ID"
+      ],
+      "required_parameters": [
+        "relation_orientation"
+      ],
+      "allowed_scopes": [
+        "DECLARED_RELATION_SET"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_DISTINGUISH_RELATION_ORIENTATION",
+        "TOOL": "TOOL_CAN_DISTINGUISH_RELATION_ORIENTATION"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "existing_relation",
+        "membership"
+      ]
+    },
+    {
+      "family": "relation",
+      "name": "temporal_comparison",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "TEMPORAL_VALUE"
+      ],
+      "applicable_field_types": [
+        "DATE_OF_BIRTH",
+        "EVENT_TIMESTAMP"
+      ],
+      "required_parameters": [
+        "comparison",
+        "threshold",
+        "interval_semantics",
+        "granularity"
+      ],
+      "allowed_scopes": [
+        "ALL_RECORDS",
+        "ALL_OCCURRENCES"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_CAN_EVALUATE_DECLARED_TEMPORAL_PREDICATE",
+        "TOOL": "TOOL_CAN_EVALUATE_DECLARED_TEMPORAL_PREDICATE"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "PARAMETERS_MATCH",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "ordering",
+        "coarse_temporal",
+        "existing_relation"
+      ]
+    },
+    {
+      "family": "exact_value",
+      "name": "exact_value",
+      "qualification": "seed-qualified",
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "target_roles": [
+        "VALUE",
+        "TOOL_ARGUMENT"
+      ],
+      "applicable_field_types": [
+        "EMAIL",
+        "POSTAL_ADDRESS",
+        "DATE_OF_BIRTH",
+        "EVENT_TIMESTAMP",
+        "PERSON_NAME",
+        "RECORD_ID",
+        "NUMBER",
+        "INTEGER",
+        "STRING",
+        "TOOL_PARAMETER"
+      ],
+      "required_parameters": [],
+      "allowed_scopes": [
+        "ALL_OCCURRENCES",
+        "ALL_RECORDS",
+        "DECLARED_TOOL_ARGUMENT"
+      ],
+      "boundary_semantics": {
+        "AGENT": "AGENT_RECEIVES_EXACT_VALUE",
+        "TOOL": "TOOL_RECEIVES_EXACT_VALUE_AFTER_ALLOWED_RESTORATION"
+      },
+      "satisfaction_conditions": [
+        "EXPLICIT_COVERAGE",
+        "BOUNDARY_MATCH",
+        "PRECONDITIONS_PROVED"
+      ],
+      "entails": [],
+      "does_not_entail": [
+        "identity",
+        "equality",
+        "linkage",
+        "domain",
+        "ordering",
+        "service_zone"
+      ]
+    }
+  ],
+  "transformation_contracts": [
+    {
+      "transformation_id": "REDACT",
+      "representation": "REDACTED",
+      "source_fields": "DIMENSION_DECLARED_FIELDS",
+      "output_fields": "SAME_FIELDS_REDACTED",
+      "field_local": true,
+      "occurrence_local": true,
+      "uniform_across_records": true,
+      "preserves_existing_relation": false,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/REDACT",
+      "source_binding": "DIMENSION_TARGET_FIELDS",
+      "output_binding": "SAME_SOURCE_OCCURRENCES",
+      "derivation_kind": "REDACTION",
+      "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "NOT_APPLICABLE",
+      "canonical_action_templates": [
+        {
+          "transform_id": "REDACT",
+          "representation": "REDACTED"
+        }
+      ]
+    },
+    {
+      "transformation_id": "STABLE_TOKEN",
+      "representation": "OPAQUE_TOKEN",
+      "source_fields": "DIMENSION_DECLARED_FIELDS",
+      "output_fields": "SAME_FIELDS_TOKENIZED",
+      "field_local": true,
+      "occurrence_local": false,
+      "uniform_across_records": true,
+      "preserves_existing_relation": false,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/STABLE_TOKEN",
+      "source_binding": "DIMENSION_TARGET_FIELDS",
+      "output_binding": "SAME_SOURCE_OCCURRENCES",
+      "derivation_kind": "STABLE_TOKENIZATION",
+      "occurrence_policy": "STABLE_EQUIVALENCE_CLASS",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "NOT_APPLICABLE",
+      "canonical_action_templates": [
+        {
+          "transform_id": "STABLE_TOKEN",
+          "representation": "OPAQUE_TOKEN",
+          "reversible": true
+        },
+        {
+          "transform_id": "STABLE_TOKEN",
+          "representation": "OPAQUE_TOKEN"
+        }
+      ]
+    },
+    {
+      "transformation_id": "DOMAIN_HANDLE",
+      "representation": "DERIVED_PROPERTY",
+      "source_fields": "DIMENSION_DECLARED_FIELDS",
+      "output_fields": "SAME_FIELDS_DOMAIN_PROPERTY",
+      "field_local": true,
+      "occurrence_local": true,
+      "uniform_across_records": true,
+      "preserves_existing_relation": false,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/DOMAIN_HANDLE",
+      "source_binding": "DIMENSION_TARGET_FIELDS",
+      "output_binding": "SAME_SOURCE_OCCURRENCES",
+      "derivation_kind": "DETERMINISTIC_FIELD_LOCAL_PROPERTY",
+      "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "NOT_APPLICABLE",
+      "canonical_action_templates": [
+        {
+          "transform_id": "DOMAIN_HANDLE",
+          "representation": "DERIVED_PROPERTY",
+          "property_name": "domain_handle"
+        }
+      ]
+    },
+    {
+      "transformation_id": "BIRTH_YEAR",
+      "representation": "DERIVED_PROPERTY",
+      "source_fields": "DIMENSION_DECLARED_FIELDS",
+      "output_fields": "SAME_FIELDS_YEAR_PROPERTY",
+      "field_local": true,
+      "occurrence_local": true,
+      "uniform_across_records": true,
+      "preserves_existing_relation": false,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/BIRTH_YEAR",
+      "source_binding": "DIMENSION_TARGET_FIELDS",
+      "output_binding": "SAME_SOURCE_OCCURRENCES",
+      "derivation_kind": "DETERMINISTIC_FIELD_LOCAL_PROPERTY",
+      "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "NOT_APPLICABLE",
+      "canonical_action_templates": [
+        {
+          "transform_id": "BIRTH_YEAR",
+          "representation": "DERIVED_PROPERTY",
+          "property_name": "birth_year"
+        }
+      ]
+    },
+    {
+      "transformation_id": "SERVICE_ZONE",
+      "representation": "COARSENED_VALUE",
+      "source_fields": "DIMENSION_DECLARED_FIELDS",
+      "output_fields": "SAME_FIELDS_SERVICE_ZONE",
+      "field_local": true,
+      "occurrence_local": true,
+      "uniform_across_records": true,
+      "preserves_existing_relation": false,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/SERVICE_ZONE",
+      "source_binding": "DIMENSION_TARGET_FIELDS",
+      "output_binding": "SAME_SOURCE_OCCURRENCES",
+      "derivation_kind": "TRUSTED_FIELD_LOCAL_COARSENING",
+      "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "NOT_APPLICABLE",
+      "canonical_action_templates": [
+        {
+          "transform_id": "SERVICE_ZONE",
+          "representation": "COARSENED_VALUE",
+          "property_name": "service_zone"
+        }
+      ]
+    },
+    {
+      "transformation_id": "HOUR_BUCKET",
+      "representation": "COARSENED_VALUE",
+      "source_fields": "DIMENSION_DECLARED_FIELDS",
+      "output_fields": "SAME_FIELDS_HOUR_BUCKET",
+      "field_local": true,
+      "occurrence_local": true,
+      "uniform_across_records": true,
+      "preserves_existing_relation": false,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/HOUR_BUCKET",
+      "source_binding": "DIMENSION_TARGET_FIELDS",
+      "output_binding": "SAME_SOURCE_OCCURRENCES",
+      "derivation_kind": "TRUSTED_FIELD_LOCAL_COARSENING",
+      "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "NOT_APPLICABLE",
+      "canonical_action_templates": [
+        {
+          "transform_id": "HOUR_BUCKET",
+          "representation": "COARSENED_VALUE",
+          "property_name": "timestamp_hour"
+        }
+      ]
+    },
+    {
+      "transformation_id": "RAW_VALUE",
+      "representation": "RAW_VALUE",
+      "source_fields": "DIMENSION_DECLARED_FIELDS",
+      "output_fields": "SAME_FIELDS_RAW",
+      "field_local": true,
+      "occurrence_local": true,
+      "uniform_across_records": true,
+      "preserves_existing_relation": false,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/RAW_VALUE",
+      "source_binding": "DIMENSION_TARGET_FIELDS",
+      "output_binding": "SAME_SOURCE_OCCURRENCES",
+      "derivation_kind": "IDENTITY",
+      "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "NOT_APPLICABLE",
+      "canonical_action_templates": [
+        {
+          "transform_id": "RAW_VALUE",
+          "representation": "RAW_VALUE"
+        }
+      ]
+    },
+    {
+      "transformation_id": "RELATION_ONLY",
+      "representation": "RELATION_ONLY",
+      "source_fields": "DECLARED_RELATION_ENDPOINTS",
+      "output_fields": "TOKENIZED_SOURCE_RELATION",
+      "field_local": false,
+      "occurrence_local": false,
+      "uniform_across_records": true,
+      "preserves_existing_relation": true,
+      "depends_on_task_answer": false,
+      "selects_subset": false,
+      "introduces_rank": false,
+      "introduces_aggregate": false,
+      "introduces_derived_relation": false,
+      "source_provenance": "md-bench-v0.2/SOURCE_RELATIONS",
+      "source_binding": "DECLARED_RELATION_ENDPOINTS",
+      "output_binding": "SOURCE_RELATION_SAME_EDGES",
+      "derivation_kind": "SOURCE_RELATION_PRESERVATION",
+      "occurrence_policy": "SOURCE_RELATION_AS_DECLARED",
+      "metadata_policy": "NO_RUNTIME_METADATA",
+      "relation_provenance": "SOURCE_DECLARED_ONLY",
+      "canonical_action_templates": [
+        {
+          "transform_id": "RELATION_ONLY",
+          "representation": "RELATION_ONLY"
+        }
+      ]
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension_ref": "MD-EQ-01/email",
+      "task_id": "MD-EQ-01",
+      "dimension_id": "email",
+      "order": 0,
+      "target_fields": [
+        {
+          "field_ref": "records.email",
+          "semantic_type": "EMAIL"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": [
+            {
+              "capability": "equality",
+              "parameters": {
+                "equality_basis": "FIELD_VALUE"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "equality",
+              "parameters": {
+                "equality_basis": "FIELD_VALUE"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "deduplicate"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-GROUP-02/contact_email",
+      "task_id": "MD-GROUP-02",
+      "dimension_id": "contact_email",
+      "order": 1,
+      "target_fields": [
+        {
+          "field_ref": "invoices.contact_email",
+          "semantic_type": "EMAIL"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": []
+        },
+        {
+          "level": 2,
+          "transformation_id": "DOMAIN_HANDLE",
+          "canonical_action": {
+            "transform_id": "DOMAIN_HANDLE",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "domain_handle"
+          },
+          "coverage": [
+            {
+              "capability": "domain",
+              "parameters": {
+                "granularity": "EMAIL_DOMAIN"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "domain",
+              "parameters": {
+                "granularity": "EMAIL_DOMAIN"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "group_by"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-ORDER-03/date_of_birth",
+      "task_id": "MD-ORDER-03",
+      "dimension_id": "date_of_birth",
+      "order": 2,
+      "target_fields": [
+        {
+          "field_ref": "people.date_of_birth",
+          "semantic_type": "DATE_OF_BIRTH"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": []
+        },
+        {
+          "level": 2,
+          "transformation_id": "BIRTH_YEAR",
+          "canonical_action": {
+            "transform_id": "BIRTH_YEAR",
+            "representation": "DERIVED_PROPERTY",
+            "property_name": "birth_year"
+          },
+          "coverage": [
+            {
+              "capability": "ordering",
+              "parameters": {
+                "direction": "ASCENDING",
+                "precision": "YEAR"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "DOB_YEAR_ORDER_PRESERVING"
+              ]
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "ordering",
+              "parameters": {
+                "direction": "ASCENDING",
+                "precision": "YEAR"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "sort"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-LOC-04/address",
+      "task_id": "MD-LOC-04",
+      "dimension_id": "address",
+      "order": 3,
+      "target_fields": [
+        {
+          "field_ref": "requests.address",
+          "semantic_type": "POSTAL_ADDRESS"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": []
+        },
+        {
+          "level": 2,
+          "transformation_id": "SERVICE_ZONE",
+          "canonical_action": {
+            "transform_id": "SERVICE_ZONE",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone"
+          },
+          "coverage": [
+            {
+              "capability": "service_zone",
+              "parameters": {
+                "zone_rule_ref": "workflow.zone_rule"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "ZONE_RULE_AVAILABLE"
+              ]
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "service_zone",
+              "parameters": {
+                "zone_rule_ref": "workflow.zone_rule"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "ZONE_RULE_AVAILABLE"
+              ]
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "group_by"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-CROSS-05/subject_email",
+      "task_id": "MD-CROSS-05",
+      "dimension_id": "subject_email",
+      "order": 4,
+      "target_fields": [
+        {
+          "field_ref": "events.subject_email",
+          "semantic_type": "EMAIL"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": [
+            {
+              "capability": "linkage",
+              "parameters": {
+                "linkage_scope": "CROSS_RECORD"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "linkage",
+              "parameters": {
+                "linkage_scope": "CROSS_RECORD"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "record_linkage"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-CROSS-05/timestamp",
+      "task_id": "MD-CROSS-05",
+      "dimension_id": "timestamp",
+      "order": 5,
+      "target_fields": [
+        {
+          "field_ref": "events.timestamp",
+          "semantic_type": "EVENT_TIMESTAMP"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": []
+        },
+        {
+          "level": 2,
+          "transformation_id": "HOUR_BUCKET",
+          "canonical_action": {
+            "transform_id": "HOUR_BUCKET",
+            "representation": "COARSENED_VALUE",
+            "property_name": "timestamp_hour"
+          },
+          "coverage": [
+            {
+              "capability": "temporal_comparison",
+              "parameters": {
+                "comparison": "ABSOLUTE_DIFFERENCE_LEQ",
+                "threshold": {
+                  "value": 72,
+                  "unit": "HOUR"
+                },
+                "interval_semantics": "CLOSED",
+                "granularity": "HOUR"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "TIMESTAMPS_HOUR_ALIGNED"
+              ]
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "temporal_comparison",
+              "parameters": {
+                "comparison": "ABSOLUTE_DIFFERENCE_LEQ",
+                "threshold": {
+                  "value": 72,
+                  "unit": "HOUR"
+                },
+                "interval_semantics": "CLOSED",
+                "granularity": "HOUR"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "temporal_window"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-GRAPH-06/person_name",
+      "task_id": "MD-GRAPH-06",
+      "dimension_id": "person_name",
+      "order": 6,
+      "target_fields": [
+        {
+          "field_ref": "edges.from",
+          "semantic_type": "PERSON_NAME"
+        },
+        {
+          "field_ref": "edges.to",
+          "semantic_type": "PERSON_NAME"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": [
+            {
+              "capability": "identity",
+              "parameters": {
+                "stability_scope": "TASK"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "identity",
+              "parameters": {
+                "stability_scope": "TASK"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": []
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "graph_relation"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-GRAPH-06/source_relations",
+      "task_id": "MD-GRAPH-06",
+      "dimension_id": "source_relations",
+      "order": 7,
+      "target_fields": [
+        {
+          "field_ref": "edges.from",
+          "semantic_type": "PERSON_NAME"
+        },
+        {
+          "field_ref": "edges.to",
+          "semantic_type": "PERSON_NAME"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "RELATION_ONLY",
+          "canonical_action": {
+            "transform_id": "RELATION_ONLY",
+            "representation": "RELATION_ONLY"
+          },
+          "coverage": [
+            {
+              "capability": "existing_relation",
+              "parameters": {
+                "relation_orientation": "DIRECTED",
+                "relation_source": "SOURCE_DECLARED"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "SOURCE_RELATION_DECLARED"
+              ]
+            },
+            {
+              "capability": "directionality",
+              "parameters": {
+                "relation_orientation": "DIRECTED"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "SOURCE_RELATION_DECLARED"
+              ]
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "graph_relation"
+          ],
+          "operation_roles": [
+            "AGENT_REASONING"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-TOOL-07/recipient_email",
+      "task_id": "MD-TOOL-07",
+      "dimension_id": "recipient_email",
+      "order": 8,
+      "target_fields": [
+        {
+          "field_ref": "tickets.recipient_email",
+          "semantic_type": "EMAIL"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN",
+            "reversible": true
+          },
+          "coverage": [
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "TOOL",
+              "required_preconditions": [
+                "DECLARED_TOOL_ARGUMENT",
+                "TRUSTED_RESTORATION_AVAILABLE"
+              ]
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "TOOL",
+              "required_preconditions": [
+                "DECLARED_TOOL_ARGUMENT"
+              ]
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "tool_call"
+          ],
+          "operation_roles": [
+            "TOOL_EXECUTION"
+          ]
+        }
+      ]
+    },
+    {
+      "dimension_ref": "MD-TOOL-07/address",
+      "task_id": "MD-TOOL-07",
+      "dimension_id": "address",
+      "order": 9,
+      "target_fields": [
+        {
+          "field_ref": "tickets.address",
+          "semantic_type": "POSTAL_ADDRESS"
+        }
+      ],
+      "candidate_actions": [
+        {
+          "level": 0,
+          "transformation_id": "REDACT",
+          "canonical_action": {
+            "transform_id": "REDACT",
+            "representation": "REDACTED"
+          },
+          "coverage": []
+        },
+        {
+          "level": 1,
+          "transformation_id": "STABLE_TOKEN",
+          "canonical_action": {
+            "transform_id": "STABLE_TOKEN",
+            "representation": "OPAQUE_TOKEN"
+          },
+          "coverage": []
+        },
+        {
+          "level": 2,
+          "transformation_id": "SERVICE_ZONE",
+          "canonical_action": {
+            "transform_id": "SERVICE_ZONE",
+            "representation": "COARSENED_VALUE",
+            "property_name": "service_zone"
+          },
+          "coverage": [
+            {
+              "capability": "service_zone",
+              "parameters": {
+                "zone_rule_ref": "workflow.zone_rule"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "ZONE_RULE_AVAILABLE"
+              ]
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "transformation_id": "RAW_VALUE",
+          "canonical_action": {
+            "transform_id": "RAW_VALUE",
+            "representation": "RAW_VALUE"
+          },
+          "coverage": [
+            {
+              "capability": "service_zone",
+              "parameters": {
+                "zone_rule_ref": "workflow.zone_rule"
+              },
+              "boundary": "AGENT",
+              "required_preconditions": [
+                "ZONE_RULE_AVAILABLE"
+              ]
+            },
+            {
+              "capability": "exact_value",
+              "parameters": {},
+              "boundary": "AGENT",
+              "required_preconditions": []
+            }
+          ]
+        }
+      ],
+      "operation_bindings": [
+        {
+          "operation_families": [
+            "tool_call"
+          ],
+          "operation_roles": [
+            "TOOL_EXECUTION"
+          ]
+        }
+      ]
+    }
+  ],
+  "structural_validation": {
+    "object_policy": "CLOSED_REJECT_UNDECLARED_FIELDS",
+    "allowed_top_level_fields": [
+      "catalog_version",
+      "source_benchmark_version",
+      "source_search_space",
+      "finite_space",
+      "capability_match_policy",
+      "canonical_dimension_order",
+      "deterministic_serialization",
+      "boundary_policy",
+      "infeasibility_reasons",
+      "capability_semantics",
+      "transformation_contracts",
+      "dimensions",
+      "structural_validation",
+      "trusted_slice_policy"
+    ],
+    "allowed_transformation_contract_fields": [
+      "transformation_id",
+      "representation",
+      "source_fields",
+      "output_fields",
+      "field_local",
+      "occurrence_local",
+      "uniform_across_records",
+      "preserves_existing_relation",
+      "depends_on_task_answer",
+      "selects_subset",
+      "introduces_rank",
+      "introduces_aggregate",
+      "introduces_derived_relation",
+      "source_provenance",
+      "source_binding",
+      "output_binding",
+      "derivation_kind",
+      "occurrence_policy",
+      "metadata_policy",
+      "relation_provenance",
+      "canonical_action_templates"
+    ],
+    "allowed_dimension_fields": [
+      "dimension_ref",
+      "task_id",
+      "dimension_id",
+      "order",
+      "target_fields",
+      "operation_bindings",
+      "candidate_actions"
+    ],
+    "allowed_operation_binding_fields": [
+      "operation_families",
+      "operation_roles"
+    ],
+    "allowed_candidate_action_fields": [
+      "level",
+      "transformation_id",
+      "canonical_action",
+      "coverage"
+    ],
+    "allowed_canonical_action_fields": [
+      "transform_id",
+      "representation",
+      "property_name",
+      "reversible"
+    ],
+    "allowed_coverage_fields": [
+      "capability",
+      "parameters",
+      "boundary",
+      "required_preconditions"
+    ],
+    "source_output_rules": [
+      {
+        "rule_id": "shape.redact",
+        "source_fields": "DIMENSION_DECLARED_FIELDS",
+        "output_fields": "SAME_FIELDS_REDACTED",
+        "source_binding": "DIMENSION_TARGET_FIELDS",
+        "output_binding": "SAME_SOURCE_OCCURRENCES",
+        "derivation_kind": "REDACTION",
+        "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "NOT_APPLICABLE",
+        "source_provenance": "md-bench-v0.2/REDACT",
+        "required_invariants": {
+          "field_local": true,
+          "occurrence_local": true,
+          "uniform_across_records": true,
+          "preserves_existing_relation": false,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      },
+      {
+        "rule_id": "shape.stable_token",
+        "source_fields": "DIMENSION_DECLARED_FIELDS",
+        "output_fields": "SAME_FIELDS_TOKENIZED",
+        "source_binding": "DIMENSION_TARGET_FIELDS",
+        "output_binding": "SAME_SOURCE_OCCURRENCES",
+        "derivation_kind": "STABLE_TOKENIZATION",
+        "occurrence_policy": "STABLE_EQUIVALENCE_CLASS",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "NOT_APPLICABLE",
+        "source_provenance": "md-bench-v0.2/STABLE_TOKEN",
+        "required_invariants": {
+          "field_local": true,
+          "occurrence_local": false,
+          "uniform_across_records": true,
+          "preserves_existing_relation": false,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      },
+      {
+        "rule_id": "shape.domain_handle",
+        "source_fields": "DIMENSION_DECLARED_FIELDS",
+        "output_fields": "SAME_FIELDS_DOMAIN_PROPERTY",
+        "source_binding": "DIMENSION_TARGET_FIELDS",
+        "output_binding": "SAME_SOURCE_OCCURRENCES",
+        "derivation_kind": "DETERMINISTIC_FIELD_LOCAL_PROPERTY",
+        "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "NOT_APPLICABLE",
+        "source_provenance": "md-bench-v0.2/DOMAIN_HANDLE",
+        "required_invariants": {
+          "field_local": true,
+          "occurrence_local": true,
+          "uniform_across_records": true,
+          "preserves_existing_relation": false,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      },
+      {
+        "rule_id": "shape.birth_year",
+        "source_fields": "DIMENSION_DECLARED_FIELDS",
+        "output_fields": "SAME_FIELDS_YEAR_PROPERTY",
+        "source_binding": "DIMENSION_TARGET_FIELDS",
+        "output_binding": "SAME_SOURCE_OCCURRENCES",
+        "derivation_kind": "DETERMINISTIC_FIELD_LOCAL_PROPERTY",
+        "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "NOT_APPLICABLE",
+        "source_provenance": "md-bench-v0.2/BIRTH_YEAR",
+        "required_invariants": {
+          "field_local": true,
+          "occurrence_local": true,
+          "uniform_across_records": true,
+          "preserves_existing_relation": false,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      },
+      {
+        "rule_id": "shape.service_zone",
+        "source_fields": "DIMENSION_DECLARED_FIELDS",
+        "output_fields": "SAME_FIELDS_SERVICE_ZONE",
+        "source_binding": "DIMENSION_TARGET_FIELDS",
+        "output_binding": "SAME_SOURCE_OCCURRENCES",
+        "derivation_kind": "TRUSTED_FIELD_LOCAL_COARSENING",
+        "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "NOT_APPLICABLE",
+        "source_provenance": "md-bench-v0.2/SERVICE_ZONE",
+        "required_invariants": {
+          "field_local": true,
+          "occurrence_local": true,
+          "uniform_across_records": true,
+          "preserves_existing_relation": false,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      },
+      {
+        "rule_id": "shape.hour_bucket",
+        "source_fields": "DIMENSION_DECLARED_FIELDS",
+        "output_fields": "SAME_FIELDS_HOUR_BUCKET",
+        "source_binding": "DIMENSION_TARGET_FIELDS",
+        "output_binding": "SAME_SOURCE_OCCURRENCES",
+        "derivation_kind": "TRUSTED_FIELD_LOCAL_COARSENING",
+        "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "NOT_APPLICABLE",
+        "source_provenance": "md-bench-v0.2/HOUR_BUCKET",
+        "required_invariants": {
+          "field_local": true,
+          "occurrence_local": true,
+          "uniform_across_records": true,
+          "preserves_existing_relation": false,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      },
+      {
+        "rule_id": "shape.raw_value",
+        "source_fields": "DIMENSION_DECLARED_FIELDS",
+        "output_fields": "SAME_FIELDS_RAW",
+        "source_binding": "DIMENSION_TARGET_FIELDS",
+        "output_binding": "SAME_SOURCE_OCCURRENCES",
+        "derivation_kind": "IDENTITY",
+        "occurrence_policy": "EACH_SOURCE_OCCURRENCE_UNIFORMLY",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "NOT_APPLICABLE",
+        "source_provenance": "md-bench-v0.2/RAW_VALUE",
+        "required_invariants": {
+          "field_local": true,
+          "occurrence_local": true,
+          "uniform_across_records": true,
+          "preserves_existing_relation": false,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      },
+      {
+        "rule_id": "shape.relation_only",
+        "source_fields": "DECLARED_RELATION_ENDPOINTS",
+        "output_fields": "TOKENIZED_SOURCE_RELATION",
+        "source_binding": "DECLARED_RELATION_ENDPOINTS",
+        "output_binding": "SOURCE_RELATION_SAME_EDGES",
+        "derivation_kind": "SOURCE_RELATION_PRESERVATION",
+        "occurrence_policy": "SOURCE_RELATION_AS_DECLARED",
+        "metadata_policy": "NO_RUNTIME_METADATA",
+        "relation_provenance": "SOURCE_DECLARED_ONLY",
+        "source_provenance": "md-bench-v0.2/SOURCE_RELATIONS",
+        "required_invariants": {
+          "field_local": false,
+          "occurrence_local": false,
+          "uniform_across_records": true,
+          "preserves_existing_relation": true,
+          "depends_on_task_answer": false,
+          "selects_subset": false,
+          "introduces_rank": false,
+          "introduces_aggregate": false,
+          "introduces_derived_relation": false
+        }
+      }
+    ]
+  },
+  "trusted_slice_policy": {
+    "source": "VERIFIER_INPUT_NOT_PLANNER_OUTPUT",
+    "catalog_version_must_match": true,
+    "all_dimension_refs_must_exist": true,
+    "requirement_mapping_inputs": [
+      "TARGET_FIELD_AND_TYPE",
+      "CAPABILITY_AND_PARAMETERS",
+      "BOUNDARY",
+      "BOUND_OPERATION_FAMILY_AND_ROLE"
+    ],
+    "zero_match": "INFEASIBLE",
+    "multiple_match": "INVALID_AMBIGUOUS_DIMENSION_MAPPING",
+    "missing_required_dimension": "INFEASIBLE"
+  }
+}
