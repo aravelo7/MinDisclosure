@@ -11,6 +11,7 @@ const loadJson = (relativePath) =>
   JSON.parse(fs.readFileSync(path.join(ROOT, relativePath), 'utf8'));
 const schema = loadJson('fixtures/planner-capability-schema-v0.3.json');
 const ontology = loadJson('fixtures/planner-ontology-v0.3.json');
+const catalog = loadJson('fixtures/planner-representation-catalog-v0.3.json');
 
 const OWNERS = new Set([
   'OPERATION_DERIVED', 'WORKFLOW_DERIVED', 'RELATION_DERIVED',
@@ -126,7 +127,7 @@ function assertClosedSchemaGraph() {
 }
 
 function exactKeys(value, expected) {
-  assert.deepEqual(Object.keys(value).sort(), [...expected].sort());
+  return JSON.stringify(Object.keys(value).sort()) === JSON.stringify([...expected].sort());
 }
 
 function ontologyErrors(value) {
@@ -199,6 +200,200 @@ function canonicalDimensionKey(capability, input, ontologyValue = ontology) {
     return `RELATION_DIMENSION:${input.relation_ref}:${JSON.stringify([...input.endpoint_selectors].sort())}`;
   }
   return {status: 'ONTOLOGY_INVALID'};
+}
+
+const VALID_SEMANTIC_TYPES = new Set(schema.$defs.semantic_type.enum);
+const VALID_BOUNDARIES = new Set(['AGENT', 'TOOL']);
+const VALID_OWNERS = new Set(['USER_INTENT', 'TRUSTED_WORKFLOW', 'DATA_SCHEMA', 'TOOL_SCHEMA', 'RUNTIME_CAPABILITY']);
+
+function sortJson(value) {
+  if (Array.isArray(value)) return value.map(sortJson);
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortJson(value[key])]));
+}
+
+function stableJson(value) {
+  return JSON.stringify(sortJson(value));
+}
+
+function predicateError(predicate, capability) {
+  if (!predicate || typeof predicate !== 'object') return 'PREDICATE_INVALID';
+  const declaration = capability.parameter_declarations.find((item) => item.name === predicate.parameter);
+  if (!declaration || typeof predicate.operator !== 'string') return 'PREDICATE_PARAMETER_INVALID';
+  if (predicate.operator === 'EQUALS') {
+    const allowed = declaration.value_schema.enum;
+    if (allowed && !allowed.includes(predicate.value)) return 'PREDICATE_VALUE_INVALID';
+    return null;
+  }
+  if (predicate.operator === 'ONE_OF') {
+    if (!Array.isArray(predicate.values) || predicate.values.length === 0) return 'PREDICATE_VALUE_INVALID';
+    const allowed = declaration.value_schema.enum;
+    if (allowed && predicate.values.some((value) => !allowed.includes(value))) return 'PREDICATE_VALUE_INVALID';
+    return null;
+  }
+  if (['TRUSTED_DECLARATION_REF', 'TRUSTED_WORKFLOW_REF', 'DECLARED_RELATION_VALUE'].includes(predicate.operator)) return null;
+  return 'PREDICATE_OPERATOR_INVALID';
+}
+
+function catalogStructuralError(value) {
+  const rootKeys = ['\u0024schema', '\u0024id', 'title', 'description', 'catalog_version', 'finite_space', 'deterministic_serialization', 'boundary_policy', 'infeasibility_reasons', 'templates'];
+  if (!value || !exactKeys(value, rootKeys) || value.catalog_version !== 'planner-representation-catalog-v0.3' || value.finite_space !== true) return 'CATALOG_STRUCTURE_INVALID';
+  const capabilityMap = new Map(ontology.capabilities.map((item) => [item.capability_ref, item]));
+  const operationMap = new Map(ontology.operations.map((item) => [item.operation_ref, item]));
+  const templateIds = new Set();
+  const actions = new Map();
+  const templateKeys = ['template_id', 'dimension_kind', 'applicable_semantic_types', 'applicable_selector_shape', 'capability_coverage', 'capability_parameter_predicates', 'effective_boundary_coverage', 'required_trusted_preconditions', 'transformation_contract', 'disclosure_rank', 'canonical_action_template', 'no_solver_invariants'];
+  const shapeKeys = ['shape', 'min_arity', 'max_arity', 'required_target_roles'];
+  const boundaryKeys = ['boundary', 'required_preconditions'];
+  const preconditionKeys = ['precondition_ref', 'owner_class', 'evidence_kind'];
+  const transformationKeys = ['source_binding', 'output_binding', 'derivation_kind', 'occurrence_policy', 'metadata_policy', 'relation_provenance', 'field_local', 'occurrence_local', 'uniform_across_records', 'preserves_existing_relation', 'depends_on_task_answer', 'selects_subset', 'introduces_rank', 'introduces_aggregate', 'introduces_derived_relation'];
+  const actionKeys = ['action_id', 'action_kind', 'transformation', 'parameters'];
+  for (const template of value.templates ?? []) {
+    if (!exactKeys(template, templateKeys)) return 'CATALOG_STRUCTURE_INVALID';
+    if (templateIds.has(template.template_id) || !/^template\.(field|relation)\.[a-z][a-z0-9_.-]*$/.test(template.template_id)) return 'CATALOG_STRUCTURE_INVALID';
+    templateIds.add(template.template_id);
+    if (!['FIELD_DIMENSION', 'RELATION_DIMENSION'].includes(template.dimension_kind)) return 'CATALOG_STRUCTURE_INVALID';
+    if (!template.applicable_semantic_types.every((type) => VALID_SEMANTIC_TYPES.has(type))) return 'CATALOG_INVALID';
+    if (!exactKeys(template.applicable_selector_shape, shapeKeys) || template.applicable_selector_shape.min_arity < 1 || template.applicable_selector_shape.max_arity < template.applicable_selector_shape.min_arity) return 'CATALOG_STRUCTURE_INVALID';
+    if (!template.applicable_selector_shape.required_target_roles.every((role) => schema.$defs.target_role.enum.includes(role))) return 'CATALOG_INVALID';
+    for (const coverage of template.capability_coverage) {
+      const capability = capabilityMap.get(coverage.capability_ref);
+      if (!capability) return 'CAPABILITY_UNKNOWN';
+      if (capability.dimension_kind !== template.dimension_kind) return 'DIMENSION_KIND_MISMATCH';
+    }
+    for (const predicateGroup of template.capability_parameter_predicates) {
+      const capability = capabilityMap.get(predicateGroup.capability_ref);
+      if (!capability || !template.capability_coverage.some((item) => item.capability_ref === predicateGroup.capability_ref)) return 'PREDICATE_CAPABILITY_UNKNOWN';
+      if (predicateGroup.predicates.some((predicate) => predicateError(predicate, capability))) return 'PREDICATE_INVALID';
+    }
+    for (const boundary of template.effective_boundary_coverage) {
+      if (!exactKeys(boundary, boundaryKeys) || !VALID_BOUNDARIES.has(boundary.boundary) || !boundary.required_preconditions.every((ref) => typeof ref === 'string')) return 'CATALOG_STRUCTURE_INVALID';
+    }
+    const preconditionRefs = new Set();
+    for (const precondition of template.required_trusted_preconditions) {
+      if (!exactKeys(precondition, preconditionKeys) || !VALID_OWNERS.has(precondition.owner_class) || typeof precondition.precondition_ref !== 'string' || typeof precondition.evidence_kind !== 'string') return 'CATALOG_STRUCTURE_INVALID';
+      preconditionRefs.add(precondition.precondition_ref);
+    }
+    for (const boundary of template.effective_boundary_coverage) {
+      if (boundary.required_preconditions.some((ref) => !preconditionRefs.has(ref))) return 'UNPROVED_TRUSTED_PRECONDITION';
+    }
+    if (!exactKeys(template.transformation_contract, transformationKeys)) return 'CATALOG_STRUCTURE_INVALID';
+    if (template.transformation_contract.depends_on_task_answer || template.transformation_contract.selects_subset || template.transformation_contract.introduces_rank || template.transformation_contract.introduces_aggregate || template.transformation_contract.introduces_derived_relation || !template.transformation_contract.uniform_across_records) return 'NO_SOLVER_INVARIANT_VIOLATION';
+    if (template.dimension_kind === 'FIELD_DIMENSION' && (template.transformation_contract.source_binding !== 'DIMENSION_TARGET_FIELDS' || template.transformation_contract.output_binding !== 'SAME_SOURCE_OCCURRENCES' || template.transformation_contract.relation_provenance !== 'NOT_APPLICABLE')) return 'DIMENSION_KIND_MISMATCH';
+    if (template.dimension_kind === 'RELATION_DIMENSION' && (template.applicable_selector_shape.shape !== 'ENDPOINT_SELECTOR_SET' || template.transformation_contract.source_binding !== 'DECLARED_RELATION_ENDPOINTS' || template.transformation_contract.output_binding !== 'SOURCE_RELATION_SAME_EDGES' || template.transformation_contract.relation_provenance !== 'SOURCE_DECLARED_ONLY' || !template.required_trusted_preconditions.some((item) => item.precondition_ref === 'precondition.source_relation_declared'))) return 'RELATION_CONTRACT_INVALID';
+    if (!Number.isInteger(template.disclosure_rank) || template.disclosure_rank < 0 || !exactKeys(template.canonical_action_template, actionKeys)) return 'CATALOG_STRUCTURE_INVALID';
+    const action = template.canonical_action_template;
+    const previous = actions.get(action.action_id);
+    if (previous && (stableJson(previous.action) !== stableJson(action) || previous.rank !== template.disclosure_rank)) return 'CATALOG_INVALID';
+    actions.set(action.action_id, {action, rank: template.disclosure_rank});
+    if (!Array.isArray(template.no_solver_invariants) || template.no_solver_invariants.length === 0) return 'NO_SOLVER_INVARIANT_VIOLATION';
+  }
+  if (!operationMap.size) return 'ONTOLOGY_INVALID';
+  return null;
+}
+
+function constructDimensions(requirements, ontologyValue = ontology) {
+  const capabilityMap = new Map(ontologyValue.capabilities.map((item) => [item.capability_ref, item]));
+  const dimensions = new Map();
+  for (const requirement of requirements) {
+    const capability = capabilityMap.get(requirement.capability_ref);
+    if (!capability || requirement.dimension_kind && requirement.dimension_kind !== capability.dimension_kind) return {status: 'ONTOLOGY_INVALID'};
+    const keyInput = capability.dimension_kind === 'FIELD_DIMENSION'
+      ? {target_selectors: requirement.target_selectors}
+      : {relation_ref: requirement.relation_ref, endpoint_selectors: requirement.endpoint_selectors};
+    const key = canonicalDimensionKey(capability, keyInput, ontologyValue);
+    if (typeof key !== 'string') return key;
+    if (!dimensions.has(key)) dimensions.set(key, {key, dimension_kind: capability.dimension_kind, semantic_types: new Set(), target_roles: new Set(), requirements: []});
+    const dimension = dimensions.get(key);
+    (requirement.semantic_types ?? []).forEach((type) => dimension.semantic_types.add(type));
+    (requirement.target_roles ?? []).forEach((role) => dimension.target_roles.add(role));
+    dimension.requirements.push(requirement);
+  }
+  return {status: 'OK', dimensions: [...dimensions.values()].sort((left, right) => left.dimension_kind.localeCompare(right.dimension_kind) || left.key.localeCompare(right.key))};
+}
+
+function predicateMatches(predicate, requirement) {
+  const actual = requirement.parameters?.[predicate.parameter];
+  if (predicate.operator === 'EQUALS') return actual === predicate.value;
+  if (predicate.operator === 'ONE_OF') return predicate.values.includes(actual);
+  if (predicate.operator === 'TRUSTED_DECLARATION_REF') return typeof actual === 'string' && /^(workflow|schema)\.[a-z][a-z0-9_.-]*$/.test(actual);
+  if (predicate.operator === 'TRUSTED_WORKFLOW_REF') return typeof actual === 'string' && /^workflow\.[a-z][a-z0-9_.-]*$/.test(actual);
+  if (predicate.operator === 'DECLARED_RELATION_VALUE') return typeof actual === 'string' && actual.length > 0;
+  return false;
+}
+
+function coverageCapabilityMatches(coverage, requirement, template) {
+  if (coverage.capability_ref !== requirement.capability_ref) return false;
+  const group = template.capability_parameter_predicates.find((item) => item.capability_ref === coverage.capability_ref);
+  return !group || group.predicates.every((predicate) => predicateMatches(predicate, requirement));
+}
+
+function actionSatisfies(template, requirements) {
+  return requirements.every((requirement) => {
+    const boundary = template.effective_boundary_coverage.find((item) => item.boundary === requirement.boundary);
+    if (!boundary) return false;
+    const available = new Set(requirement.available_preconditions ?? []);
+    if (boundary.required_preconditions.some((precondition) => !available.has(precondition))) return false;
+    return template.capability_coverage.some((coverage) => coverageCapabilityMatches(coverage, requirement, template));
+  });
+}
+
+function templateMatches(template, dimension) {
+  if (template.dimension_kind !== dimension.dimension_kind) return false;
+  const shape = template.applicable_selector_shape;
+  const selectorCount = dimension.dimension_kind === 'FIELD_DIMENSION'
+    ? dimension.requirements[0].target_selectors.length
+    : dimension.requirements[0].endpoint_selectors.length;
+  if (selectorCount < shape.min_arity || selectorCount > shape.max_arity) return false;
+  if (![...dimension.semantic_types].every((type) => template.applicable_semantic_types.includes(type))) return false;
+  if (![...shape.required_target_roles].every((role) => dimension.target_roles.has(role))) return false;
+  return actionSatisfies(template, dimension.requirements);
+}
+
+function candidateTemplates(requirements, catalogValue = catalog) {
+  const structuralError = catalogStructuralError(catalogValue);
+  if (structuralError) return {status: structuralError};
+  const resolved = constructDimensions(requirements);
+  if (resolved.status !== 'OK') return resolved;
+  const candidates = resolved.dimensions.map((dimension) => ({
+    dimension,
+    templates: catalogValue.templates.filter((template) => templateMatches(template, dimension))
+  }));
+  if (candidates.some((item) => item.templates.length === 0)) return {status: 'INFEASIBLE', candidates};
+  return {status: 'CANDIDATES', candidates};
+}
+
+function enumeratePlans(candidates, index = 0, current = [], plans = []) {
+  if (index === candidates.length) return plans.concat([current]);
+  return candidates[index].templates.reduce((all, template) =>
+    enumeratePlans(candidates, index + 1, current.concat(template), all), plans);
+}
+
+function rankVector(plan) {
+  return plan.map((template) => template.disclosure_rank);
+}
+
+function paretoMinimal(plans) {
+  return plans.filter((candidate, candidateIndex) => !plans.some((other, otherIndex) => {
+    if (candidateIndex === otherIndex) return false;
+    const candidateRanks = rankVector(candidate);
+    const otherRanks = rankVector(other);
+    return otherRanks.every((rank, index) => rank <= candidateRanks[index]) &&
+      otherRanks.some((rank, index) => rank < candidateRanks[index]);
+  }));
+}
+
+function selectPlan(requirements, catalogValue = catalog) {
+  const resolved = candidateTemplates(requirements, catalogValue);
+  if (resolved.status !== 'CANDIDATES') return resolved;
+  const plans = enumeratePlans(resolved.candidates);
+  const pareto = paretoMinimal(plans);
+  pareto.sort((left, right) => {
+    const leftKey = stableJson([rankVector(left), left.map((template) => template.canonical_action_template)]);
+    const rightKey = stableJson([rankVector(right), right.map((template) => template.canonical_action_template)]);
+    return leftKey === rightKey ? 0 : leftKey < rightKey ? -1 : 1;
+  });
+  return {status: 'FEASIBLE', candidate_count: plans.length, pareto_count: pareto.length, selected_action_ids: pareto[0].map((template) => template.canonical_action_template.action_id), dimensions: resolved.candidates.map((item) => item.dimension.key)};
 }
 
 function plannerDocument() {
@@ -436,6 +631,155 @@ test('dimension-key construction has no catalog, task, seed, Gold, Oracle, or tr
   assert.deepEqual(canonicalDimensionKey(relation, {
     endpoint_selectors: ['endpoint.001', 'endpoint.002']
   }), {status: 'ONTOLOGY_INVALID'});
+});
+
+test('global catalog is structurally valid, task-agnostic, and covers only ontology capabilities', () => {
+  assert.equal(catalogStructuralError(catalog), null);
+  assert.equal(catalog.templates.length, 7);
+  assert.equal(catalog.templates.filter((item) => item.dimension_kind === 'FIELD_DIMENSION').length, 6);
+  assert.equal(catalog.templates.filter((item) => item.dimension_kind === 'RELATION_DIMENSION').length, 1);
+  assert.deepEqual([...new Set(catalog.templates.map((item) => item.transformation_contract.derivation_kind))].sort(), [
+    'DECLARED_PROPERTY_EXTRACTION', 'DECLARED_SET_MEMBERSHIP', 'IDENTITY', 'REDACTION',
+    'SOURCE_RELATION_PRESERVATION', 'STABLE_TOKENIZATION', 'TRUSTED_FIELD_LOCAL_COARSENING'
+  ].sort());
+  const serialized = JSON.stringify(catalog).toLowerCase();
+  for (const forbidden of ['task_id', 'seed_id', 'md-', 'gold', 'oracle', 'expected action', 'trusted_catalog_slice', 'dimension_ref', 'benchmark']) {
+    assert.equal(serialized.includes(forbidden), false, forbidden);
+  }
+});
+
+test('catalog structural negatives fail closed without task-specific exceptions', () => {
+  const unknownCapability = clone(catalog);
+  unknownCapability.templates[1].capability_coverage[0].capability_ref = 'capability.unknown';
+  assert.equal(catalogStructuralError(unknownCapability), 'CAPABILITY_UNKNOWN');
+
+  const invalidSemanticType = clone(catalog);
+  invalidSemanticType.templates[0].applicable_semantic_types.push('SECRET_VALUE');
+  assert.equal(catalogStructuralError(invalidSemanticType), 'CATALOG_INVALID');
+
+  const invalidTemplateId = clone(catalog);
+  invalidTemplateId.templates[0].template_id = 'template.field.MD-EQ-01';
+  assert.equal(catalogStructuralError(invalidTemplateId), 'CATALOG_STRUCTURE_INVALID');
+
+  const invalidPredicate = clone(catalog);
+  invalidPredicate.templates[1].capability_parameter_predicates[0].predicates[0].parameter = 'task_id';
+  assert.equal(catalogStructuralError(invalidPredicate), 'PREDICATE_INVALID');
+
+  const malformedPrecondition = clone(catalog);
+  delete malformedPrecondition.templates.find((item) => item.template_id === 'template.relation.source_preservation').required_trusted_preconditions[0].owner_class;
+  assert.equal(catalogStructuralError(malformedPrecondition), 'CATALOG_STRUCTURE_INVALID');
+
+  const fieldAsRelation = clone(catalog);
+  fieldAsRelation.templates[0].dimension_kind = 'RELATION_DIMENSION';
+  assert.equal(catalogStructuralError(fieldAsRelation), 'RELATION_CONTRACT_INVALID');
+
+  const relationWithoutContract = clone(catalog);
+  const relationTemplate = relationWithoutContract.templates.find((item) => item.dimension_kind === 'RELATION_DIMENSION');
+  relationTemplate.transformation_contract.relation_provenance = 'NOT_APPLICABLE';
+  assert.equal(catalogStructuralError(relationWithoutContract), 'RELATION_CONTRACT_INVALID');
+
+  const unknownPredicateCapability = clone(catalog);
+  unknownPredicateCapability.templates[1].capability_parameter_predicates.push({capability_ref: 'capability.exact_value', predicates: []});
+  assert.equal(catalogStructuralError(unknownPredicateCapability), 'PREDICATE_CAPABILITY_UNKNOWN');
+
+  const canonicalActionConflict = clone(catalog);
+  const canonicalCopy = clone(catalog.templates[0]);
+  canonicalCopy.template_id = 'template.field.redaction_alt';
+  canonicalCopy.canonical_action_template.action_kind = 'DIFFERENT_ACTION';
+  canonicalActionConflict.templates.push(canonicalCopy);
+  assert.equal(catalogStructuralError(canonicalActionConflict), 'CATALOG_INVALID');
+
+  const rankConflict = clone(catalog);
+  const rankCopy = clone(catalog.templates[0]);
+  rankCopy.template_id = 'template.field.redaction_rank_conflict';
+  rankCopy.disclosure_rank = 9;
+  rankConflict.templates.push(rankCopy);
+  assert.equal(catalogStructuralError(rankConflict), 'CATALOG_INVALID');
+});
+
+function fieldRequirement(capability_ref, parameters, overrides = {}) {
+  return {
+    capability_ref,
+    dimension_kind: 'FIELD_DIMENSION',
+    target_selectors: overrides.target_selectors ?? ['slot.001'],
+    semantic_types: overrides.semantic_types ?? ['EMAIL'],
+    target_roles: overrides.target_roles ?? ['VALUE'],
+    parameters,
+    boundary: overrides.boundary ?? 'AGENT',
+    available_preconditions: overrides.available_preconditions ?? []
+  };
+}
+
+function relationRequirement(capability_ref, parameters, overrides = {}) {
+  return {
+    capability_ref,
+    dimension_kind: 'RELATION_DIMENSION',
+    relation_ref: overrides.relation_ref ?? 'relation.source_declared',
+    endpoint_selectors: overrides.endpoint_selectors ?? ['endpoint.001', 'endpoint.002'],
+    semantic_types: overrides.semantic_types ?? ['PERSON_NAME'],
+    target_roles: overrides.target_roles ?? ['RELATION_SOURCE', 'RELATION_TARGET'],
+    parameters,
+    boundary: overrides.boundary ?? 'AGENT',
+    available_preconditions: overrides.available_preconditions ?? []
+  };
+}
+
+test('structural dimension mapping aggregates same field keys and orders fields before relations', () => {
+  const requirements = [
+    fieldRequirement('capability.identity', {stability_scope: 'TASK'}, {target_selectors: ['slot.002', 'slot.001']}),
+    fieldRequirement('capability.equality', {equality_basis: 'FIELD_VALUE'}, {target_selectors: ['slot.001', 'slot.002']}),
+    relationRequirement('capability.existing_relation', {relation_orientation: 'DIRECTED', relation_source: 'SOURCE_DECLARED'}, {available_preconditions: ['precondition.source_relation_declared']})
+  ];
+  const result = constructDimensions(requirements);
+  assert.equal(result.status, 'OK');
+  assert.equal(result.dimensions.length, 2);
+  assert.equal(result.dimensions[0].dimension_kind, 'FIELD_DIMENSION');
+  assert.equal(result.dimensions[1].dimension_kind, 'RELATION_DIMENSION');
+  assert.equal(result.dimensions[0].requirements.length, 2);
+  assert.equal(result.dimensions[0].key, 'FIELD_DIMENSION:["slot.001","slot.002"]');
+});
+
+test('dimension construction and catalog matching do not infer dimensions from catalog feasibility', () => {
+  const requirement = fieldRequirement('capability.identity', {stability_scope: 'TASK'});
+  const before = clone(requirement);
+  const source = constructDimensions.toString() + canonicalDimensionKey.toString() + relationIdentityContract.toString();
+  for (const forbidden of ['catalog', 'task_id', 'seed_id', 'gold', 'oracle', 'trusted_catalog_slice']) {
+    assert.equal(source.toLowerCase().includes(forbidden), false, forbidden);
+  }
+  const result = selectPlan([requirement]);
+  assert.equal(result.status, 'FEASIBLE');
+  assert.deepEqual(requirement, before);
+});
+
+test('zero satisfying actions is INFEASIBLE and multiple satisfying actions are compiler candidates, not AMBIGUOUS', () => {
+  const relationWithoutEvidence = relationRequirement('capability.directionality', {relation_orientation: 'DIRECTED'});
+  const infeasible = candidateTemplates([relationWithoutEvidence]);
+  assert.equal(infeasible.status, 'INFEASIBLE');
+
+  const identity = fieldRequirement('capability.identity', {stability_scope: 'TASK'});
+  const candidates = candidateTemplates([identity]);
+  assert.equal(candidates.status, 'CANDIDATES');
+  assert.ok(candidates.candidates[0].templates.length >= 2);
+  assert.notEqual(candidates.status, 'AMBIGUOUS');
+});
+
+test('Pareto filtering and canonical action serialization select a deterministic representation plan', () => {
+  const identity = fieldRequirement('capability.identity', {stability_scope: 'TASK'});
+  const selected = selectPlan([identity]);
+  assert.equal(selected.status, 'FEASIBLE');
+  assert.equal(selected.candidate_count, 2);
+  assert.equal(selected.pareto_count, 1);
+  assert.deepEqual(selected.selected_action_ids, ['action.field.stable_token']);
+
+  const tieCatalog = clone(catalog);
+  const alternate = clone(tieCatalog.templates.find((item) => item.template_id === 'template.field.stable_tokenization'));
+  alternate.template_id = 'template.field.stable_tokenization_alt';
+  alternate.canonical_action_template.action_id = 'action.field.stable_token_alt';
+  tieCatalog.templates.push(alternate);
+  const tie = selectPlan([identity], tieCatalog);
+  assert.equal(tie.status, 'FEASIBLE');
+  assert.equal(tie.pareto_count, 2);
+  assert.deepEqual(tie.selected_action_ids, ['action.field.stable_token']);
 });
 
 test('frozen v0.1/v0.2/v0.2.1 planner artifacts are unchanged', () => {

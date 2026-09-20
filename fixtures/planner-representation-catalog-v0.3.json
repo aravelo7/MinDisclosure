@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindisclosure.local/catalogs/planner-representation-catalog-v0.3.json",
+  "title": "MinDisclosure global representation catalog v0.3",
+  "description": "Global task-agnostic representation templates for validated semantic dimensions.",
+  "catalog_version": "planner-representation-catalog-v0.3",
+  "finite_space": true,
+  "deterministic_serialization": {
+    "object_keys": "LEXICOGRAPHIC",
+    "dimension_order": ["FIELD_DIMENSION", "RELATION_DIMENSION"],
+    "dimension_key": "CANONICAL_DIMENSION_KEY",
+    "plan_tie_break": "CANONICAL_ACTION_SERIALIZATION",
+    "encoding": "UTF-8",
+    "whitespace": "NONE"
+  },
+  "boundary_policy": {
+    "boundaries": ["AGENT", "TOOL"],
+    "uniform_per_dimension": true,
+    "raw_fallback": false,
+    "tool_restoration": "DECLARED_TOOL_ONLY",
+    "unproved_precondition": "ACTION_DOES_NOT_COVER_REQUIREMENT"
+  },
+  "infeasibility_reasons": [
+    "NO_SATISFYING_ACTION",
+    "BOUNDARY_MISMATCH",
+    "UNPROVED_TRUSTED_PRECONDITION",
+    "ONTOLOGY_INVALID",
+    "CATALOG_INVALID"
+  ],
+  "templates": [
+    {
+      "template_id": "template.field.redaction",
+      "dimension_kind": "FIELD_DIMENSION",
+      "applicable_semantic_types": ["EMAIL", "POSTAL_ADDRESS", "DATE_OF_BIRTH", "EVENT_TIMESTAMP", "PERSON_NAME", "RECORD_ID", "NUMBER", "INTEGER", "STRING", "TOOL_PARAMETER"],
+      "applicable_selector_shape": {"shape": "TARGET_SELECTOR_SET", "min_arity": 1, "max_arity": 16, "required_target_roles": []},
+      "capability_coverage": [],
+      "capability_parameter_predicates": [],
+      "effective_boundary_coverage": [{"boundary": "AGENT", "required_preconditions": []}, {"boundary": "TOOL", "required_preconditions": []}],
+      "required_trusted_preconditions": [],
+      "transformation_contract": {"source_binding": "DIMENSION_TARGET_FIELDS", "output_binding": "SAME_SOURCE_OCCURRENCES", "derivation_kind": "REDACTION", "occurrence_policy": "UNIFORM_PER_SOURCE_OCCURRENCE", "metadata_policy": "NO_RUNTIME_METADATA", "relation_provenance": "NOT_APPLICABLE", "field_local": true, "occurrence_local": true, "uniform_across_records": true, "preserves_existing_relation": false, "depends_on_task_answer": false, "selects_subset": false, "introduces_rank": false, "introduces_aggregate": false, "introduces_derived_relation": false},
+      "disclosure_rank": 0,
+      "canonical_action_template": {"action_id": "action.field.redact", "action_kind": "REDACT_FIELDS", "transformation": "REDACTION", "parameters": {}},
+      "no_solver_invariants": ["NO_TASK_ANSWER_DEPENDENCE", "NO_SUBSET_SELECTION", "NO_RANK_INTRODUCTION", "NO_AGGREGATE_INTRODUCTION", "NO_DERIVED_RELATION_INTRODUCTION", "NO_RUNTIME_METADATA"]
+    },
+    {
+      "template_id": "template.field.stable_tokenization",
+      "dimension_kind": "FIELD_DIMENSION",
+      "applicable_semantic_types": ["EMAIL", "PERSON_NAME", "RECORD_ID", "STRING"],
+      "applicable_selector_shape": {"shape": "TARGET_SELECTOR_SET", "min_arity": 1, "max_arity": 16, "required_target_roles": []},
+      "capability_coverage": [{"capability_ref": "capability.identity"}, {"capability_ref": "capability.equality"}, {"capability_ref": "capability.linkage"}],
+      "capability_parameter_predicates": [{"capability_ref": "capability.identity", "predicates": [{"parameter": "stability_scope", "operator": "EQUALS", "value": "TASK"}]}, {"capability_ref": "capability.equality", "predicates": [{"parameter": "equality_basis", "operator": "EQUALS", "value": "FIELD_VALUE"}]}, {"capability_ref": "capability.linkage", "predicates": [{"parameter": "linkage_scope", "operator": "EQUALS", "value": "CROSS_RECORD"}]}],
+      "effective_boundary_coverage": [{"boundary": "AGENT", "required_preconditions": []}, {"boundary": "TOOL", "required_preconditions": []}],
+      "required_trusted_preconditions": [],
+      "transformation_contract": {"source_binding": "DIMENSION_TARGET_FIELDS", "output_binding": "SAME_SOURCE_OCCURRENCES", "derivation_kind": "STABLE_TOKENIZATION", "occurrence_policy": "STABLE_EQUIVALENCE_CLASS", "metadata_policy": "NO_RUNTIME_METADATA", "relation_provenance": "NOT_APPLICABLE", "field_local": true, "occurrence_local": false, "uniform_across_records": true, "preserves_existing_relation": false, "depends_on_task_answer": false, "selects_subset": false, "introduces_rank": false, "introduces_aggregate": false, "introduces_derived_relation": false},
+      "disclosure_rank": 1,
+      "canonical_action_template": {"action_id": "action.field.stable_token", "action_kind": "STABLE_TOKENIZE_FIELDS", "transformation": "STABLE_TOKENIZATION", "parameters": {"stability": "TASK"}},
+      "no_solver_invariants": ["NO_TASK_ANSWER_DEPENDENCE", "NO_SUBSET_SELECTION", "NO_RANK_INTRODUCTION", "NO_AGGREGATE_INTRODUCTION", "NO_DERIVED_RELATION_INTRODUCTION", "NO_RUNTIME_METADATA"]
+    },
+    {
+      "template_id": "template.field.declared_property",
+      "dimension_kind": "FIELD_DIMENSION",
+      "applicable_semantic_types": ["EMAIL", "DATE_OF_BIRTH", "EVENT_TIMESTAMP", "STRING", "POSTAL_ADDRESS"],
+      "applicable_selector_shape": {"shape": "TARGET_SELECTOR_SET", "min_arity": 1, "max_arity": 16, "required_target_roles": []},
+      "capability_coverage": [{"capability_ref": "capability.domain"}, {"capability_ref": "capability.category"}, {"capability_ref": "capability.coarse_temporal"}],
+      "capability_parameter_predicates": [{"capability_ref": "capability.domain", "predicates": [{"parameter": "granularity", "operator": "ONE_OF", "values": ["EMAIL_DOMAIN", "YEAR", "DAY", "HOUR"]}]}, {"capability_ref": "capability.category", "predicates": [{"parameter": "category_system_ref", "operator": "TRUSTED_DECLARATION_REF"}]}, {"capability_ref": "capability.coarse_temporal", "predicates": [{"parameter": "granularity", "operator": "ONE_OF", "values": ["YEAR", "DAY", "HOUR"]}]}],
+      "effective_boundary_coverage": [{"boundary": "AGENT", "required_preconditions": []}, {"boundary": "TOOL", "required_preconditions": []}],
+      "required_trusted_preconditions": [],
+      "transformation_contract": {"source_binding": "DIMENSION_TARGET_FIELDS", "output_binding": "SAME_SOURCE_OCCURRENCES", "derivation_kind": "DECLARED_PROPERTY_EXTRACTION", "occurrence_policy": "UNIFORM_PER_SOURCE_OCCURRENCE", "metadata_policy": "NO_RUNTIME_METADATA", "relation_provenance": "NOT_APPLICABLE", "field_local": true, "occurrence_local": true, "uniform_across_records": true, "preserves_existing_relation": false, "depends_on_task_answer": false, "selects_subset": false, "introduces_rank": false, "introduces_aggregate": false, "introduces_derived_relation": false},
+      "disclosure_rank": 2,
+      "canonical_action_template": {"action_id": "action.field.declared_property", "action_kind": "EXTRACT_DECLARED_PROPERTY", "transformation": "DECLARED_PROPERTY_EXTRACTION", "parameters": {"source": "CAPABILITY_PARAMETER"}},
+      "no_solver_invariants": ["NO_TASK_ANSWER_DEPENDENCE", "NO_SUBSET_SELECTION", "NO_RANK_INTRODUCTION", "NO_AGGREGATE_INTRODUCTION", "NO_DERIVED_RELATION_INTRODUCTION", "NO_RUNTIME_METADATA"]
+    },
+    {
+      "template_id": "template.field.trusted_coarsening",
+      "dimension_kind": "FIELD_DIMENSION",
+      "applicable_semantic_types": ["POSTAL_ADDRESS", "DATE_OF_BIRTH", "EVENT_TIMESTAMP", "STRING"],
+      "applicable_selector_shape": {"shape": "TARGET_SELECTOR_SET", "min_arity": 1, "max_arity": 16, "required_target_roles": []},
+      "capability_coverage": [{"capability_ref": "capability.geographic_region"}, {"capability_ref": "capability.service_zone"}, {"capability_ref": "capability.temporal_comparison"}],
+      "capability_parameter_predicates": [{"capability_ref": "capability.geographic_region", "predicates": [{"parameter": "region_scheme_ref", "operator": "TRUSTED_WORKFLOW_REF"}]}, {"capability_ref": "capability.service_zone", "predicates": [{"parameter": "zone_rule_ref", "operator": "TRUSTED_WORKFLOW_REF"}]}, {"capability_ref": "capability.temporal_comparison", "predicates": [{"parameter": "granularity", "operator": "ONE_OF", "values": ["YEAR", "DAY", "HOUR"]}]}],
+      "effective_boundary_coverage": [{"boundary": "AGENT", "required_preconditions": ["precondition.coarsening_rule"]}, {"boundary": "TOOL", "required_preconditions": ["precondition.coarsening_rule"]}],
+      "required_trusted_preconditions": [{"precondition_ref": "precondition.coarsening_rule", "owner_class": "TRUSTED_WORKFLOW", "evidence_kind": "VERIFIED_WORKFLOW_RULE"}],
+      "transformation_contract": {"source_binding": "DIMENSION_TARGET_FIELDS", "output_binding": "SAME_SOURCE_OCCURRENCES", "derivation_kind": "TRUSTED_FIELD_LOCAL_COARSENING", "occurrence_policy": "UNIFORM_PER_SOURCE_OCCURRENCE", "metadata_policy": "NO_RUNTIME_METADATA", "relation_provenance": "NOT_APPLICABLE", "field_local": true, "occurrence_local": true, "uniform_across_records": true, "preserves_existing_relation": false, "depends_on_task_answer": false, "selects_subset": false, "introduces_rank": false, "introduces_aggregate": false, "introduces_derived_relation": false},
+      "disclosure_rank": 2,
+      "canonical_action_template": {"action_id": "action.field.trusted_coarsening", "action_kind": "COARSEN_FIELD_VALUE", "transformation": "TRUSTED_FIELD_LOCAL_COARSENING", "parameters": {"source": "CAPABILITY_PARAMETER"}},
+      "no_solver_invariants": ["NO_TASK_ANSWER_DEPENDENCE", "NO_SUBSET_SELECTION", "NO_RANK_INTRODUCTION", "NO_AGGREGATE_INTRODUCTION", "NO_DERIVED_RELATION_INTRODUCTION", "NO_RUNTIME_METADATA"]
+    },
+    {
+      "template_id": "template.field.membership",
+      "dimension_kind": "FIELD_DIMENSION",
+      "applicable_semantic_types": ["EMAIL", "PERSON_NAME", "RECORD_ID", "STRING"],
+      "applicable_selector_shape": {"shape": "TARGET_SELECTOR_SET", "min_arity": 1, "max_arity": 16, "required_target_roles": []},
+      "capability_coverage": [{"capability_ref": "capability.membership"}],
+      "capability_parameter_predicates": [{"capability_ref": "capability.membership", "predicates": [{"parameter": "set_ref", "operator": "TRUSTED_DECLARATION_REF"}]}],
+      "effective_boundary_coverage": [{"boundary": "AGENT", "required_preconditions": ["precondition.declared_set"]}, {"boundary": "TOOL", "required_preconditions": ["precondition.declared_set"]}],
+      "required_trusted_preconditions": [{"precondition_ref": "precondition.declared_set", "owner_class": "DATA_SCHEMA", "evidence_kind": "VERIFIED_DECLARED_SET"}],
+      "transformation_contract": {"source_binding": "DIMENSION_TARGET_FIELDS", "output_binding": "SAME_SOURCE_OCCURRENCES", "derivation_kind": "DECLARED_SET_MEMBERSHIP", "occurrence_policy": "UNIFORM_PER_SOURCE_OCCURRENCE", "metadata_policy": "NO_RUNTIME_METADATA", "relation_provenance": "NOT_APPLICABLE", "field_local": true, "occurrence_local": true, "uniform_across_records": true, "preserves_existing_relation": false, "depends_on_task_answer": false, "selects_subset": false, "introduces_rank": false, "introduces_aggregate": false, "introduces_derived_relation": false},
+      "disclosure_rank": 2,
+      "canonical_action_template": {"action_id": "action.field.membership", "action_kind": "APPLY_DECLARED_MEMBERSHIP", "transformation": "DECLARED_SET_MEMBERSHIP", "parameters": {"source": "CAPABILITY_PARAMETER"}},
+      "no_solver_invariants": ["NO_TASK_ANSWER_DEPENDENCE", "NO_SUBSET_SELECTION", "NO_RANK_INTRODUCTION", "NO_AGGREGATE_INTRODUCTION", "NO_DERIVED_RELATION_INTRODUCTION", "NO_RUNTIME_METADATA"]
+    },
+    {
+      "template_id": "template.field.raw_retention",
+      "dimension_kind": "FIELD_DIMENSION",
+      "applicable_semantic_types": ["EMAIL", "POSTAL_ADDRESS", "DATE_OF_BIRTH", "EVENT_TIMESTAMP", "PERSON_NAME", "RECORD_ID", "NUMBER", "INTEGER", "STRING", "TOOL_PARAMETER"],
+      "applicable_selector_shape": {"shape": "TARGET_SELECTOR_SET", "min_arity": 1, "max_arity": 16, "required_target_roles": []},
+      "capability_coverage": [{"capability_ref": "capability.identity"}, {"capability_ref": "capability.equality"}, {"capability_ref": "capability.linkage"}, {"capability_ref": "capability.domain"}, {"capability_ref": "capability.category"}, {"capability_ref": "capability.ordering"}, {"capability_ref": "capability.coarse_temporal"}, {"capability_ref": "capability.geographic_region"}, {"capability_ref": "capability.service_zone"}, {"capability_ref": "capability.membership"}, {"capability_ref": "capability.temporal_comparison"}, {"capability_ref": "capability.exact_value"}],
+      "capability_parameter_predicates": [],
+      "effective_boundary_coverage": [{"boundary": "AGENT", "required_preconditions": []}, {"boundary": "TOOL", "required_preconditions": ["precondition.tool_information_contract", "precondition.agent_non_observation", "precondition.atomic_restoration"]}],
+      "required_trusted_preconditions": [{"precondition_ref": "precondition.tool_information_contract", "owner_class": "TOOL_SCHEMA", "evidence_kind": "VERIFIED_TOOL_INFORMATION_CONTRACT"}, {"precondition_ref": "precondition.agent_non_observation", "owner_class": "RUNTIME_CAPABILITY", "evidence_kind": "VERIFIED_RUNTIME_CAPABILITY"}, {"precondition_ref": "precondition.atomic_restoration", "owner_class": "RUNTIME_CAPABILITY", "evidence_kind": "VERIFIED_RUNTIME_CAPABILITY"}],
+      "transformation_contract": {"source_binding": "DIMENSION_TARGET_FIELDS", "output_binding": "SAME_SOURCE_OCCURRENCES", "derivation_kind": "IDENTITY", "occurrence_policy": "UNIFORM_PER_SOURCE_OCCURRENCE", "metadata_policy": "NO_RUNTIME_METADATA", "relation_provenance": "NOT_APPLICABLE", "field_local": true, "occurrence_local": true, "uniform_across_records": true, "preserves_existing_relation": false, "depends_on_task_answer": false, "selects_subset": false, "introduces_rank": false, "introduces_aggregate": false, "introduces_derived_relation": false},
+      "disclosure_rank": 3,
+      "canonical_action_template": {"action_id": "action.field.raw", "action_kind": "RETAIN_SOURCE_VALUE", "transformation": "IDENTITY", "parameters": {"release": "EXACT_SOURCE_VALUE"}},
+      "no_solver_invariants": ["NO_TASK_ANSWER_DEPENDENCE", "NO_SUBSET_SELECTION", "NO_RANK_INTRODUCTION", "NO_AGGREGATE_INTRODUCTION", "NO_DERIVED_RELATION_INTRODUCTION", "NO_RUNTIME_METADATA"]
+    },
+    {
+      "template_id": "template.relation.source_preservation",
+      "dimension_kind": "RELATION_DIMENSION",
+      "applicable_semantic_types": ["PERSON_NAME", "RECORD_ID", "STRING"],
+      "applicable_selector_shape": {"shape": "ENDPOINT_SELECTOR_SET", "min_arity": 2, "max_arity": 2, "required_target_roles": ["RELATION_SOURCE", "RELATION_TARGET"]},
+      "capability_coverage": [{"capability_ref": "capability.existing_relation"}, {"capability_ref": "capability.directionality"}],
+      "capability_parameter_predicates": [{"capability_ref": "capability.existing_relation", "predicates": [{"parameter": "relation_source", "operator": "EQUALS", "value": "SOURCE_DECLARED"}, {"parameter": "relation_orientation", "operator": "DECLARED_RELATION_VALUE"}]}, {"capability_ref": "capability.directionality", "predicates": [{"parameter": "relation_orientation", "operator": "DECLARED_RELATION_VALUE"}]}],
+      "effective_boundary_coverage": [{"boundary": "AGENT", "required_preconditions": ["precondition.source_relation_declared"]}, {"boundary": "TOOL", "required_preconditions": ["precondition.source_relation_declared"]}],
+      "required_trusted_preconditions": [{"precondition_ref": "precondition.source_relation_declared", "owner_class": "DATA_SCHEMA", "evidence_kind": "VERIFIED_SOURCE_DECLARED_RELATION"}],
+      "transformation_contract": {"source_binding": "DECLARED_RELATION_ENDPOINTS", "output_binding": "SOURCE_RELATION_SAME_EDGES", "derivation_kind": "SOURCE_RELATION_PRESERVATION", "occurrence_policy": "SOURCE_RELATION_AS_DECLARED", "metadata_policy": "NO_RUNTIME_METADATA", "relation_provenance": "SOURCE_DECLARED_ONLY", "field_local": false, "occurrence_local": false, "uniform_across_records": true, "preserves_existing_relation": true, "depends_on_task_answer": false, "selects_subset": false, "introduces_rank": false, "introduces_aggregate": false, "introduces_derived_relation": false},
+      "disclosure_rank": 0,
+      "canonical_action_template": {"action_id": "action.relation.source_preservation", "action_kind": "PRESERVE_SOURCE_RELATION", "transformation": "SOURCE_RELATION_PRESERVATION", "parameters": {"relation": "SOURCE_DECLARED"}},
+      "no_solver_invariants": ["NO_TASK_ANSWER_DEPENDENCE", "NO_SUBSET_SELECTION", "NO_RANK_INTRODUCTION", "NO_AGGREGATE_INTRODUCTION", "NO_DERIVED_RELATION_INTRODUCTION", "NO_RUNTIME_METADATA"]
+    }
+  ]
+}
