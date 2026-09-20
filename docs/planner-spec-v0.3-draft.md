@@ -778,6 +778,18 @@ Templates describe general transformations such as stable tokenization,
 declared property extraction, source-relation preservation, redaction, or raw
 retention. They do not identify a task or a task field by name.
 
+`FIELD_DIMENSION` is not limited to ordinary property capabilities. It also
+covers identity, equality, and linkage capabilities whose disclosure
+representation acts on the selected field inputs themselves. In particular,
+`linkage` establishes cross-record linkability for selected fields; it does not
+consume or preserve a source-declared relation identity.
+
+`RELATION_DIMENSION` is reserved for a capability whose ontology declaration
+requires a verified source-declared relation identity. A capability declared as
+`RELATION_DIMENSION` without an admissible, verifiable relation identity
+contract is `ONTOLOGY_INVALID`; no Runtime or catalog step may guess or invent
+the relation reference.
+
 The global ontology declares the dimension kind for every capability. Missing
 or contradictory dimension-kind declarations are `ONTOLOGY_INVALID`.
 
@@ -800,6 +812,12 @@ RELATION_DIMENSION key =
   canonical declared relation ref
   + canonical endpoint selector set
 ```
+
+The relation key is total only when the capability's ontology contract binds a
+verified source-declared relation identity and the selected endpoint slots
+match that declaration. A `RELATION_DIMENSION` capability without that total
+relation-key constructor is `ONTOLOGY_INVALID`, not a request to infer a
+`relation_ref` from catalog feasibility or Runtime data.
 
 Requirements with the same dimension kind and key share one instantiated
 dimension. A dimension may therefore carry multiple capability requirements.

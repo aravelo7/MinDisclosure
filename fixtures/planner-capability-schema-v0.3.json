@@ -1,0 +1,400 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindisclosure.local/schemas/planner-capability-schema-v0.3.json",
+  "title": "MinDisclosure Planner Task IR and contract artifacts v0.3",
+  "description": "Closed Planner-visible Task IR and Minimal Semantic Kernel. Downstream completion, proof, boundary, evaluator, and terminal objects are closed definitions in this schema but are never Planner output.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_ir", "semantic_kernel", "uncertainty"],
+  "properties": {
+    "schema_version": {"const": "planner-capability-schema-v0.3"},
+    "task_ir": {"$ref": "#/$defs/task_ir"},
+    "semantic_kernel": {"$ref": "#/$defs/semantic_kernel"},
+    "uncertainty": {"$ref": "#/$defs/uncertainty"}
+  },
+  "$defs": {
+    "uncertainty": {
+      "enum": ["CONFIDENT", "UNCERTAIN", "INVALID"]
+    },
+    "semantic_type": {
+      "enum": ["EMAIL", "POSTAL_ADDRESS", "DATE_OF_BIRTH", "EVENT_TIMESTAMP", "PERSON_NAME", "RECORD_ID", "NUMBER", "INTEGER", "STRING", "TOOL_NAME", "TOOL_PARAMETER"]
+    },
+    "target_role": {
+      "enum": ["VALUE", "GROUP_KEY", "SORT_KEY", "LINK_KEY", "TEMPORAL_VALUE", "RELATION_SOURCE", "RELATION_TARGET", "TOOL_ARGUMENT"]
+    },
+    "operation_family": {
+      "enum": ["equality", "deduplicate", "group_by", "aggregate", "sort", "filter", "compare", "temporal_window", "record_linkage", "graph_relation", "degree", "reachability", "select", "tool_call"]
+    },
+    "result_shape": {
+      "enum": ["groups", "ordered_records", "record_pairs", "source_graph", "graph_summary", "aggregate_table", "selected_record", "tool_call", "task_result"]
+    },
+    "field_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.\\[\\]-]*$"
+    },
+    "slot_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "planner_local_ref": {
+      "type": "string",
+      "pattern": "^local\\.[a-z][a-z0-9_.-]*$"
+    },
+    "operation_ref": {
+      "type": "string",
+      "pattern": "^op\\.[0-9]{3}$"
+    },
+    "tool_ref": {
+      "type": "string",
+      "pattern": "^tool\\.[a-z][a-z0-9_.-]*$"
+    },
+    "parameter_ref": {
+      "type": "string",
+      "pattern": "^tool\\.[a-z][a-z0-9_.-]*$"
+    },
+    "semantic_parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "direction": {"enum": ["ASCENDING", "DESCENDING"]},
+        "precision": {"enum": ["YEAR", "DAY", "HOUR", "EXACT"]},
+        "granularity": {"enum": ["EMAIL_DOMAIN", "YEAR", "DAY", "HOUR", "REGION", "SERVICE_ZONE", "EXACT"]},
+        "comparison": {"enum": ["EQUAL", "ABSOLUTE_DIFFERENCE_LEQ"]},
+        "threshold": {"$ref": "#/$defs/threshold"},
+        "interval_semantics": {"enum": ["CLOSED", "OPEN", "LEFT_CLOSED", "RIGHT_CLOSED"]},
+        "equality_basis": {"enum": ["FIELD_VALUE", "ENTITY_IDENTITY"]},
+        "linkage_scope": {"enum": ["TASK", "CROSS_RECORD"]},
+        "relation_orientation": {"enum": ["DIRECTED", "UNDIRECTED"]},
+        "relation_source": {"const": "SOURCE_DECLARED"},
+        "category_system_ref": {"type": "string", "pattern": "^(workflow|schema)\\.[a-z][a-z0-9_.-]*$"},
+        "set_ref": {"type": "string", "pattern": "^(workflow|schema)\\.[a-z][a-z0-9_.-]*$"},
+        "aggregation": {"enum": ["SUM", "COUNT", "COUNT_AND_SUM", "MAXIMUM"]},
+        "relation_ref": {"type": "string", "pattern": "^relation\\.[a-z][a-z0-9_.-]*$"}
+      }
+    },
+    "threshold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {"type": "number", "exclusiveMinimum": 0},
+        "unit": {"enum": ["HOUR", "DAY"]}
+      }
+    },
+    "input_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot_ref", "field_ref"],
+      "properties": {
+        "slot_ref": {"$ref": "#/$defs/slot_ref"},
+        "field_ref": {"$ref": "#/$defs/field_ref"}
+      }
+    },
+    "tool_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_ref", "parameter_refs"],
+      "properties": {
+        "tool_ref": {"$ref": "#/$defs/tool_ref"},
+        "parameter_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/parameter_ref"}}
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["planner_local_ref", "family", "input_bindings", "parameters", "depends_on", "result_shape"],
+      "properties": {
+        "planner_local_ref": {"$ref": "#/$defs/planner_local_ref"},
+        "family": {"$ref": "#/$defs/operation_family"},
+        "input_bindings": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/input_binding"}},
+        "parameters": {"$ref": "#/$defs/semantic_parameters"},
+        "depends_on": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/planner_local_ref"}},
+        "result_shape": {"$ref": "#/$defs/result_shape"},
+        "tool_binding": {"$ref": "#/$defs/tool_binding"}
+      }
+    },
+    "presentation_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "rule"],
+      "properties": {
+        "kind": {"enum": ["semantic_order", "label_convention", "serialization_guard"]},
+        "rule": {"enum": ["INPUT_ORDER", "SOURCE_APPEARANCE_ORDER", "ENDPOINT_APPEARANCE_ORDER", "DECLARED_PARAMETER_NAMES", "IGNORE_JSON_KEY_ORDER"]}
+      }
+    },
+    "task_ir": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_ir_version", "operations"],
+      "properties": {
+        "task_ir_version": {"const": "task-ir-v0.3"},
+        "operations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/operation"}},
+        "presentation_constraints": {"type": "array", "items": {"$ref": "#/$defs/presentation_constraint"}}
+      }
+    },
+    "semantic_scope": {
+      "oneOf": [
+        {"$ref": "#/$defs/input_record_set_scope"},
+        {"$ref": "#/$defs/input_occurrence_set_scope"},
+        {"$ref": "#/$defs/declared_relation_set_scope"}
+      ]
+    },
+    "input_record_set_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {"kind": {"const": "INPUT_RECORD_SET"}}
+    },
+    "input_occurrence_set_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {"kind": {"const": "INPUT_OCCURRENCE_SET"}}
+    },
+    "declared_relation_set_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "relation_ref"],
+      "properties": {
+        "kind": {"const": "DECLARED_RELATION_SET"},
+        "relation_ref": {"type": "string", "pattern": "^relation\\.[a-z][a-z0-9_.-]*$"}
+      }
+    },
+    "consumer_intent": {
+      "oneOf": [
+        {"$ref": "#/$defs/agent_computation_intent"},
+        {"$ref": "#/$defs/declared_tool_parameter_intent"}
+      ]
+    },
+    "agent_computation_intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {"kind": {"const": "AGENT_COMPUTATION"}}
+    },
+    "declared_tool_parameter_intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "tool_ref", "parameter_ref"],
+      "properties": {
+        "kind": {"const": "DECLARED_TOOL_PARAMETER"},
+        "tool_ref": {"$ref": "#/$defs/tool_ref"},
+        "parameter_ref": {"$ref": "#/$defs/parameter_ref"}
+      }
+    },
+    "task_semantic_capability_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "capability_name", "semantic_parameters"],
+      "properties": {
+        "origin": {"const": "TASK_SEMANTIC"},
+        "capability_name": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "semantic_parameters": {"$ref": "#/$defs/semantic_parameters"}
+      }
+    },
+    "tool_information_capability_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin"],
+      "properties": {"origin": {"const": "TOOL_INFORMATION_CONTRACT"}}
+    },
+    "capability_request": {
+      "oneOf": [
+        {"$ref": "#/$defs/task_semantic_capability_request"},
+        {"$ref": "#/$defs/tool_information_capability_request"}
+      ]
+    },
+    "kernel_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_binding", "target_input_selectors", "capability_request", "consumer_intent"],
+      "properties": {
+        "operation_binding": {"$ref": "#/$defs/planner_local_ref"},
+        "target_input_selectors": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/slot_ref"}},
+        "capability_request": {"$ref": "#/$defs/capability_request"},
+        "semantic_scope_intent": {"$ref": "#/$defs/semantic_scope"},
+        "consumer_intent": {"$ref": "#/$defs/consumer_intent"}
+      }
+    },
+    "semantic_kernel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_kernel_version", "requirements"],
+      "properties": {
+        "semantic_kernel_version": {"const": "minimal-semantic-kernel-v0.3"},
+        "requirements": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/kernel_requirement"}}
+      }
+    },
+    "completed_capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family", "name", "parameters"],
+      "properties": {
+        "family": {"enum": ["identity", "property", "relation", "exact_value"]},
+        "name": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "parameters": {"$ref": "#/$defs/semantic_parameters"}
+      }
+    },
+    "completed_semantic_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requirement_id", "operation_ref", "target_input_selectors", "capability", "scope", "consumer_intent", "semantic_requirement_hash"],
+      "properties": {
+        "requirement_id": {"type": "string", "pattern": "^req\\.[0-9]{3}$"},
+        "operation_ref": {"$ref": "#/$defs/operation_ref"},
+        "target_input_selectors": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/slot_ref"}},
+        "capability": {"$ref": "#/$defs/completed_capability"},
+        "scope": {"$ref": "#/$defs/semantic_scope"},
+        "consumer_intent": {"$ref": "#/$defs/consumer_intent"},
+        "semantic_requirement_hash": {"$ref": "#/$defs/semantic_requirement_hash"}
+      }
+    },
+    "semantic_requirement_hash": {
+      "type": "string",
+      "pattern": "^sha256\\.[a-f0-9]{64}$"
+    },
+    "authority_owner": {
+      "enum": ["USER_INTENT", "TRUSTED_WORKFLOW", "DATA_SCHEMA", "TOOL_SCHEMA", "GLOBAL_ONTOLOGY"]
+    },
+    "support_type": {
+      "enum": ["USER_INTENT_CLAIM", "WORKFLOW_RULE", "SCHEMA_FACT", "TOOL_SCHEMA_FACT", "TOOL_INFORMATION_CONTRACT", "ONTOLOGY_DECLARATION"]
+    },
+    "narrowing_relation": {
+      "oneOf": [
+        {"type": "string", "enum": ["EXACT_MATCH", "SUBSET_OF"]},
+        {"type": "object", "additionalProperties": false, "required": ["kind", "rule_ref"], "properties": {"kind": {"enum": ["DERIVED_BY", "CONJUNCTIVE_MEET"]}, "rule_ref": {"type": "string", "pattern": "^(rule|policy)\\.[a-z][a-z0-9_.-]*$"}}}
+      ]
+    },
+    "authority_field_proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_path", "owner_class", "source_id", "support_type", "support_ref", "narrowing_relation"],
+      "properties": {
+        "claim_path": {"type": "string", "pattern": "^[a-z][a-z0-9_.\\[\\]-]*$"},
+        "owner_class": {"$ref": "#/$defs/authority_owner"},
+        "source_id": {"type": "string", "pattern": "^(ctx|ontology)\\.[a-z][a-z0-9_.-]*$"},
+        "support_type": {"$ref": "#/$defs/support_type"},
+        "support_ref": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "narrowing_relation": {"$ref": "#/$defs/narrowing_relation"}
+      }
+    },
+    "authority_proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_requirement_hash", "context_snapshot_id", "field_proofs", "decision"],
+      "properties": {
+        "semantic_requirement_hash": {"$ref": "#/$defs/semantic_requirement_hash"},
+        "context_snapshot_id": {"type": "string", "pattern": "^snapshot\\.[a-z][a-z0-9_.-]*$"},
+        "field_proofs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/authority_field_proof"}},
+        "decision": {"enum": ["AUTHORIZED", "INSUFFICIENT_AUTHORITY"]}
+      }
+    },
+    "tool_parameter_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_ref", "parameter_ref", "semantic_type", "required"],
+      "properties": {
+        "tool_ref": {"$ref": "#/$defs/tool_ref"},
+        "parameter_ref": {"$ref": "#/$defs/parameter_ref"},
+        "semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "required": {"type": "boolean"}
+      }
+    },
+    "tool_information_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_id", "tool_ref", "parameter_ref", "accepted_source_semantic_types", "required_capability", "minimum_information_semantics", "issuer", "version"],
+      "properties": {
+        "contract_id": {"type": "string", "pattern": "^contract\\.[a-z][a-z0-9_.-]*$"},
+        "tool_ref": {"$ref": "#/$defs/tool_ref"},
+        "parameter_ref": {"$ref": "#/$defs/parameter_ref"},
+        "accepted_source_semantic_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/semantic_type"}},
+        "required_capability": {"$ref": "#/$defs/contract_capability"},
+        "minimum_information_semantics": {"enum": ["EXACT_SOURCE_VALUE", "TASK_STABLE_TOKEN", "DECLARED_PROPERTY"]},
+        "issuer": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "version": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+$"}
+      }
+    },
+    "contract_capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "parameters"],
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"},
+        "parameters": {"$ref": "#/$defs/semantic_parameters"}
+      }
+    },
+    "release_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_and_destination_authorized", "tool_only_release_authorized"],
+      "properties": {
+        "operation_and_destination_authorized": {"type": "boolean"},
+        "tool_only_release_authorized": {"type": "boolean"}
+      }
+    },
+    "runtime_capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_non_observation_supported", "atomic_restoration_supported", "runtime_mediator_identity"],
+      "properties": {
+        "agent_non_observation_supported": {"type": "boolean"},
+        "atomic_restoration_supported": {"type": "boolean"},
+        "runtime_mediator_identity": {"type": "string", "pattern": "^runtime\\.[a-z][a-z0-9_.-]*$"}
+      }
+    },
+    "effective_boundary_decision": {
+      "oneOf": [
+        {"$ref": "#/$defs/effective_boundary_derived"},
+        {"$ref": "#/$defs/effective_boundary_terminal"}
+      ]
+    },
+    "effective_boundary_derived": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_requirement_hash", "status", "boundary", "consumer_intent", "release_decision", "runtime_capability"],
+      "properties": {
+        "semantic_requirement_hash": {"$ref": "#/$defs/semantic_requirement_hash"},
+        "status": {"const": "DERIVED"},
+        "boundary": {"enum": ["AGENT", "TOOL"]},
+        "consumer_intent": {"$ref": "#/$defs/consumer_intent"},
+        "release_decision": {"$ref": "#/$defs/release_decision"},
+        "runtime_capability": {"$ref": "#/$defs/runtime_capability"}
+      }
+    },
+    "effective_boundary_terminal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_requirement_hash", "status", "reason_code"],
+      "properties": {
+        "semantic_requirement_hash": {"$ref": "#/$defs/semantic_requirement_hash"},
+        "status": {"enum": ["UNSUPPORTED", "INSUFFICIENT_AUTHORITY"]},
+        "reason_code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+      }
+    },
+    "axis_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "diagnostics"],
+      "properties": {
+        "status": {"enum": ["PASS", "FAIL", "NOT_EVALUATED"]},
+        "diagnostics": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}}
+      }
+    },
+    "terminal_status": {
+      "enum": ["ACCEPTED", "AMBIGUOUS", "UNSUPPORTED", "INSUFFICIENT_AUTHORITY", "INFEASIBLE", "ONTOLOGY_INVALID", "CATALOG_INVALID"]
+    },
+    "evaluator_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_requirement_correctness", "authority_proof_validity", "effective_boundary_release_policy_correctness", "compiler_feasibility_minimality", "terminal_status"],
+      "properties": {
+        "semantic_requirement_correctness": {"$ref": "#/$defs/axis_result"},
+        "authority_proof_validity": {"$ref": "#/$defs/axis_result"},
+        "effective_boundary_release_policy_correctness": {"$ref": "#/$defs/axis_result"},
+        "compiler_feasibility_minimality": {"$ref": "#/$defs/axis_result"},
+        "terminal_status": {"$ref": "#/$defs/terminal_status"}
+      }
+    }
+  }
+}
