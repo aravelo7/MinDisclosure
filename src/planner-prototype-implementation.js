@@ -839,7 +839,7 @@ async function runOfflineQualification({assets = loadPlannerAssets()} = {}) {
 }
 
 if (require.main === module) {
-  if (process.argv.length !== 3 || process.argv[2] !== '--offline-qualification') throw new Error('usage: node src/planner-prototype-v0.1.2.js --offline-qualification');
+  if (process.argv.length !== 3 || process.argv[2] !== '--offline-qualification') throw new Error('usage: node src/planner-prototype-implementation.js --offline-qualification');
   runOfflineQualification().then((report) => process.stdout.write(`${JSON.stringify(report)}\n`)).catch((error) => { process.stderr.write(`${error.stack}\n`); process.exitCode = 1; });
 }
 

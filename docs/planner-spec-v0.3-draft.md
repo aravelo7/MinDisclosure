@@ -1002,27 +1002,25 @@ schema requiredness create capabilities.
 ## 18. Remaining blockers before freeze
 
 There is no remaining unresolved conceptual choice among the five research
-blockers. The draft is nevertheless not freeze-ready until the following
-machine-verifiable artifacts and evidence exist in a future authorized round:
+blockers. The schema, global operation/capability ontology, task-agnostic
+representation catalog, and initial conformance tests have now been materialized
+as draft assets:
 
-1. a closed v0.3 schema for Task IR, Minimal Semantic Kernel, completed Semantic
-   Requirement, Authority Proof, Tool information contract, effective-boundary
-   decision, and the four-axis evaluator result;
-2. a frozen global operation/capability ontology containing the owner,
-   derivation, input-slot, dimension-kind, and canonicalization declarations
-   required by this draft;
-3. a task-agnostic global representation catalog with structural validation and
-   no task-qualified identifiers;
-4. conformance tests proving scope denotation, completion uniqueness, proof
-   multiplicity behavior, boundary failure states, leakage denial, and global
-   dimension instantiation; and
-5. a trusted, machine-checkable Runtime capability declaration for agent
-   non-observation and atomic Tool restoration before any TOOL-only exact
-   requirement can be accepted.
+- `fixtures/planner-capability-schema-v0.3.json`;
+- `fixtures/planner-ontology-v0.3.json`;
+- `fixtures/planner-representation-catalog-v0.3.json`; and
+- `tests/planner-spec-v0.3.test.js`.
 
-These are contract materialization and validation blockers, not permission to
-implement them in this round. Until they are present and jointly checked, the
-status remains `DRAFT — NOT FROZEN`.
+Materialization does not freeze the contract or constitute a v0.3 Runtime
+implementation. Before freeze, the draft assets still require joint validation;
+remaining raw-blind and leakage coverage must be incorporated into the versioned
+conformance set; and a trusted machine-checkable Runtime capability declaration
+must provide evidence for agent non-observation and atomic Tool restoration
+before any TOOL-only exact requirement can be accepted. No Runtime enforcement
+or held-out evaluation has been implemented.
+
+Until those requirements are satisfied and the version is explicitly frozen,
+the status remains `DRAFT — NOT FROZEN`.
 
 ## 19. Explicit exclusions
 
